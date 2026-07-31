@@ -4,11 +4,14 @@ import glob
 
 def optimize_all_assets():
     print("🚀 Starting digital asset optimization...")
-    png_files = glob.glob("/home/user/TSH-*/*.png")
+    # Scan both product folders and social media post folders
+    png_files = glob.glob("/home/user/TSH-*/*.png") + glob.glob("/home/user/D99-Social-Media/**/*.png", recursive=True)
     total_old_size = 0
     total_new_size = 0
     
     for file_path in png_files:
+        if not os.path.isfile(file_path):
+            continue
         old_size = os.path.getsize(file_path)
         total_old_size += old_size
         
@@ -27,7 +30,8 @@ def optimize_all_assets():
     print(f"\n🎉 Optimization Complete!")
     print(f"📊 Total Old Size: {total_old_size/(1024*1024):.2f} MB")
     print(f"📊 Total New Size: {total_new_size/(1024*1024):.2f} MB")
-    print(f"📉 Saved: {((total_old_size - total_new_size) / total_old_size) * 100:.1f}% space!")
+    if total_old_size > 0:
+        print(f"📉 Saved: {((total_old_size - total_new_size) / total_old_size) * 100:.1f}% space!")
 
 if __name__ == "__main__":
     optimize_all_assets()
