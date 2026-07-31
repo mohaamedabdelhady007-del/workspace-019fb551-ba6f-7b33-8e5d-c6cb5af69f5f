@@ -4,8 +4,11 @@ import glob
 
 def optimize_all_assets():
     print("🚀 Starting digital asset optimization...")
-    # Scan both product folders and social media post folders
-    png_files = glob.glob("/home/user/TSH-*/*.png") + glob.glob("/home/user/D99-Social-Media/**/*.png", recursive=True)
+    # Scan product folders, social media folders
+    png_files = (
+        glob.glob("/home/user/product/**/*.png", recursive=True) + 
+        glob.glob("/home/user/D99-Social-Media/**/*.png", recursive=True)
+    )
     total_old_size = 0
     total_new_size = 0
     
