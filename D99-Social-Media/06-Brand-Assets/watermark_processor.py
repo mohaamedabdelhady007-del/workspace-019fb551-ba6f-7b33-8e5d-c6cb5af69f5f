@@ -1,10 +1,29 @@
 from PIL import Image, ImageDraw, ImageFont
 import os
 
-def apply_brand_watermark(image_path, website_url="www.district-99.com"):
+def create_red_star_logo(logo_path, target_size=(50, 50)):
     """
-    Applies a highly-styled, modern, and youthful website text watermark
-    (www.district-99.com) onto the image using a clean DejaVuSans-Bold font.
+    Isolates the star from logo_option_2 and colors it in deep streetwear scarlet red.
+    """
+    logo = Image.open(logo_path).convert("RGBA")
+    logo = logo.resize(target_size, Image.Resampling.LANCZOS)
+    
+    # Create red color mask
+    red_color = (230, 10, 20, 230) # Premium streetwear red with slight transparency
+    red_img = Image.new("RGBA", target_size, red_color)
+    
+    r, g, b, a = logo.split()
+    mask = r.point(lambda p: 255 if p > 50 else 0)
+    
+    watermark_logo = Image.new("RGBA", target_size, (0,0,0,0))
+    watermark_logo.paste(red_img, (0, 0), mask=mask)
+    return watermark_logo
+
+def apply_brand_watermark(image_path, logo_path="/home/user/D99-Social-Media/06-Brand-Assets/logo_option_2.png", website_url="www.district-99.com"):
+    """
+    Applies the ultimate premium streetwear watermark to the image:
+    A red Cyber-Star logo on the left, and 'www.district-99.com' next to it,
+    rendered in the ultra-cool 'Syne-Variable.ttf' font, centered at the bottom.
     """
     if not os.path.exists(image_path):
         print(f"Error: Image {image_path} not found.")
@@ -16,43 +35,51 @@ def apply_brand_watermark(image_path, website_url="www.district-99.com"):
     # Create Draw object
     draw = ImageDraw.Draw(img)
     
-    # Set up font size (scaled to 2.5% of image height for high legibility)
-    font_size = int(h * 0.025)
+    # Set up size metrics
+    logo_h = int(h * 0.035) # 3.5% of image height
+    logo_size = (logo_h, logo_h)
     
-    # Load the beautiful DejaVuSans-Bold font which is installed on the system
-    font_path = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
+    # Load custom ultra-cool font (Syne-Variable)
+    font_size = int(h * 0.024)
+    font_path = "/home/user/D99-Social-Media/06-Brand-Assets/Syne-Variable.ttf"
     try:
         font = ImageFont.truetype(font_path, font_size)
     except IOError:
         font = ImageFont.load_default()
         
-    # Set up modern semi-transparent white/gray color for clean streetwear vibe (editorial style)
-    text_color = (255, 255, 255, 180) # Clean white with slight opacity (Alpha = 180)
-    
-    # Position: Bottom-center or bottom-left. Let's do bottom-center!
-    # Calculate text dimensions
+    # Get text dimensions
     if hasattr(draw, "textlength"):
         text_w = draw.textlength(website_url, font=font)
     else:
         text_w = font_size * len(website_url) * 0.6
         
-    text_x = (w - text_w) // 2 # Centered
-    text_y = h - int(h * 0.08) # 8% from bottom
+    # Total width of the watermark block (logo + spacing + text)
+    spacing = 15 # Gap between logo and text
+    total_w = logo_size[0] + spacing + text_w
     
-    # Optional: Draw a very subtle dark shadow behind text for perfect contrast on any background
-    shadow_color = (0, 0, 0, 80)
-    draw.text((text_x + 2, text_y + 2), website_url, font=font, fill=shadow_color)
+    # Centered positions
+    start_x = (w - total_w) // 2
+    logo_y = h - int(h * 0.08) # 8% from bottom
+    text_y = logo_y + (logo_size[1] // 2) - (font_size // 2) - 2 # Center text vertically with logo
     
-    # Draw the main text
-    draw.text((text_x, text_y), website_url, font=font, fill=text_color)
+    # 1. Paste the Red Cyber-Star Logo
+    red_star = create_red_star_logo(logo_path, target_size=logo_size)
+    img.paste(red_star, (int(start_x), int(logo_y)), mask=red_star)
+    
+    # 2. Draw the website text (Pure White with subtle drop shadow)
+    text_x = start_x + logo_size[0] + spacing
+    
+    # Shadow for maximum contrast on any background
+    draw.text((text_x + 2, text_y + 2), website_url, font=font, fill=(0, 0, 0, 100))
+    # Main white text
+    draw.text((text_x, text_y), website_url, font=font, fill=(255, 255, 255, 220))
     
     # Save the watermarked image
     img.save(image_path, "PNG")
-    print(f"✅ Successfully watermarked {os.path.basename(image_path)} with: {website_url}")
+    print(f"✅ Applied premium streetwear watermark (Red Star + Syne Web) to: {os.path.basename(image_path)}")
     return True
 
 if __name__ == "__main__":
-    # Test on a dummy path or a completed pose
     apply_brand_watermark(
         "/home/user/product/tshirt 01 to 18/TSH-01/pose_1.png"
     )
