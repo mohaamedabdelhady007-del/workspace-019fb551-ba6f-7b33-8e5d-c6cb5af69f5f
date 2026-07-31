@@ -1,0 +1,5 @@
+# Ignore token file and caches
+.git_token
+__pycache__/
+*.pyc
+temp_*.jpg
