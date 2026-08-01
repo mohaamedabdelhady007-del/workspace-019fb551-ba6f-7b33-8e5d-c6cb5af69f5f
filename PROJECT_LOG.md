@@ -11,6 +11,8 @@
   > **`DISTRICT-99: Action is the Bridge.`**
 * **لوحة العمل الإبداعية المشتركة (Shared Figma Board):**
   > [D99 Creative Studio on Figma](https://www.figma.com/design/Fv0TDLL9kVdsehSylm2AOb/Untitled?node-id=0-1&t=OD0Tbh2zKFmnBrzu-1)
+* **رابط فريق العمل المشترك على Canva (Shared Canva Team):**
+  > [DISTRICT-99 Canva Studio](https://canva.link/dmzmi9kcj2sedm8)
 
 ---
 
@@ -72,3 +74,4 @@
 | 2026-07-31 | الهوية البصرية | اختيار الشعار الثاني (Techno Star) والشعار اللفظي (Action is the Bridge) | 🟢 مكتملة 100% |
 | 2026-07-31 | شوبيفاي المتطور | إزالة الفسفوري بالكامل + مزامنة ورفع الـ 18 تيشيرت + تصفير المخزون كـ SOLD OUT | 🟢 مكتملة 100% |
 | 2026-07-31 | الهوية الرقمية | ربط مساحة العمل الإبداعية المشتركة لـ D99 على Figma مع Mido | 🟢 مكتملة 100% |
+| 2026-07-31 | الهوية الرقمية | ربط حساب فريق العمل المشترك على Canva للتحكم والتصميم الكامل | 🟢 مكتملة 100% |
