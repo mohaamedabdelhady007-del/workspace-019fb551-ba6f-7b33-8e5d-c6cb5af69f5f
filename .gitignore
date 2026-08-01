@@ -1,5 +1,6 @@
-# Ignore token file and caches
+# Ignore token files and caches
 .git_token
+.shopify_token
 __pycache__/
 *.pyc
 temp_*.jpg
