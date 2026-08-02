@@ -1,0 +1,218 @@
+{% comment %}
+  DISTRICT-99 (D99) - CUSTOM EDITORIAL HEADER SECTION
+  This is the custom Liquid code for the premium centered-logo, left-menu, right-cart layout.
+  Save this locally as a guide to inject later!
+{% endcomment %}
+
+<header class="header d99-custom-header">
+  <div class="container">
+    <div class="nav d99-header-grid">
+      
+      <!-- 1. LEFT SIDE: Navigation Links (العلاقات على اليسار) -->
+      <nav class="d99-nav-links">
+        <a href="/" class="d99-link-home">Home</a>
+        
+        <!-- Dropdown for T-Shirts -->
+        <div class="d99-dropdown">
+          <a href="/collections/all" class="d99-link-circle d99-dropdown-toggle">
+            T-shirts <i class="fas fa-chevron-down d99-arrow"></i>
+          </a>
+          <div class="d99-dropdown-menu">
+            <a href="/collections/oversized-t-shirts">Oversized</a>
+            <a href="/collections/premium-t-shirts">Premium</a>
+          </div>
+        </div>
+        
+        <a href="/collections/hoodies" class="d99-link-circle">Hoodies</a>
+        <a href="/collections/jeans" class="d99-link-circle">Jeans</a>
+      </nav>
+      
+      <!-- 2. CENTER: Transparent Black Logo (اللوجو في المنتصف) -->
+      <div class="logo d99-logo-center">
+        <a href="/">
+          <img src="{{ 'd99-logo-header.png' | asset_url }}" alt="DISTRICT-99" class="d99-logo-img">
+        </a>
+      </div>
+      
+      <!-- 3. RIGHT SIDE: Cart and Actions (السلة على اليمين) -->
+      <div class="nav-actions d99-actions-right">
+        <a href="/cart" class="d99-cart-icon"><i class="fas fa-shopping-cart"></i></a>
+        <a href="/account" class="d99-account-icon"><i class="fas fa-user"></i></a>
+      </div>
+      
+    </div>
+  </div>
+</header>
+
+<style>
+  /* ----------------------------------------------------
+     Besoke Streetwear Header Styling for DISTRICT-99 (D99)
+     ---------------------------------------------------- */
+  .d99-custom-header {
+    background-color: #ffffff;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    padding: 20px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+
+  /* Grid Layout: Left (Menu), Center (Logo), Right (Actions) */
+  .d99-header-grid {
+    display: grid !important;
+    grid-template-columns: 2fr 1fr 2fr !important;
+    align-items: center !important;
+    width: 100%;
+  }
+
+  /* 1. LEFT SIDE: Navigation Links */
+  .d99-nav-links {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    justify-content: flex-start;
+  }
+
+  /* Home Link: Larger, no circle */
+  .d99-link-home {
+    font-size: 18px !important;
+    font-weight: 800 !important;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #000000;
+    letter-spacing: -0.01em;
+    transition: color 0.3s ease;
+  }
+
+  .d99-link-home:hover {
+    color: #e50914; /* DISTRICT-99 Red */
+  }
+
+  /* Circular Links (T-shirts, Hoodies, Jeans) */
+  .d99-link-circle {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #000000;
+    border: 1px solid #000000; /* Thin black circle */
+    border-radius: 50px;       /* Perfect circle/oval border */
+    padding: 8px 18px !important;
+    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  .d99-link-circle:hover {
+    background-color: #000000;
+    color: #ffffff !important;
+    border-color: #000000;
+  }
+
+  /* 2. CENTER: Logo Styling */
+  .d99-logo-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .d99-logo-img {
+    height: 48px !important; /* Perfect luxury height */
+    width: auto !important;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+  }
+
+  .d99-logo-img:hover {
+    transform: scale(1.05); /* Interactive hover */
+  }
+
+  /* 3. RIGHT SIDE: Cart & Actions */
+  .d99-actions-right {
+    display: flex;
+    gap: 20px;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  .d99-cart-icon, .d99-account-icon {
+    font-size: 18px !important;
+    color: #000000;
+    transition: color 0.3s ease;
+    text-decoration: none;
+  }
+
+  .d99-cart-icon:hover, .d99-account-icon:hover {
+    color: #e50914; /* DISTRICT-99 Red */
+  }
+
+  /* ----------------------------------------------------
+     Dropdown Hover System (T-shirts Submenu)
+     ---------------------------------------------------- */
+  .d99-dropdown {
+    position: relative;
+    display: inline-block;
+  }
+
+  .d99-dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #ffffff;
+    box-shadow: 0px 8px 24px rgba(0,0,0,0.1);
+    border: 1px solid rgba(0,0,0,0.05);
+    padding: 10px 0;
+    min-width: 140px;
+    z-index: 1100;
+    border-radius: 0px; /* Sharp corners */
+    margin-top: 10px;
+  }
+
+  .d99-dropdown-menu::before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    width: 10px;
+    height: 10px;
+    background-color: #ffffff;
+    border-left: 1px solid rgba(0,0,0,0.05);
+    border-top: 1px solid rgba(0,0,0,0.05);
+  }
+
+  .d99-dropdown-menu a {
+    display: block;
+    color: #000000;
+    padding: 10px 20px;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    text-align: center;
+    transition: all 0.2s ease;
+  }
+
+  .d99-dropdown-menu a:hover {
+    background-color: #000000;
+    color: #ffffff !important;
+  }
+
+  /* Reveal Dropdown on Hover */
+  .d99-dropdown:hover .d99-dropdown-menu {
+    display: block;
+  }
+
+  /* Dropdown Arrow rotation on Hover */
+  .d99-dropdown:hover .d99-arrow {
+    transform: rotate(180deg);
+  }
+
+  .d99-arrow {
+    transition: transform 0.3s ease;
+    font-size: 10px;
+  }
+</style>
