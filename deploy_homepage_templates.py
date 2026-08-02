@@ -62,17 +62,12 @@ def deploy_homepage_layout():
                 "settings": {
                     "heading": "Define Your District"
                 }
-            },
-            "featured_products": {
-                "type": "bento-products",
-                "settings": {}
             }
         },
         "order": [
             "d99_marquee_ticker",
             "d99_split_hero",
-            "d99_lookbook_grid",
-            "featured_products"
+            "d99_lookbook_grid"
         ]
     }
     

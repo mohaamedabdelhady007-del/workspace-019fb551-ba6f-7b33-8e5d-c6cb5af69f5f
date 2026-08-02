@@ -220,17 +220,20 @@
   }
 
   /* Responsive styling for Mobile */
-  @media screen and (max-width: 990px) {
+  /* Responsive styling for Mobile & Editor */
+  @media screen and (max-width: 1024px) {
     .d99-bento-grid {
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(2, 1fr) !important;
+      grid-auto-rows: minmax(220px, auto) !important;
+      gap: 20px !important;
     }
   }
 
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 600px) {
     .d99-bento-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 20px !important;
     }
   }
 </style>
