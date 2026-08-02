@@ -1,0 +1,9 @@
+{
+  "sections": {
+    "hero": { "type": "hero", "settings": { "heading": "NEW ARRIVALS", "sub": "Action is the bridge.", "button": "COP NOW" } },
+    "lookbook": { "type": "lookbook", "settings": { "heading": "DEFINE YOUR DISTRICT" } },
+    "featured": { "type": "featured-collection", "settings": { "title": "FEATURED", "limit": 4 } },
+    "news": { "type": "newsletter", "settings": { "heading": "JOIN THE DISTRICT", "sub": "Get drops first." } }
+  },
+  "order": ["hero", "lookbook", "featured", "news"]
+}

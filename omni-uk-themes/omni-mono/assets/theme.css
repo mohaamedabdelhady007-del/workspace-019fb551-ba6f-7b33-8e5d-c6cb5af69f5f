@@ -1,0 +1,125 @@
+/* =========================================================================
+   OMNI — Mono Contrast (Stark B&W)  —  OMNI UK theme
+   Inspired by: cart_drawer_mockup (high-contrast black & white)
+   ========================================================================= */
+:root{
+  --bg:#ffffff; --fg:#000000; --accent:#000000; --muted:#555555;
+  --line:#000000; --onaccent:#ffffff;
+  --font-head:'Arial Black', Arial, sans-serif; --font-body:'Helvetica Neue', Arial, sans-serif;
+  --maxw:1300px; --radius:0px; --border-w:2px; --track:0.20em;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{-webkit-font-smoothing:antialiased;}
+body{
+  background:var(--bg); color:var(--fg); font-family:var(--font-body);
+  line-height:1.55; font-size:16px;
+}
+img{max-width:100%; display:block;}
+a{color:inherit; text-decoration:none; transition:color .2s ease;}
+a:hover{opacity:.7;}
+.skip-link{position:absolute;left:-999px;}
+.skip-link:focus{left:1rem;top:1rem;background:var(--fg);color:var(--bg);padding:.5rem 1rem;z-index:99;}
+
+/* ---------- HEADER ---------- */
+.site-header{position:sticky;top:0;z-index:50;background:var(--bg);border-bottom:1px solid var(--line);}
+.header__inner{display:flex;align-items:center;justify-content:space-between;gap:1rem;
+  max-width:var(--maxw);margin:0 auto;padding:.9rem 1.5rem;}
+.header__logo{font-family:var(--font-head);font-size:1.4rem;font-weight:700;letter-spacing:.02em;}
+.header__logo img{height:34px;width:auto;}
+.header__nav{display:flex;gap:1.6rem;flex-wrap:wrap;}
+.header__link{font-size:.8rem;letter-spacing:var(--track);text-transform:uppercase;}
+.header__cart{font-size:.8rem;letter-spacing:var(--track);text-transform:uppercase;}
+
+/* ---------- ANNOUNCEMENT MARQUEE ---------- */
+.announce{background:var(--fg);color:var(--bg);overflow:hidden;white-space:nowrap;padding:.5rem 0;}
+.announce__track{display:inline-block;animation:marq 22s linear infinite;}
+.announce__track span{font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;padding:0 1.2rem;}
+.announce__dot{opacity:.6;}
+@keyframes marq{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+/* ---------- HERO ---------- */
+.hero{position:relative;display:grid;grid-template-columns:1.2fr .8fr;align-items:center;
+  max-width:var(--maxw);margin:0 auto;min-height:78vh;gap:2rem;padding:3rem 1.5rem;}
+.hero__media img{width:100%;height:70vh;object-fit:cover;border-radius:var(--radius);}
+.hero__content h1{font-family:var(--font-head);font-weight:700;line-height:1;margin-bottom:1rem;}
+.hero__sub{color:var(--muted);margin-bottom:1.6rem;font-size:1.05rem;}
+.btn{display:inline-block;padding:.9rem 2.2rem;border:1px solid var(--fg);border-radius:var(--radius);
+  font-size:.78rem;letter-spacing:var(--track);text-transform:uppercase;cursor:pointer;
+  background:transparent;color:var(--fg);transition:all .2s ease;}
+.btn:hover{background:var(--fg);color:var(--bg);opacity:1;}
+
+/* ---------- LOOKBOOK / BENTO ---------- */
+.lookbook{max-width:var(--maxw);margin:4rem auto;padding:0 1.5rem;}
+.lookbook__title,.section-title{font-family:var(--font-head);text-transform:uppercase;
+  letter-spacing:var(--track);font-size:clamp(1.4rem,3vw,2.4rem);margin-bottom:1.6rem;}
+.bento{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:minmax(240px,auto);gap:18px;}
+.bento__cell{position:relative;overflow:hidden;background:var(--line);border-radius:var(--radius);}
+.bento__cell img{width:100%;height:100%;object-fit:cover;}
+.bento__placeholder{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  color:var(--muted);letter-spacing:.2em;text-transform:uppercase;font-size:.8rem;}
+.lookbook__hint{margin-top:1rem;color:var(--muted);font-size:.8rem;}
+
+/* ---------- FEATURED / CARDS ---------- */
+.featured{max-width:var(--maxw);margin:4rem auto;padding:0 1.5rem;}
+.featured__grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;}
+.card{border-radius:var(--radius);}
+.card__media{aspect-ratio:3/4;overflow:hidden;background:var(--line);margin-bottom:.7rem;}
+.card__media img{width:100%;height:100%;object-fit:cover;transition:transform .4s ease;}
+.card:hover .card__media img{transform:scale(1.04);}
+.card__title{font-size:.95rem;font-weight:600;}
+.card__price{color:var(--muted);font-size:.9rem;}
+
+/* ---------- NEWSLETTER ---------- */
+.news{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:4rem 1.5rem;margin-top:4rem;}
+.news__inner{max-width:640px;margin:0 auto;text-align:center;}
+.news__inner h2{font-family:var(--font-head);text-transform:uppercase;letter-spacing:var(--track);margin-bottom:.6rem;}
+.news__form{display:flex;gap:.6rem;justify-content:center;margin-top:1.4rem;flex-wrap:wrap;}
+.news__form input{padding:.9rem 1.2rem;border:1px solid var(--line);background:transparent;color:var(--fg);
+  border-radius:var(--radius);min-width:260px;}
+
+/* ---------- FOOTER ---------- */
+.site-footer{border-top:1px solid var(--line);margin-top:4rem;padding:3rem 1.5rem 2rem;}
+.footer__cols{max-width:var(--maxw);margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr;gap:2rem;}
+.footer__col h3{font-family:var(--font-head);font-size:1.5rem;margin-bottom:.5rem;}
+.footer__col h4{text-transform:uppercase;letter-spacing:var(--track);font-size:.78rem;margin-bottom:.8rem;}
+.footer__col ul{list-style:none;}
+.footer__col li{margin-bottom:.4rem;}
+.footer__col p{color:var(--muted);}
+.footer__bottom{max-width:var(--maxw);margin:2.5rem auto 0;padding-top:1.5rem;border-top:1px solid var(--line);
+  display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;color:var(--muted);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;}
+
+/* ---------- PRODUCT / COLLECTION / CART PAGES ---------- */
+.product-page{max-width:var(--maxw);margin:3rem auto;padding:0 1.5rem;display:grid;grid-template-columns:1fr 1fr;gap:3rem;}
+.product-page__media img{border-radius:var(--radius);margin-bottom:1rem;}
+.product-page__info h1{font-family:var(--font-head);font-size:2.2rem;margin-bottom:1rem;}
+.product-page__price{font-size:1.4rem;margin-bottom:1rem;}
+.product-page__desc{color:var(--muted);margin-bottom:1.6rem;}
+.collection-page,.static-page,.cart-page,.notfound,.list-collections{max-width:var(--maxw);margin:3rem auto;padding:0 1.5rem;}
+.collection-page__title,.static-page h1,.cart-page h1,.notfound h1{font-family:var(--font-head);text-transform:uppercase;letter-spacing:var(--track);margin-bottom:1.6rem;}
+.cart-item{display:flex;gap:1rem;align-items:center;padding:1rem 0;border-bottom:1px solid var(--line);}
+.cart-item img{width:90px;height:auto;}
+.cart-page__total{margin:1.5rem 0;font-size:1.2rem;}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width:1024px){
+  .bento{grid-template-columns:repeat(2,1fr);}
+  .featured__grid{grid-template-columns:repeat(2,1fr);}
+}
+@media (max-width:760px){
+  .hero{grid-template-columns:1fr;min-height:auto;}
+  .hero__media img{height:52vh;}
+  .product-page{grid-template-columns:1fr;}
+  .footer__cols{grid-template-columns:1fr;}
+  .header__nav{display:none;}
+}
+
+/* ---------- THEME FLAVOR OVERRIDES ---------- */
+
+  *{border-radius:0 !important;}
+  .site-header{border-bottom:var(--border_w) solid #000;text-transform:uppercase;letter-spacing:var(--track);}
+  .btn{border:var(--border_w) solid #000;background:#000;color:#fff;}
+  .btn:hover{background:#fff;color:#000;}
+  .bento__cell{border:var(--border_w) solid #000;}
+  .hero__media{border:var(--border_w) solid #000;}
+  .card{border:1px solid #000;}
+

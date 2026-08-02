@@ -1,0 +1,27 @@
+<header class="site-header" data-header>
+  <div class="header__inner">
+    <a href="{{ routes.root_url }}" class="header__logo">
+      {%- if section.settings.logo -%}
+        <img src="{{ section.settings.logo | img_url:'200x' }}" alt="{{ shop.name | escape }}">
+      {%- else -%}
+        {{ shop.name }}
+      {%- endif -%}
+    </a>
+    <nav class="header__nav" aria-label="Primary">
+      {% for link in linklists.main-menu.links %}
+        <a href="{{ link.url }}" class="header__link">{{ link.title }}</a>
+      {% endfor %}
+    </nav>
+    <div class="header__actions">
+      <a href="{{ routes.cart_url }}" class="header__cart">Cart ({{ cart.item_count }})</a>
+    </div>
+  </div>
+</header>
+{% schema %}
+{
+  "name": "OMNI Header",
+  "settings": [
+    { "type": "image_picker", "id": "logo", "label": "Logo" }
+  ]
+}
+{% endschema %}

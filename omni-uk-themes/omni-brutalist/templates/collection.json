@@ -1,0 +1,9 @@
+{
+  "sections": {
+    "main": {
+      "type": "collection-template",
+      "settings": { "title": "", "columns": 3 }
+    }
+  },
+  "order": ["main"]
+}
