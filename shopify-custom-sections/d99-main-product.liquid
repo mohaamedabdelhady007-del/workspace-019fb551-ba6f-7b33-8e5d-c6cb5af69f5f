@@ -1,0 +1,777 @@
+{% comment %}
+  DISTRICT-99 (D99) - CYBER-BRUTALIST PRODUCT PAGE SECTION (MATCHING product_page_option_5.jpg)
+  Bespoke Glitch-Tech Spec layout with industrial scaffolding, monospace specification cards,
+  custom wash care symbols, and dynamic checkout panels.
+{% endcomment %}
+
+<div class="d99-brutalist-product-wrapper">
+  
+  <!-- TOP STATUS BAR -->
+  <div class="d99-status-bar">
+    <div class="d99-status-cell">D99</div>
+    <div class="d99-status-cell">// DISTRICT-99&reg;<br>SECTION: APPAREL</div>
+    <div class="d99-status-cell">// PRODUCT MODULE<br>[{{ product.title | upcase }}]</div>
+    <div class="d99-status-cell">USER: D99_VISITOR<br>CLEARANCE: GUEST</div>
+    <div class="d99-status-cell">CART [{{ cart.item_count }}]</div>
+    <div class="d99-status-cell d99-red-marker">&times;</div>
+  </div>
+
+  <div class="d99-product-grid container">
+    
+    <!-- LEFT SIDE: Scaffold Image Column -->
+    <div class="d99-product-left-scaffold">
+      <div class="d99-scaffold-container">
+        
+        <!-- Left Sidebar Indicators -->
+        <div class="d99-scaffold-indicators">
+          <span class="d99-sc-meta">D99</span>
+          <span class="d99-sc-meta">// SECTION<br>A-A</span>
+          <span class="d99-sc-meta">// STRUCTURE<br>001</span>
+          
+          <div class="d99-scaffold-bullets">
+            <span class="active">01</span>
+            <span>02</span>
+            <span>03</span>
+            <span>04</span>
+            <span>05</span>
+          </div>
+        </div>
+
+        <!-- Main Image with Scaffolding Frames -->
+        <div class="d99-scaffold-main-frame">
+          <!-- Structural Scaffold Bars (CSS Overlay) -->
+          <div class="d99-sc-bar-v left"></div>
+          <div class="d99-sc-bar-v right"></div>
+          <div class="d99-sc-bar-h top"></div>
+          <div class="d99-sc-bar-h bottom"></div>
+          <div class="d99-sc-joint tl">+</div>
+          <div class="d99-sc-joint tr">+</div>
+          <div class="d99-sc-joint bl">+</div>
+          <div class="d99-sc-joint br">+</div>
+          
+          <!-- Image Stack -->
+          <div class="d99-scaffold-image-stack">
+            {% if product.images.size > 0 %}
+              {% for image in product.images %}
+                <div class="d99-scaffold-img-item {% if forloop.first %}active{% endif %}" data-index="{{ forloop.index }}">
+                  <img src="{{ image | img_url: 'master' }}" alt="{{ product.title }} - Pose {{ forloop.index }}" class="d99-brutalist-img">
+                </div>
+              {% endfor %}
+            {% else %}
+              <div class="d99-scaffold-img-item active">
+                {{ 'product-1' | placeholder_svg_tag: 'd99-placeholder-svg' }}
+              </div>
+            {% endif %}
+          </div>
+          
+          <!-- System Metadata Overlay -->
+          <div class="d99-scaffold-metadata">
+            <p>MODULE_{{ product.title | upcase | replace: ' ', '_' }}</p>
+            <p>v2.4.1</p>
+            <p class="d99-text-red">STATUS: ACTIVE</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- RIGHT SIDE: Monospace Specs & Checkout Panel -->
+    <div class="d99-product-right-specs">
+      <div class="d99-specs-sticky">
+        
+        <!-- Breadcrumb & Systems Status -->
+        <div class="d99-specs-breadcrumbs">
+          <span>D99</span> / <span>APPAREL</span> / <span>TOPS</span> / <span class="d99-text-red">{{ product.title | upcase }}</span>
+        </div>
+
+        <!-- Large Glitched Title (Matches product_page_option_5.jpg) -->
+        <h1 class="d99-brutalist-title">{{ product.title | upcase }}</h1>
+        <div class="d99-subtitle-japanese">オーラ・ティー</div>
+        
+        <p class="d99-product-tagline">// OVERSIZED FIT // STRUCTURED SILHOUETTE<br>ENGINEERED FOR PRESENCE</p>
+
+        <!-- Dynamic Middle Grid: Spec Card (Left) & Care Instructions (Right) -->
+        <div class="d99-specs-middle-grid">
+          
+          <!-- Monospace Specification Card -->
+          <div class="d99-spec-card">
+            <span class="d99-card-header">// SPECIFICATION CARD</span>
+            <div class="d99-spec-row">
+              <span class="d99-spec-label">FABRIC WEIGHT</span>
+              <span class="d99-spec-val d99-text-red">300 GSM</span>
+            </div>
+            <div class="d99-spec-row-sub">Heavy Combed Cotton</div>
+            
+            <div class="d99-spec-row">
+              <span class="d99-spec-label">FABRIC COMPOSITION</span>
+              <span class="d99-spec-val">100% Cotton</span>
+            </div>
+            <div class="d99-spec-row-sub">Pre-Shrunk</div>
+
+            <div class="d99-spec-row">
+              <span class="d99-spec-label">CONSTRUCTION</span>
+              <span class="d99-spec-val">Double Needle</span>
+            </div>
+            <div class="d99-spec-row-sub">Reinforced Seams</div>
+
+            <div class="d99-spec-row">
+              <span class="d99-spec-label">COLLAR</span>
+              <span class="d99-spec-val">Ribbed Crewneck</span>
+            </div>
+            <div class="d99-spec-row-sub">2x2 Knit</div>
+
+            <div class="d99-spec-row">
+              <span class="d99-spec-label">FIT</span>
+              <span class="d99-spec-val">Oversized</span>
+            </div>
+            <div class="d99-spec-row-sub">Drop Shoulders</div>
+
+            <div class="d99-spec-row">
+              <span class="d99-spec-label">COLORWAYS</span>
+              <span class="d99-spec-val">Void Black / Ash Grey</span>
+            </div>
+          </div>
+
+          <!-- Laundry Care Instructions with custom SVGs/CSS -->
+          <div class="d99-care-card">
+            <span class="d99-card-header">// CARE INSTRUCTIONS</span>
+            
+            <div class="d99-care-row">
+              <div class="d99-care-icon">
+                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="1.5" fill="none"><path d="M4 10h16c1 0 2 1 2 2v4c0 2-2 3-4 3H6c-2 0-4-1-4-3v-4c0-1 1-2 2-2zM4 10l2-6h12l2 6M12 12v5"/></svg>
+                <span class="d99-care-temp">30</span>
+              </div>
+              <div class="d99-care-text">
+                <span class="d99-care-label">MACHINE WASH COLD</span>
+                <span class="d99-care-sub">MAX 30°C // GENTLE CYCLE</span>
+              </div>
+            </div>
+
+            <div class="d99-care-row">
+              <div class="d99-care-icon">
+                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="1.5" fill="none"><path d="M12 2L2 20h20L12 2zM3 19l9-15 9 15M2 2l20 20"/></svg>
+              </div>
+              <div class="d99-care-text">
+                <span class="d99-care-label">DO NOT BLEACH</span>
+                <span class="d99-care-sub">AVOID CHLORINE BASED BLEACH</span>
+              </div>
+            </div>
+
+            <div class="d99-care-row">
+              <div class="d99-care-icon">
+                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="1.5" fill="none"><path d="M4 4h16v16H4V4zM12 4v16M4 12h16"/></svg>
+              </div>
+              <div class="d99-care-text">
+                <span class="d99-care-label">HANG DRY IN SHADE</span>
+                <span class="d99-care-sub">AVOID DIRECT SUNLIGHT</span>
+              </div>
+            </div>
+
+            <div class="d99-care-row">
+              <div class="d99-care-icon">
+                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="1.5" fill="none"><path d="M3 18h18M6 14c0-4 3-6 6-6s6 2 6 6M6 14h12M12 12h.01"/></svg>
+              </div>
+              <div class="d99-care-text">
+                <span class="d99-care-label">IRON ON LOW HEAT</span>
+                <span class="d99-care-sub">MAX 110°C // DO NOT IRON PRINT</span>
+              </div>
+            </div>
+
+            <div class="d99-care-row">
+              <div class="d99-care-icon">
+                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="1.5" fill="none"><circle cx="12" cy="12" r="10"/><path d="M4 4l16 16"/></svg>
+              </div>
+              <div class="d99-care-text">
+                <span class="d99-care-label">DO NOT TUMBLE DRY</span>
+                <span class="d99-care-sub">HIGH HEAT MAY CAUSE SHRINKAGE</span>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- Size Selector Panel -->
+        {% form 'product', product, id: 'd99-product-form' %}
+          <input type="hidden" name="id" id="d99-variant-id" value="{{ product.variants.first.id }}">
+          
+          <div class="d99-size-selection-area">
+            <div class="d99-size-header">
+              <span class="d99-size-label">// SIZE SELECTOR</span>
+              <button type="button" class="d99-size-guide-btn" onclick="openSizeModal()">SIZE GUIDE [&nearr;]</button>
+            </div>
+            
+            <div class="d99-brutalist-size-grid">
+              {% for variant in product.variants %}
+                <button type="button" 
+                        class="d99-brutalist-size-btn {% if forloop.first %}active{% endif %} {% unless variant.available %}sold-out{% endunless %}" 
+                        data-variant-id="{{ variant.id }}"
+                        onclick="selectSize(this, '{{ variant.id }}')">
+                  {{ variant.title }}
+                </button>
+              {% endfor %}
+            </div>
+          </div>
+
+          <!-- Checkout Strip Panel (Matches product_page_option_5.jpg) -->
+          <div class="d99-checkout-strip">
+            {% if product.available %}
+              <button type="submit" name="add" class="d99-strip-buy-btn">
+                ADD TO CART
+              </button>
+            {% else %}
+              <button type="button" class="d99-strip-buy-btn sold-out" disabled>
+                SOLD OUT
+              </button>
+            {% endif %}
+            
+            <div class="d99-strip-price">{{ product.price | money }}</div>
+            <div class="d99-strip-plus">+</div>
+          </div>
+        {% endform %}
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Sizing Chart Modal (Oversized Specifications) -->
+<div id="d99-size-modal" class="d99-modal">
+  <div class="d99-modal-content">
+    <span class="d99-modal-close" onclick="closeSizeModal()">&times;</span>
+    <h2 class="d99-modal-title">D99_GRID v.01 // SIZE CHART</h2>
+    <p class="d99-modal-subtitle">Our patterns are engineered with dropped shoulders and loose chest widths. Select your standard size for the intended fit.</p>
+    
+    <table class="d99-size-table">
+      <thead>
+        <tr>
+          <th>Size</th>
+          <th>Chest Width (cm)</th>
+          <th>Body Length (cm)</th>
+          <th>Sleeve Length (cm)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>XS</td><td>53</td><td>70</td><td>21</td></tr>
+        <tr><td>S</td><td>56</td><td>72</td><td>22</td></tr>
+        <tr><td>M</td><td>59</td><td>74</td><td>23</td></tr>
+        <tr><td>L</td><td>62</td><td>76</td><td>24</td></tr>
+        <tr><td>XL</td><td>65</td><td>78</td><td>25</td></tr>
+        <tr><td>XXL</td><td>68</td><td>80</td><td>26</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<style>
+  /* ----------------------------------------------------
+     D99 Cyber-Brutalist Product Section Styling
+     ---------------------------------------------------- */
+  .d99-brutalist-product-wrapper {
+    background-color: #080808;
+    color: #ffffff;
+    width: 100%;
+  }
+
+  /* 1. Status Bar */
+  .d99-status-bar {
+    display: grid;
+    grid-template-columns: 1fr 2fr 2fr 2fr 1fr 0.5fr;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: #737373;
+    padding: 15px 20px;
+    align-items: center;
+  }
+  .d99-status-cell {
+    border-left: 1px solid rgba(255,255,255,0.05);
+    padding-left: 15px;
+    line-height: 1.3;
+  }
+  .d99-status-cell:first-child {
+    border-left: none;
+    padding-left: 0;
+    font-family: var(--font-heading);
+    font-size: 14px;
+    font-weight: 800;
+    color: #fff;
+  }
+  .d99-red-marker {
+    color: #e50914;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: right;
+    cursor: pointer;
+  }
+
+  /* 2. Grid Layout */
+  .d99-product-grid {
+    display: flex;
+    gap: 50px;
+    padding: 40px 0;
+  }
+
+  /* Left Scaffold Image Container */
+  .d99-product-left-scaffold {
+    flex: 1.2;
+  }
+  .d99-scaffold-container {
+    display: flex;
+    gap: 30px;
+  }
+  .d99-scaffold-indicators {
+    display: flex;
+    flex-direction: column;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: #525252;
+    gap: 15px;
+  }
+  .d99-sc-meta {
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    padding-bottom: 8px;
+    line-height: 1.2;
+  }
+  .d99-scaffold-bullets {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 30px;
+  }
+  .d99-scaffold-bullets span {
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+  .d99-scaffold-bullets span.active, .d99-scaffold-bullets span:hover {
+    color: #e50914;
+    font-weight: bold;
+  }
+
+  /* Scaffolding Frame Overlay (Brutalist Iron Pipes effect) */
+  .d99-scaffold-main-frame {
+    flex: 1;
+    position: relative;
+    border: 1px solid rgba(255,255,255,0.08);
+    background-color: #141414;
+    padding: 10px;
+  }
+  .d99-sc-bar-v {
+    position: absolute;
+    top: -5px;
+    bottom: -5px;
+    width: 2px;
+    background-color: rgba(255,255,255,0.15);
+  }
+  .d99-sc-bar-v.left { left: 10px; }
+  .d99-sc-bar-v.right { right: 10px; }
+  .d99-sc-bar-h {
+    position: absolute;
+    left: -5px;
+    right: -5px;
+    height: 2px;
+    background-color: rgba(255,255,255,0.15);
+  }
+  .d99-sc-bar-h.top { top: 10px; }
+  .d99-sc-bar-h.bottom { bottom: 10px; }
+  .d99-sc-joint {
+    position: absolute;
+    color: #e50914;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: bold;
+    background-color: #141414;
+    width: 12px;
+    height: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+  }
+  .d99-sc-joint.tl { top: 4px; left: 5px; }
+  .d99-sc-joint.tr { top: 4px; right: 5px; }
+  .d99-sc-joint.bl { bottom: 4px; left: 5px; }
+  .d99-sc-joint.br { bottom: 4px; right: 5px; }
+
+  .d99-scaffold-image-stack {
+    width: 100%;
+    aspect-ratio: 3/4;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .d99-scaffold-img-item {
+    display: none;
+    width: 100%;
+    height: 100%;
+  }
+  .d99-scaffold-img-item.active {
+    display: block;
+  }
+  .d99-brutalist-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .d99-scaffold-metadata {
+    position: absolute;
+    bottom: 25px;
+    left: 25px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    line-height: 1.4;
+    background-color: rgba(20,20,20,0.8);
+    padding: 8px 12px;
+    border: 1px solid rgba(255,255,255,0.05);
+  }
+
+  /* Right Specs Column */
+  .d99-product-right-specs {
+    flex: 1;
+  }
+  .d99-specs-sticky {
+    position: sticky;
+    top: 100px;
+  }
+  .d99-specs-breadcrumbs {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: #525252;
+    margin-bottom: 15px;
+  }
+  .d99-brutalist-title {
+    font-family: var(--font-heading) !important;
+    font-size: 44px !important;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: #fff;
+    letter-spacing: -0.01em;
+    line-height: 1;
+    margin-bottom: 5px;
+    text-shadow: 2px 2px 0px rgba(229,9,20,0.4);
+  }
+  .d99-subtitle-japanese {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: #e50914;
+    margin-bottom: 20px;
+  }
+  .d99-product-tagline {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: #737373;
+    line-height: 1.4;
+    margin-bottom: 30px;
+  }
+
+  /* Middle Specs Grid */
+  .d99-specs-middle-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 35px;
+  }
+
+  /* Spec Card Monospace */
+  .d99-spec-card {
+    border: 1px solid rgba(255,255,255,0.08);
+    background-color: #111;
+    padding: 15px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+  }
+  .d99-card-header {
+    font-size: 10px;
+    color: #e50914;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 12px;
+  }
+  .d99-spec-row {
+    display: flex;
+    justify-content: space-between;
+    color: #ffffff;
+    font-weight: bold;
+    margin-top: 10px;
+  }
+  .d99-spec-row-sub {
+    color: #525252;
+    font-size: 9px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  /* Care Instructions Card */
+  .d99-care-card {
+    border: 1px solid rgba(255,255,255,0.08);
+    background-color: #111;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .d99-care-row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+  .d99-care-icon {
+    position: relative;
+    width: 24px;
+    height: 24px;
+    color: #e50914;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .d99-care-temp {
+    position: absolute;
+    font-family: var(--font-mono);
+    font-size: 8px;
+    font-weight: bold;
+    color: #e50914;
+    top: 9px;
+  }
+  .d99-care-text {
+    display: flex;
+    flex-direction: column;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    line-height: 1.2;
+  }
+  .d99-care-label {
+    color: #fff;
+    font-weight: bold;
+  }
+  .d99-care-sub {
+    color: #525252;
+    font-size: 8px;
+  }
+
+  /* Size Selector Grid */
+  .d99-size-selection-area {
+    margin-bottom: 30px;
+  }
+  .d99-size-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  .d99-size-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: bold;
+    color: #fff;
+  }
+  .d99-size-guide-btn {
+    background: none;
+    border: none;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: #e50914;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  .d99-brutalist-size-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+  }
+  .d99-brutalist-size-btn {
+    background-color: #0c0c0c;
+    color: #ffffff;
+    border: 1px solid rgba(255,255,255,0.15);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: bold;
+    padding: 12px 0;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .d99-brutalist-size-btn:hover, .d99-brutalist-size-btn.active {
+    background-color: #fff;
+    color: #000;
+    border-color: #fff;
+  }
+  .d99-brutalist-size-btn.sold-out {
+    opacity: 0.25;
+    text-decoration: line-through;
+    cursor: not-allowed;
+  }
+
+  /* 3. Checkout Strip */
+  .d99-checkout-strip {
+    display: grid;
+    grid-template-columns: 2fr 1.2fr 0.5fr;
+    border: 1px solid #e50914;
+    background-color: #0c0c0c;
+    width: 100%;
+    align-items: center;
+  }
+  .d99-strip-buy-btn {
+    background-color: #e50914;
+    color: #ffffff;
+    border: none;
+    font-family: var(--font-heading);
+    font-size: 14px;
+    font-weight: 800;
+    padding: 18px 0;
+    cursor: pointer;
+    letter-spacing: 0.05em;
+    transition: all 0.3s;
+  }
+  .d99-strip-buy-btn:hover {
+    background-color: #ffffff;
+    color: #000000;
+  }
+  .d99-strip-buy-btn.sold-out {
+    background-color: #1a1a1a;
+    color: #525252;
+    cursor: not-allowed;
+  }
+  .d99-strip-price {
+    font-family: var(--font-mono);
+    font-size: 15px;
+    font-weight: bold;
+    color: #ffffff;
+    text-align: center;
+    border-left: 1px solid rgba(255,255,255,0.08);
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .d99-strip-plus {
+    background-color: #0c0c0c;
+    color: #e50914;
+    font-family: var(--font-mono);
+    font-size: 18px;
+    font-weight: bold;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-left: 1px solid rgba(255,255,255,0.08);
+    cursor: pointer;
+  }
+
+  /* 4. Sizing Modal */
+  .d99-modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    inset: 0;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.7);
+    backdrop-filter: blur(5px);
+  }
+  .d99-modal-content {
+    background-color: #0c0c0c;
+    margin: 10% auto;
+    padding: 35px;
+    border: 1px solid rgba(255,255,255,0.15);
+    width: 90%;
+    max-width: 580px;
+    position: relative;
+  }
+  .d99-modal-close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    color: #fff;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  .d99-modal-close:hover {
+    color: #e50914;
+  }
+  .d99-modal-title {
+    font-family: var(--font-heading) !important;
+    font-size: 20px !important;
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: 8px;
+  }
+  .d99-modal-subtitle {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: #737373;
+    line-height: 1.4;
+    margin-bottom: 25px;
+  }
+  .d99-size-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-mono);
+    font-size: 12px;
+  }
+  .d99-size-table th, .d99-size-table td {
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 10px;
+    text-align: center;
+  }
+  .d99-size-table th {
+    background-color: #141414;
+    color: #fff;
+  }
+
+  @media screen and (max-width: 990px) {
+    .d99-status-bar {
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 15px;
+    }
+    .d99-status-cell:nth-child(4), .d99-status-cell:nth-child(5) {
+      display: none;
+    }
+    .d99-product-grid {
+      flex-direction: column;
+      gap: 30px;
+    }
+    .d99-specs-middle-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  // Dynamic Image Stack Selector
+  document.querySelectorAll('.d99-scaffold-bullets span').forEach(bullet => {
+    bullet.addEventListener('click', function() {
+      document.querySelectorAll('.d99-scaffold-bullets span').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      
+      const idx = this.innerText;
+      document.querySelectorAll('.d99-scaffold-img-item').forEach(img => {
+        img.classList.remove('active');
+        if (img.getAttribute('data-index') == idx) {
+          img.classList.add('active');
+        }
+      });
+    });
+  });
+
+  function selectSize(btn, variantId) {
+    document.querySelectorAll('.d99-brutalist-size-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('d99-variant-id').value = variantId;
+  }
+
+  function openSizeModal() {
+    document.getElementById('d99-size-modal').style.display = 'block';
+  }
+
+  function closeSizeModal() {
+    document.getElementById('d99-size-modal').style.display = 'none';
+  }
+
+  window.onclick = function(event) {
+    const modal = document.getElementById('d99-size-modal');
+    if (event.target == modal) {
+      modal.style.display = 'none';
+    }
+  }
+</script>
