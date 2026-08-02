@@ -105,7 +105,7 @@ def deploy_custom_header():
 </body>
 </html>"""
 
-    # 2. Bespoke custom styling CSS for the header elements
+    # 2. Bespoke custom styling CSS for the header elements (Fixed Word Wrap & Sharp Styling)
     custom_header_css = """
 /* ====================================================
    DISTRICT-99 (D99) - PREMIUM CUSTOM HEADER STYLING
@@ -163,7 +163,7 @@ def deploy_custom_header():
   margin-left: 2px !important;
 }
 
-/* Circular Links (T-shirts, Hoodies, Jeans) */
+/* Circular Links (T-shirts, Hoodies, Jeans) - FIXED NO-WRAP */
 .d99-link-circle {
   display: inline-flex !important;
   align-items: center !important;
@@ -179,6 +179,7 @@ def deploy_custom_header():
   padding: 8px 18px !important;
   transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1) !important;
   letter-spacing: 0.05em !important;
+  white-space: nowrap !important;        /* FORCE WORD NEXT TO EACH OTHER - NO WRAP */
 }
 
 .d99-link-circle:hover {
@@ -311,18 +312,20 @@ def deploy_custom_header():
     except Exception:
         existing_css = ""
         
-    # Append header styles if not already appended
-    if "D99 - PREMIUM CUSTOM HEADER" not in existing_css:
-        updated_css = existing_css + "\n\n" + custom_header_css
-        print("📤 Injecting premium header styles into theme.css...")
-        urllib.request.urlopen(urllib.request.Request(
-            f"https://{STORE_URL}/admin/api/2026-07/themes/{theme_id}/assets.json",
-            data=json.dumps({"asset": {"key": "assets/theme.css", "value": updated_css}}).encode("utf-8"),
-            headers=headers, method="PUT"
-        ))
-        print("   ✅ Successfully appended custom header CSS!")
-    else:
-        print("   🎨 Custom Header CSS already exists, skipped appending.")
+    # Replace any old Custom Header styling to prevent double append, and append fresh updated CSS
+    if "D99 - PREMIUM CUSTOM HEADER" in existing_css:
+        # split by start of custom header and rebuild
+        parts = existing_css.split("/* ====================================================\n   DISTRICT-99 (D99) - PREMIUM CUSTOM HEADER STYLING")
+        existing_css = parts[0]
+        
+    updated_css = existing_css + "\n\n" + custom_header_css
+    print("📤 Injecting premium header styles into theme.css...")
+    urllib.request.urlopen(urllib.request.Request(
+        f"https://{STORE_URL}/admin/api/2026-07/themes/{theme_id}/assets.json",
+        data=json.dumps({"asset": {"key": "assets/theme.css", "value": updated_css}}).encode("utf-8"),
+        headers=headers, method="PUT"
+    ))
+    print("   ✅ Successfully appended custom header CSS!")
         
     print("\n🎉 CUSTOM HEADER IS NOW 100% LIVE ON YOUR SHOPIFY WEBSITE! 🎉")
     print("👉 افتح متجرك المباشر الآن وشاهد الإبداع الخرافي الجديد!")

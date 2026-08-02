@@ -4,7 +4,7 @@ import base64
 import os
 
 # DISTRICT-99 (D99) - SHOPIFY HEADER LOGO UPLOADER
-# هذا السكريبت يقوم برفع لوجو DISTRICT-99 المخصص للخلفية البيضاء (باللون الأسود الشفاف) بداخل ملفات أصول الثيم!
+# هذا السكريبت يقوم برفع لوجو DISTRICT-99 المفرغ والأسود الجديد بداخل ملفات أصول الثيم!
 
 STORE_URL = "district99-preview.myshopify.com"
 
@@ -37,7 +37,7 @@ def upload_header_logo():
     if not theme_id:
         return
         
-    logo_path = "/home/user/D99-Social-Media/06-Brand-Assets/d99_logo_light_bg.png"
+    logo_path = "/home/user/D99-Social-Media/06-Brand-Assets/d99-logo-header.png"
     if not os.path.exists(logo_path):
         return
         
