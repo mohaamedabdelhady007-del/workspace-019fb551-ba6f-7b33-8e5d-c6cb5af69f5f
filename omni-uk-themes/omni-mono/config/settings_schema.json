@@ -1,0 +1,13 @@
+[
+  {
+    "name": "Theme",
+    "settings": [
+      { "type": "header", "content": "Colors" },
+      { "type": "color", "id": "color_bg", "label": "Background", "default": "#ffffff" },
+      { "type": "color", "id": "color_fg", "label": "Foreground", "default": "#111111" },
+      { "type": "color", "id": "color_accent", "label": "Accent", "default": "#111111" },
+      { "type": "header", "content": "Layout" },
+      { "type": "range", "id": "max_width", "label": "Max width", "min": 1000, "max": 1600, "step": 20, "default": 1320 }
+    ]
+  }
+]

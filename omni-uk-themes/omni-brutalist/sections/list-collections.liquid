@@ -1,0 +1,14 @@
+<section class="list-collections">
+  <h1>Collections</h1>
+  <div class="featured__grid">
+    {% for collection in collections %}
+      <a class="card" href="{{ collection.url }}">
+        <div class="card__media">
+          {% if collection.image %}<img src="{{ collection.image | img_url:'600x' }}" alt="{{ collection.title | escape }}">{% endif %}
+        </div>
+        <h3 class="card__title">{{ collection.title }}</h3>
+      </a>
+    {% endfor %}
+  </div>
+</section>
+{% schema %}{ "name": "OMNI List Collections", "settings": [] }{% endschema %}

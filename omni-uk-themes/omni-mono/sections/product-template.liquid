@@ -1,0 +1,14 @@
+<section class="product-page">
+  <div class="product-page__media">
+    {% for image in product.images %}<img src="{{ image | img_url:'800x' }}" alt="{{ product.title | escape }}">{% endfor %}
+  </div>
+  <div class="product-page__info">
+    <h1>{{ product.title }}</h1>
+    <p class="product-page__price">{{ product.price | money }}</p>
+    <div class="product-page__desc">{{ product.description }}</div>
+    {% form 'product', product %}
+      <button type="submit" class="btn">Add to cart</button>
+    {% endform %}
+  </div>
+</section>
+{% schema %}{ "name": "OMNI Product", "settings": [ { "type":"checkbox","id":"show_price","label":"Show price","default":true }, { "type":"checkbox","id":"show_description","label":"Show description","default":true } ] }{% endschema %}

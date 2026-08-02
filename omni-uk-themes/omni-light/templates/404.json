@@ -1,0 +1,6 @@
+{
+  "sections": {
+    "main": { "type": "four-o-four", "settings": {} }
+  },
+  "order": ["main"]
+}

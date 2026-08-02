@@ -1,0 +1,9 @@
+<section class="collection-page">
+  <h1 class="collection-page__title">{{ collection.title }}</h1>
+  <div class="featured__grid">
+    {% for product in collection.products %}
+      {% render 'card-product', product: product %}
+    {% endfor %}
+  </div>
+</section>
+{% schema %}{ "name": "OMNI Collection", "settings": [ { "type":"text","id":"title","label":"Title" }, { "type":"range","id":"columns","label":"Columns","min":2,"max":4,"default":3 } ] }{% endschema %}

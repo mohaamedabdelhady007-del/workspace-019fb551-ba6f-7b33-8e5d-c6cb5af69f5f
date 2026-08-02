@@ -1,0 +1,9 @@
+{
+  "sections": {
+    "main": {
+      "type": "product-template",
+      "settings": { "show_price": true, "show_description": true }
+    }
+  },
+  "order": ["main"]
+}

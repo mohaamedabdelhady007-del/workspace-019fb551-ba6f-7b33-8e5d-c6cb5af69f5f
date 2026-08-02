@@ -1,0 +1,9 @@
+<div class="card">
+  <a href="{{ product.url }}">
+    <div class="card__media">
+      <img src="{{ product.featured_image | img_url:'600x' }}" alt="{{ product.title | escape }}" loading="lazy">
+    </div>
+    <h3 class="card__title">{{ product.title }}</h3>
+    <span class="card__price">{{ product.price | money }}</span>
+  </a>
+</div>

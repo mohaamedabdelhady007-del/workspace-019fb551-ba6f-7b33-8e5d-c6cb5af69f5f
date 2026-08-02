@@ -1,0 +1,33 @@
+<footer class="site-footer">
+  <div class="footer__cols">
+    <div class="footer__col">
+      <h3>{{ shop.name }}</h3>
+      <p>{{ section.settings.tagline }}</p>
+    </div>
+    <div class="footer__col">
+      <h4>Shop</h4>
+      <ul>
+        {% for link in linklists.main-menu.links %}<li><a href="{{ link.url }}">{{ link.title }}</a></li>{% endfor %}
+      </ul>
+    </div>
+    <div class="footer__col">
+      <h4>Info</h4>
+      <ul>
+        {% for link in linklists.footer.links %}<li><a href="{{ link.url }}">{{ link.title }}</a></li>{% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="footer__bottom">
+    <span>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. All rights reserved.</span>
+    <span>{{ section.settings.note }}</span>
+  </div>
+</footer>
+{% schema %}
+{
+  "name": "OMNI Footer",
+  "settings": [
+    { "type": "text", "id": "tagline", "label": "Tagline", "default": "Action is the bridge." },
+    { "type": "text", "id": "note", "label": "Bottom note", "default": "DISTRICT-99 // OMNI UK" }
+  ]
+}
+{% endschema %}
