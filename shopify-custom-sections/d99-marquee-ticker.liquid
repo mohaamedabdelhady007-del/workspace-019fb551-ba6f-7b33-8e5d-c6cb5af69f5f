@@ -1,0 +1,102 @@
+{% comment %}
+  DISTRICT-99 (D99) - INFINITE MARQUEE TICKER SECTION
+  Custom Shopify Liquid Section (Online Store 2.0 compatible)
+  Place this inside your theme's 'sections/' folder as 'd99-marquee-ticker.liquid'
+{% endcomment %}
+
+<div class="d99-marquee-wrapper" style="background-color: {{ section.settings.bg_color }}; color: {{ section.settings.text_color }};">
+  <div class="d99-marquee-container">
+    <div class="d99-marquee-content">
+      <span>{{ section.settings.marquee_text }}</span>
+      <span>{{ section.settings.marquee_text }}</span>
+      <span>{{ section.settings.marquee_text }}</span>
+      <span>{{ section.settings.marquee_text }}</span>
+      <span>{{ section.settings.marquee_text }}</span>
+      <span>{{ section.settings.marquee_text }}</span>
+    </div>
+  </div>
+</div>
+
+<style>
+  .d99-marquee-wrapper {
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    box-sizing: border-box;
+    padding: 15px 0;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    font-family: 'Syne', 'Space Grotesk', sans-serif;
+    text-transform: uppercase;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+  }
+  
+  .d99-marquee-container {
+    display: flex;
+    width: 100%;
+  }
+  
+  .d99-marquee-content {
+    display: flex;
+    animation: d99-marquee-animation 25s linear infinite;
+  }
+  
+  .d99-marquee-content span {
+    font-size: {{ section.settings.font_size }}px;
+    padding: 0 40px;
+    display: inline-block;
+  }
+  
+  @keyframes d99-marquee-animation {
+    0% { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(-50%, 0, 0); }
+  }
+
+  /* Support pause on hover for interactive feel */
+  .d99-marquee-wrapper:hover .d99-marquee-content {
+    animation-play-state: paused;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "D99 Marquee Ticker",
+  "settings": [
+    {
+      "type": "text",
+      "id": "marquee_text",
+      "label": "Marquee Text",
+      "default": "DISTRICT-99 // ACTION IS THE BRIDGE // FREE SHIPPING NATIONWIDE //"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "min": 12,
+      "max": 36,
+      "step": 1,
+      "unit": "px",
+      "label": "Font Size",
+      "default": 18
+    }
+  ],
+  "presets": [
+    {
+      "name": "D99 Marquee Ticker",
+      "category": "Streetwear Custom Sections"
+    }
+  ]
+}
+{% endschema %}

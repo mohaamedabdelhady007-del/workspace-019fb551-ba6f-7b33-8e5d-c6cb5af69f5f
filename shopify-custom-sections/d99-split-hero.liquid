@@ -1,0 +1,165 @@
+{% comment %}
+  DISTRICT-99 (D99) - EDITORIAL SPLIT HERO SECTION
+  Custom Shopify Liquid Section (Online Store 2.0 compatible)
+  Place this inside your theme's 'sections/' folder as 'd99-split-hero.liquid'
+{% endcomment %}
+
+<div class="d99-split-hero-container">
+  <div class="d99-split-column d99-left-col" style="background-image: url('{{ section.settings.image_left | img_url: 'master' }}');">
+    <div class="d99-col-overlay">
+      <h2 class="d99-hero-heading">{{ section.settings.title_left }}</h2>
+      <a href="{{ section.settings.link_left }}" class="d99-hero-btn">{{ section.settings.btn_label_left }}</a>
+    </div>
+  </div>
+  
+  <div class="d99-split-column d99-right-col" style="background-image: url('{{ section.settings.image_right | img_url: 'master' }}');">
+    <div class="d99-col-overlay">
+      <h2 class="d99-hero-heading">{{ section.settings.title_right }}</h2>
+      <a href="{{ section.settings.link_right }}" class="d99-hero-btn">{{ section.settings.btn_label_right }}</a>
+    </div>
+  </div>
+</div>
+
+<style>
+  .d99-split-hero-container {
+    display: flex;
+    width: 100%;
+    height: 90vh;
+    overflow: hidden;
+    background-color: #000000;
+  }
+
+  .d99-split-column {
+    flex: 1;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  .d99-split-column::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, rgba(0,0,0,0) 60%, rgba(0,0,0,0.7) 100%);
+    z-index: 1;
+  }
+
+  .d99-col-overlay {
+    position: absolute;
+    bottom: 10%;
+    left: 10%;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .d99-hero-heading {
+    color: #ffffff;
+    font-family: 'Syne', 'Space Grotesk', sans-serif;
+    font-size: clamp(24px, 4vw, 48px);
+    font-weight: 800;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+
+  .d99-hero-btn {
+    color: #ffffff;
+    background-color: #000000;
+    border: 1px solid #ffffff;
+    text-decoration: none;
+    padding: 12px 30px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    transition: all 0.3s ease;
+    border-radius: 0px; /* Sharp corners for luxury minimal feel */
+  }
+
+  .d99-hero-btn:hover {
+    color: #000000;
+    background-color: #ffffff;
+  }
+
+  /* Responsive styling for Mobile - Stack columns vertically */
+  @media screen and (max-width: 768px) {
+    .d99-split-hero-container {
+      flex-direction: column;
+      height: 120vh;
+    }
+    .d99-split-column {
+      height: 50%;
+    }
+    .d99-col-overlay {
+      bottom: 15%;
+      left: 8%;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "D99 Split Hero",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image_left",
+      "label": "Left Column Image"
+    },
+    {
+      "type": "text",
+      "id": "title_left",
+      "label": "Left Column Title",
+      "default": "New Arrivals"
+    },
+    {
+      "type": "text",
+      "id": "btn_label_left",
+      "label": "Left Column Button Label",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "link_left",
+      "label": "Left Column Link"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_right",
+      "label": "Right Column Image"
+    },
+    {
+      "type": "text",
+      "id": "title_right",
+      "label": "Right Column Title",
+      "default": "The Collection"
+    },
+    {
+      "type": "text",
+      "id": "btn_label_right",
+      "label": "Right Column Button Label",
+      "default": "Discover"
+    },
+    {
+      "type": "url",
+      "id": "link_right",
+      "label": "Right Column Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "D99 Split Hero",
+      "category": "Streetwear Custom Sections"
+    }
+  ]
+}
+{% endschema %}

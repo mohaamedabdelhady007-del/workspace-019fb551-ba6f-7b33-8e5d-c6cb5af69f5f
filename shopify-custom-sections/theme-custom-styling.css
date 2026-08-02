@@ -1,0 +1,101 @@
+/*
+  DISTRICT-99 (D99) - CUSTOM PREMIUM STYLING SHEET
+  Bespoke custom CSS styling rules to give Shopify Dawn (or any theme) a luxury, minimalist, and editorial feel (Acne Studios / SSENSE style).
+  Paste this at the bottom of your 'assets/base.css' or 'assets/theme.css' file.
+*/
+
+/* 1. Global Minimalist Reset */
+:root {
+  --buttons-radius: 0px !important;       /* Force all buttons to have sharp, luxury corners */
+  --buttons-radius-outset: 0px !important;
+  --inputs-radius: 0px !important;        /* Sharp form fields */
+  --cards-radius: 0px !important;         /* Sharp product cards */
+  --badge-corner-radius: 0px !important;  /* Sharp badges */
+}
+
+/* 2. Premium Streetwear Typography */
+body, p, span, a, input, select, textarea {
+  font-family: 'Space Grotesk', sans-serif !important;
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .button, .customer-title {
+  font-family: 'Syne', 'Space Grotesk', sans-serif !important;
+  font-weight: 800 !important;
+  text-transform: uppercase !important;
+  letter-spacing: -0.01em !important;
+}
+
+/* 3. Hide Unnecessary Borders (SSENSE Editorial Look) */
+.card, .card-wrapper, .product-grid-container, .grid__item {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.card__inner {
+  border: none !important;
+  background-color: #f7f7f7 !important; /* Premium light-grey container for transparent PNG product shots */
+}
+
+/* 4. Luxury Custom Button Hover Effect */
+.button, .shopify-payment-button__button {
+  border-radius: 0px !important;
+  border: 1px solid #000000 !important;
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1) !important;
+  text-transform: uppercase !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.1em !important;
+}
+
+.button:hover, .shopify-payment-button__button:hover {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border-color: #000000 !important;
+}
+
+/* Secondary Buttons */
+.button--secondary {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border: 1px solid #000000 !important;
+}
+
+.button--secondary:hover {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
+/* 5. Custom "SOLD OUT" / "SALE" Badge Styling */
+.badge {
+  border-radius: 0px !important;
+  font-family: 'Space Grotesk', sans-serif !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  padding: 5px 12px !important;
+  border: 1px solid #000000 !important;
+}
+
+.badge--sold-out {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
+.badge--sale {
+  background-color: #e50914 !important; /* DISTRICT-99 Scarlet Red */
+  color: #ffffff !important;
+  border-color: #e50914 !important;
+}
+
+/* 6. Header Styling (SSENSE Transparent Style) */
+.header-wrapper {
+  border-bottom: 1px solid rgba(0,0,0,0.05) !important;
+}
+
+.header__menu-item {
+  text-transform: uppercase !important;
+  font-weight: 700 !important;
+  font-size: 13px !important;
+  letter-spacing: 0.05em !important;
+}
