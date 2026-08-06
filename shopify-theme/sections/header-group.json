@@ -6,11 +6,9 @@
       "type": "header",
       "settings": {
         "menu": "main-menu",
-        "brand_line_1": "DISTRICT-99",
-        "brand_line_2": "UNITED BY PURPOSE / DRIVEN BY ACTION",
-        "search_label": "SEARCH (Q)",
-        "status_title": "D99 SYSTEM",
-        "status_body": "OVERRIDE //"
+        "wordmark_text": "DISTRICT-99",
+        "brand_mark": "D99™",
+        "cart_label": "Cart"
       }
     }
   },

@@ -22,6 +22,8 @@ SYNC_PATTERNS_BY_PROFILE = {
     "homepage": [
         "shopify-theme/sections/d99-home-grid.liquid",
         "shopify-theme/templates/index.json",
+        "shopify-theme/sections/header.liquid",
+        "shopify-theme/sections/header-group.json"
     ],
     "all": [
         "shopify-theme/sections/d99-*.liquid",
