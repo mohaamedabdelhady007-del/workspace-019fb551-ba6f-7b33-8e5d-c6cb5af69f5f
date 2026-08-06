@@ -20,6 +20,11 @@
     assign lookbook_product = featured_collection.products[1]
   endif
 
+  assign accessory_product = section.settings.accessory_product
+  assign product_card_image = section.settings.product_card_image
+  assign product_card_link = section.settings.product_card_link
+  assign product_card_price = section.settings.product_card_price
+
   assign year_now = 'now' | date: '%Y'
 %}
 
@@ -100,15 +105,17 @@
       <article class="d99-panel d99-home-v3__mini-card d99-home-v3__mini-card--product">
         <div class="d99-home-v3__mini-copy">{{ section.settings.product_card_title | newline_to_br }}</div>
         <div class="d99-home-v3__mini-media">
-          {% if featured_product != blank and featured_product.featured_image != blank %}
+          {% if product_card_image != blank %}
+            {{ product_card_image | image_url: width: 700 | image_tag: loading: 'lazy', alt: section.settings.product_card_title }}
+          {% elsif featured_product != blank and featured_product.featured_image != blank %}
             {{ featured_product.featured_image | image_url: width: 700 | image_tag: loading: 'lazy', alt: featured_product.title }}
           {% else %}
             {{ 'product-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
           {% endif %}
         </div>
         <div class="d99-home-v3__mini-bottom">
-          <span>{{ featured_product.price | default: 6900 | money }}</span>
-          <a href="{{ featured_product.url | default: routes.all_products_collection_url }}">{{ section.settings.product_card_cta }} <span class="d99-arrow">→</span></a>
+          <span>{{ product_card_price }}</span>
+          <a href="{{ product_card_link | default: featured_product.url | default: routes.all_products_collection_url }}">{{ section.settings.product_card_cta }} <span class="d99-arrow">→</span></a>
         </div>
         <span class="d99-home-v3__plusmark">+</span>
       </article>
@@ -173,13 +180,15 @@
       <div class="d99-home-v3__mini-media d99-home-v3__mini-media--accessory">
         {% if accessory_image != blank %}
           {{ accessory_image | image_url: width: 700 | image_tag: loading: 'lazy', alt: section.settings.accessory_title }}
+        {% elsif accessory_product != blank and accessory_product.featured_image != blank %}
+          {{ accessory_product.featured_image | image_url: width: 700 | image_tag: loading: 'lazy', alt: accessory_product.title }}
         {% else %}
           {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
         {% endif %}
       </div>
       <div class="d99-home-v3__mini-bottom d99-home-v3__mini-bottom--stacked">
         <span>{{ section.settings.accessory_price }}</span>
-        <a href="{{ section.settings.accessory_link | default: routes.all_products_collection_url }}">{{ section.settings.accessory_cta }} <span class="d99-arrow">→</span></a>
+        <a href="{{ section.settings.accessory_link | default: accessory_product.url | default: routes.all_products_collection_url }}">{{ section.settings.accessory_cta }} <span class="d99-arrow">→</span></a>
       </div>
       <span class="d99-home-v3__plusmark d99-home-v3__plusmark--bottom">+</span>
     </article>
@@ -213,16 +222,28 @@
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
 
-  .template-index .shopify-section-group-header-group,
-  .template-index .shopify-section-group-footer-group,
-  .template-index .section-header,
-  .template-index footer,
-  .template-index .footer {
+  body:has(.d99-home-v3) .shopify-section-group-header-group,
+  body:has(.d99-home-v3) .shopify-section-group-footer-group,
+  body:has(.d99-home-v3) .section-header,
+  body:has(.d99-home-v3) footer,
+  body:has(.d99-home-v3) .footer,
+  body:has(.d99-home-v3) [id*='header-group'],
+  body:has(.d99-home-v3) [id*='footer-group'],
+  body:has(.d99-home-v3) [class*='header-group'],
+  body:has(.d99-home-v3) [class*='footer-group'] {
     display: none !important;
   }
 
+  body:has(.d99-home-v3) #MainContent,
+  body:has(.d99-home-v3) main,
+  body:has(.d99-home-v3) .content-for-layout {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+  }
+
   .template-index body,
-  body.template-index {
+  body.template-index,
+  body:has(.d99-home-v3) {
     background: #d7d1c8 !important;
   }
 
@@ -900,10 +921,12 @@
     { "type": "collection", "id": "collection", "label": "Featured collection" },
     { "type": "product", "id": "featured_product", "label": "Left product card product" },
     { "type": "product", "id": "lookbook_product", "label": "Lookbook fallback product" },
+    { "type": "product", "id": "accessory_product", "label": "Accessory fallback product" },
     { "type": "image_picker", "id": "hero_left_image", "label": "Hero left image" },
     { "type": "image_picker", "id": "hero_right_image", "label": "Hero right image" },
     { "type": "image_picker", "id": "poster_image", "label": "Poster background image" },
     { "type": "image_picker", "id": "lookbook_image", "label": "Lookbook card image" },
+    { "type": "image_picker", "id": "product_card_image", "label": "Left product card image" },
     { "type": "image_picker", "id": "accessory_image", "label": "Accessory card image" },
     { "type": "text", "id": "wordmark_text", "label": "Top wordmark text", "default": "DISTRICT-99" },
     { "type": "text", "id": "brand_mark", "label": "Small brand mark", "default": "D99™" },
@@ -914,6 +937,8 @@
     { "type": "text", "id": "hero_cta_label", "label": "Hero CTA label", "default": "Shop now" },
     { "type": "url", "id": "hero_cta_link", "label": "Hero CTA link" },
     { "type": "textarea", "id": "product_card_title", "label": "Left product card title", "default": "D99™ ESSENTIAL\nOVERSIZED TEE\nBLACK" },
+    { "type": "text", "id": "product_card_price", "label": "Left product card price", "default": "$69.00" },
+    { "type": "url", "id": "product_card_link", "label": "Left product card link" },
     { "type": "text", "id": "product_card_cta", "label": "Left product card CTA", "default": "View product" },
     { "type": "textarea", "id": "explore_card_title", "label": "Explore card title", "default": "BUILD YOURS.\nBREAK THEIR\nSYSTEM." },
     { "type": "text", "id": "explore_card_cta", "label": "Explore card CTA", "default": "Explore" },
