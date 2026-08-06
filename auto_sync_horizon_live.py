@@ -21,7 +21,8 @@ SYNC_PROFILE = os.environ.get("SHOPIFY_SYNC_PROFILE", "header").strip().lower()
 SYNC_PATTERNS_BY_PROFILE = {
     "header": [
         "shopify-theme/sections/header.liquid",
-        "shopify-theme/sections/header-group.json"
+        "shopify-theme/sections/header-group.json",
+        "shopify-theme/assets/d99-header-mockup.jpg"
     ],
     "homepage": [
         "shopify-theme/sections/d99-home-grid.liquid",

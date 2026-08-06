@@ -1,30 +1,15 @@
-{% liquid
-  assign logo_alt = shop.name | escape
-  assign menu_handle = section.settings.menu
-%}
+<header class="d99-art-header" role="banner">
+  <div class="d99-art-header__wrap page-width">
+    <div class="d99-art-header__frame">
+      <img src="{{ 'd99-header-mockup.jpg' | asset_url }}" alt="DISTRICT-99 header" class="d99-art-header__image" loading="eager">
 
-<header class="d99-piece-header page-width" role="banner">
-  <div class="d99-piece-header__inner">
-    <div class="d99-piece-header__wordmark">{{ section.settings.wordmark_text }}</div>
-
-    <div class="d99-piece-header__navrow">
-      <a href="{{ routes.root_url }}" class="d99-piece-header__brandmark" aria-label="{{ logo_alt }}">{{ section.settings.brand_mark }}</a>
-
-      <nav class="d99-piece-header__nav" aria-label="Primary">
-        {% if menu_handle != blank %}
-          {% for link in menu_handle.links %}
-            <a href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title }}</a>
-          {% endfor %}
-        {% else %}
-          <a href="{{ routes.all_products_collection_url }}">Shop</a>
-          <a href="{{ routes.all_products_collection_url }}">Collections</a>
-          <a href="/pages/about">About</a>
-          <a href="/pages/lookbook">Lookbook</a>
-          <a href="/pages/contact">Contact</a>
-        {% endif %}
-      </nav>
-
-      <a href="{{ routes.cart_url }}" class="d99-piece-header__cart">{{ section.settings.cart_label }} ({{ cart.item_count }})</a>
+      <a class="d99-art-header__hotspot hs-home" href="{{ routes.root_url }}" aria-label="Home"></a>
+      <a class="d99-art-header__hotspot hs-shop" href="{{ section.settings.shop_link | default: routes.all_products_collection_url }}" aria-label="Shop"></a>
+      <a class="d99-art-header__hotspot hs-collections" href="{{ section.settings.collections_link | default: routes.all_products_collection_url }}" aria-label="Collections"></a>
+      <a class="d99-art-header__hotspot hs-about" href="{{ section.settings.about_link | default: '/pages/about' }}" aria-label="About"></a>
+      <a class="d99-art-header__hotspot hs-lookbook" href="{{ section.settings.lookbook_link | default: '/pages/lookbook' }}" aria-label="Lookbook"></a>
+      <a class="d99-art-header__hotspot hs-contact" href="{{ section.settings.contact_link | default: '/pages/contact' }}" aria-label="Contact"></a>
+      <a class="d99-art-header__hotspot hs-cart" href="{{ routes.cart_url }}" aria-label="Cart"></a>
     </div>
   </div>
 </header>
@@ -37,108 +22,63 @@
     display: none !important;
     visibility: hidden !important;
     max-height: 0 !important;
-    height: 0 !important;
     min-height: 0 !important;
+    height: 0 !important;
     overflow: hidden !important;
     opacity: 0 !important;
     pointer-events: none !important;
   }
 
-  .d99-piece-header {
-    max-width: 100% !important;
-    padding: 0.8rem 1.6rem 0 !important;
-    margin: 0 auto !important;
+  .d99-art-header {
     background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: 0 !important;
   }
 
-  .d99-piece-header__inner {
-    max-width: 150rem;
+  .d99-art-header__wrap {
+    max-width: 100% !important;
+    padding: 1rem 1.4rem 0 !important;
+    margin: 0 !important;
+  }
+
+  .d99-art-header__frame {
+    position: relative;
+    width: 100%;
+    max-width: 149.5rem;
     margin: 0 auto;
+  }
+
+  .d99-art-header__image {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .d99-art-header__hotspot {
+    position: absolute;
+    display: block;
+    z-index: 2;
     background: transparent;
   }
 
-  .d99-piece-header__wordmark {
-    font-family: 'Anton', Impact, 'Arial Narrow', sans-serif !important;
-    font-size: clamp(10rem, 18vw, 23rem) !important;
-    line-height: 0.82 !important;
-    letter-spacing: -0.035em !important;
-    text-transform: uppercase;
-    color: #0b0b0b;
-    margin: 0 0 1rem;
-    white-space: nowrap;
-    overflow: hidden;
+  .shopify-design-mode .d99-art-header__hotspot:hover,
+  .shopify-design-mode .d99-art-header__hotspot:focus-visible {
+    outline: 1px dashed rgba(255, 0, 0, 0.5);
+    outline-offset: -1px;
   }
 
-  .d99-piece-header__navrow {
-    display: grid;
-    grid-template-columns: 12rem 1fr 12rem;
-    align-items: center;
-    gap: 1.4rem;
-    padding-bottom: 1.3rem;
-  }
-
-  .d99-piece-header__brandmark,
-  .d99-piece-header__cart,
-  .d99-piece-header__nav a {
-    font-family: 'IBM Plex Mono', monospace !important;
-    font-size: 1.1rem !important;
-    font-weight: 500;
-    letter-spacing: 0.02em;
-    text-transform: uppercase;
-    text-decoration: none;
-    color: #111;
-  }
-
-  .d99-piece-header__brandmark {
-    justify-self: start;
-    font-size: 1.75rem !important;
-    letter-spacing: -0.03em;
-  }
-
-  .d99-piece-header__nav {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 4.3rem;
-    flex-wrap: wrap;
-  }
-
-  .d99-piece-header__cart {
-    justify-self: end;
-    white-space: nowrap;
-  }
-
-  .d99-piece-header__nav a:hover,
-  .d99-piece-header__brandmark:hover,
-  .d99-piece-header__cart:hover {
-    color: #b72a22;
-  }
+  .hs-home { left: 0.8%; top: 76%; width: 12%; height: 19%; }
+  .hs-shop { left: 28.4%; top: 80.2%; width: 6.5%; height: 12%; }
+  .hs-collections { left: 37.1%; top: 80.2%; width: 10.8%; height: 12%; }
+  .hs-about { left: 50.7%; top: 80.2%; width: 7.2%; height: 12%; }
+  .hs-lookbook { left: 61.8%; top: 80.2%; width: 8.8%; height: 12%; }
+  .hs-contact { left: 74.4%; top: 80.2%; width: 8.2%; height: 12%; }
+  .hs-cart { right: 0.5%; top: 77.6%; width: 9.4%; height: 15%; }
 
   @media screen and (max-width: 990px) {
-    .d99-piece-header {
-      padding: 0.6rem 1rem 0 !important;
-    }
-
-    .d99-piece-header__wordmark {
-      font-size: clamp(6rem, 16vw, 12rem) !important;
-      white-space: normal;
-      margin-bottom: 0.8rem;
-    }
-
-    .d99-piece-header__navrow {
-      grid-template-columns: 1fr;
-      gap: 0.9rem;
-      padding-bottom: 1rem;
-    }
-
-    .d99-piece-header__brandmark,
-    .d99-piece-header__cart {
-      justify-self: start;
-    }
-
-    .d99-piece-header__nav {
-      justify-content: flex-start;
-      gap: 1.4rem 2rem;
+    .d99-art-header__wrap {
+      padding: 0.6rem 0.8rem 0 !important;
     }
   }
 </style>
@@ -148,30 +88,11 @@
   "name": "D99 System Header",
   "class": "section-header",
   "settings": [
-    {
-      "type": "link_list",
-      "id": "menu",
-      "label": "Menu",
-      "default": "main-menu"
-    },
-    {
-      "type": "text",
-      "id": "wordmark_text",
-      "label": "Wordmark text",
-      "default": "DISTRICT-99"
-    },
-    {
-      "type": "text",
-      "id": "brand_mark",
-      "label": "Small brand mark",
-      "default": "D99™"
-    },
-    {
-      "type": "text",
-      "id": "cart_label",
-      "label": "Cart label",
-      "default": "Cart"
-    }
+    { "type": "url", "id": "shop_link", "label": "Shop link" },
+    { "type": "url", "id": "collections_link", "label": "Collections link" },
+    { "type": "url", "id": "about_link", "label": "About link" },
+    { "type": "url", "id": "lookbook_link", "label": "Lookbook link" },
+    { "type": "url", "id": "contact_link", "label": "Contact link" }
   ]
 }
 {% endschema %}

@@ -5,10 +5,11 @@
     "header": {
       "type": "header",
       "settings": {
-        "menu": "main-menu",
-        "wordmark_text": "DISTRICT-99",
-        "brand_mark": "D99™",
-        "cart_label": "Cart"
+        "shop_link": "shopify://collections/all",
+        "collections_link": "shopify://collections/all",
+        "about_link": "/pages/about",
+        "lookbook_link": "/pages/lookbook",
+        "contact_link": "/pages/contact"
       }
     }
   },
