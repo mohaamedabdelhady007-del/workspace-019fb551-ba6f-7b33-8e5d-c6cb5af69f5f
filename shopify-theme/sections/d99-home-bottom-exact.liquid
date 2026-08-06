@@ -1,0 +1,123 @@
+<section class="d99-home-bottom-exact" aria-label="DISTRICT-99 homepage lower grid">
+  <div class="d99-home-bottom-exact__frame">
+    <div class="d99-home-bottom-exact__artboard">
+      <img src="{{ 'd99-home-bottom-mockup.jpg' | asset_url }}" alt="DISTRICT-99 homepage lower grid" class="d99-home-bottom-exact__image" loading="eager">
+
+      <a class="d99-home-bottom-exact__hotspot hs-product-card" href="{{ section.settings.product_link | default: routes.all_products_collection_url }}" aria-label="View product"></a>
+      <a class="d99-home-bottom-exact__hotspot hs-explore" href="{{ section.settings.explore_link | default: routes.all_products_collection_url }}" aria-label="Explore"></a>
+      <a class="d99-home-bottom-exact__hotspot hs-lookbook" href="{{ section.settings.lookbook_link | default: '/pages/lookbook' }}" aria-label="View lookbook"></a>
+      <a class="d99-home-bottom-exact__hotspot hs-accessory" href="{{ section.settings.accessory_link | default: routes.all_products_collection_url }}" aria-label="View accessory"></a>
+
+      {% form 'customer', id: 'D99BottomNewsletter-' | append: section.id, class: 'd99-home-bottom-exact__newsletter' %}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        <input type="email" name="contact[email]" value="{% if customer %}{{ customer.email }}{% endif %}" placeholder="Enter your email" aria-label="Enter your email">
+        <button type="submit" aria-label="Submit newsletter"></button>
+      {% endform %}
+    </div>
+  </div>
+</section>
+
+<style>
+  .d99-home-bottom-exact {
+    width: 100%;
+    padding: 0 0.45rem 0 !important;
+    margin: 0 !important;
+    background: transparent !important;
+    line-height: 0;
+  }
+
+  .d99-home-bottom-exact__frame {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .d99-home-bottom-exact__artboard {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .d99-home-bottom-exact__image {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .d99-home-bottom-exact__hotspot,
+  .d99-home-bottom-exact__newsletter {
+    position: absolute;
+    display: block;
+    z-index: 2;
+    background: transparent;
+  }
+
+  .shopify-design-mode .d99-home-bottom-exact__hotspot:hover,
+  .shopify-design-mode .d99-home-bottom-exact__hotspot:focus-visible,
+  .shopify-design-mode .d99-home-bottom-exact__newsletter:focus-within {
+    outline: 1px dashed rgba(255, 0, 0, 0.5);
+    outline-offset: -1px;
+  }
+
+  .hs-product-card { left: 2.3%; top: 43.8%; width: 15.8%; height: 22.5%; }
+  .hs-explore { left: 28.5%; top: 45.2%; width: 10.5%; height: 18%; }
+  .hs-lookbook { left: 27.4%; top: 83.1%; width: 10.5%; height: 13.8%; }
+  .hs-accessory { right: 1.8%; top: 40.8%; width: 14.8%; height: 44.5%; }
+
+  .d99-home-bottom-exact__newsletter {
+    left: 69.4%;
+    bottom: 5.2%;
+    width: 22.3%;
+    height: 7%;
+    display: grid;
+    grid-template-columns: 1fr 3.4rem;
+    align-items: end;
+    gap: 0.8rem;
+  }
+
+  .d99-home-bottom-exact__newsletter input {
+    width: 100%;
+    border: 0;
+    background: transparent;
+    color: transparent;
+    caret-color: transparent;
+    outline: none;
+    padding: 0;
+    font-size: 1rem;
+    line-height: 1;
+  }
+
+  .d99-home-bottom-exact__newsletter input::placeholder {
+    color: transparent;
+  }
+
+  .d99-home-bottom-exact__newsletter button {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  @media screen and (max-width: 990px) {
+    .d99-home-bottom-exact {
+      padding: 0 0.25rem 0 !important;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "D99 Home Bottom Exact",
+  "settings": [
+    { "type": "url", "id": "product_link", "label": "Product card link" },
+    { "type": "url", "id": "explore_link", "label": "Explore link" },
+    { "type": "url", "id": "lookbook_link", "label": "Lookbook link" },
+    { "type": "url", "id": "accessory_link", "label": "Accessory link" }
+  ],
+  "presets": [
+    { "name": "D99 Home Bottom Exact" }
+  ]
+}
+{% endschema %}

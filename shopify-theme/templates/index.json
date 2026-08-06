@@ -6,9 +6,19 @@
         "shop_now_link": "shopify://collections/all",
         "shop_link": "shopify://collections/all"
       }
+    },
+    "d99_home_bottom_exact": {
+      "type": "d99-home-bottom-exact",
+      "settings": {
+        "product_link": "shopify://collections/all",
+        "explore_link": "shopify://collections/all",
+        "lookbook_link": "/pages/lookbook",
+        "accessory_link": "shopify://collections/all"
+      }
     }
   },
   "order": [
-    "d99_home_top_exact"
+    "d99_home_top_exact",
+    "d99_home_bottom_exact"
   ]
 }
