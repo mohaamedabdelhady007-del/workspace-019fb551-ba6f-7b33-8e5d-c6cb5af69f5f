@@ -3,158 +3,891 @@
   if featured_collection == blank
     assign featured_collection = collections['all']
   endif
-  assign hero_image = section.settings.hero_collage
-  assign action_image = section.settings.action_image
+
+  assign hero_left_image = section.settings.hero_left_image
+  assign hero_right_image = section.settings.hero_right_image
   assign poster_image = section.settings.poster_image
-  assign fw24_image = section.settings.fw24_image
-  assign intel_image = section.settings.intel_image
+  assign lookbook_image = section.settings.lookbook_image
+  assign accessory_image = section.settings.accessory_image
+
+  assign featured_product = section.settings.featured_product
+  if featured_product == blank and featured_collection != blank and featured_collection.products_count > 0
+    assign featured_product = featured_collection.products.first
+  endif
+
+  assign lookbook_product = section.settings.lookbook_product
+  if lookbook_product == blank and featured_collection != blank and featured_collection.products_count > 1
+    assign lookbook_product = featured_collection.products[1]
+  endif
+
+  assign year_now = 'now' | date: '%Y'
 %}
 
-<section class="page-width d99-page d99-home-grid-page">
-  <div class="d99-grid d99-home-grid-main" style="grid-template-columns: 1.1fr 1.55fr 0.62fr;">
-    <div class="d99-panel d99-home-manifesto" style="padding: 4rem 3.2rem 2.8rem;">
-      <div class="d99-kicker">{{ section.settings.manifesto_kicker }}</div>
-      <h1 class="d99-heading-hero">{{ section.settings.heading | newline_to_br }}</h1>
-      <div class="d99-copy">{{ section.settings.body_text | newline_to_br }}</div>
-      <div style="margin-top: 3rem;">
-        <a class="d99-link-btn" href="{{ section.settings.button_link | default: '/pages/about' }}">
-          <span>{{ section.settings.button_label }}</span>
-          <span class="d99-arrow">→</span>
-        </a>
-      </div>
-      <div style="position:absolute; left:-2.4rem; bottom:14rem; writing-mode:vertical-rl; transform:rotate(180deg); font-size:1rem; letter-spacing:.16em; text-transform:uppercase;">{{ section.settings.side_label }}</div>
-      <div style="position:absolute; right:8rem; top:19rem; color:var(--d99-red); font-size:12rem; opacity:.9; line-height:.8;">✶</div>
-    </div>
+<section class="page-width d99-page d99-home-v3">
+  <header class="d99-home-v3__masthead">
+    <div class="d99-home-v3__wordmark">{{ section.settings.wordmark_text }}</div>
 
-    <div class="d99-panel d99-home-collage" style="min-height: 78rem;">
-      <div class="d99-topline">
-        <span>D99</span>
-        <span>Built for more</span>
-      </div>
-      <div class="d99-image" style="min-height: 70rem; position: relative;">
-        {% if hero_image != blank %}
-          {{ hero_image | image_url: width: 1800 | image_tag: loading: 'lazy', alt: section.settings.heading }}
-        {% elsif featured_collection != blank and featured_collection.products.first.featured_image != blank %}
-          {{ featured_collection.products.first.featured_image | image_url: width: 1800 | image_tag: loading: 'lazy', alt: featured_collection.products.first.title }}
+    <div class="d99-home-v3__navrow">
+      <a class="d99-home-v3__brandmark" href="{{ routes.root_url }}">{{ section.settings.brand_mark }}</a>
+
+      <nav class="d99-home-v3__nav" aria-label="Homepage navigation">
+        {% if section.settings.menu != blank %}
+          {% for link in section.settings.menu.links %}
+            <a href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title }}</a>
+          {% endfor %}
         {% else %}
-          {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+          <a href="{{ routes.all_products_collection_url }}">Shop</a>
+          <a href="{{ routes.all_products_collection_url }}">Collections</a>
+          <a href="/pages/about">About</a>
+          <a href="/pages/lookbook">Lookbook</a>
+          <a href="/pages/contact">Contact</a>
         {% endif %}
-        <div class="d99-crosshair" style="left: 12%; bottom: 18%;"></div>
-        <div class="d99-stamp" style="position:absolute; right:8%; top:31%;">Action over everything</div>
-      </div>
-    </div>
+      </nav>
 
-    <div class="d99-grid" style="grid-template-rows: 1fr 1fr;">
-      <div class="d99-panel" style="padding: 3rem 2.4rem; min-height: 34rem; display:flex; flex-direction:column; justify-content:space-between;">
-        <div>
-          <div class="d99-kicker">{{ section.settings.bridge_kicker }}</div>
-          <div class="d99-copy" style="font-size: 1.6rem; line-height:1.75; color:var(--d99-ink); margin-top:2rem;">{{ section.settings.bridge_text | newline_to_br }}</div>
-        </div>
-        <div style="font-size:3rem; line-height:1; text-align:right;">＋</div>
+      <a class="d99-home-v3__cartlink" href="{{ routes.cart_url }}">Cart ({{ cart.item_count }})</a>
+    </div>
+  </header>
+
+  <div class="d99-home-v3__submeta">
+    <div class="d99-home-v3__auth-copy">{{ section.settings.authenticity_copy | newline_to_br }}</div>
+    <div class="d99-home-v3__season">[{{ section.settings.season_code }}]</div>
+  </div>
+
+  <div class="d99-home-v3__hero-grid">
+    <article class="d99-panel d99-home-v3__hero-left">
+      <div class="d99-home-v3__hero-media">
+        {% if hero_left_image != blank %}
+          {{ hero_left_image | image_url: width: 1600 | image_tag: loading: 'lazy', alt: section.settings.hero_left_caption }}
+        {% elsif featured_product != blank and featured_product.images.size > 0 %}
+          {{ featured_product.images[0] | image_url: width: 1600 | image_tag: loading: 'lazy', alt: featured_product.title }}
+        {% else %}
+          {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+        {% endif %}
       </div>
-      <div class="d99-panel d99-panel--dark" style="display:grid; grid-template-rows: 1.2fr auto; min-height: 44rem;">
-        <div class="d99-image">
-          {% if action_image != blank %}
-            {{ action_image | image_url: width: 1000 | image_tag: loading: 'lazy', alt: section.settings.action_kicker }}
-          {% elsif featured_collection != blank and featured_collection.products.size > 1 and featured_collection.products[1].featured_image != blank %}
-            {{ featured_collection.products[1].featured_image | image_url: width: 1000 | image_tag: loading: 'lazy', alt: featured_collection.products[1].title }}
+      <div class="d99-home-v3__hero-caption">{{ section.settings.hero_left_caption | newline_to_br }}</div>
+    </article>
+
+    <div class="d99-home-v3__hero-right-stack">
+      <div class="d99-panel d99-panel--dark d99-home-v3__hero-strip">
+        <div>{{ section.settings.coordinate_text | newline_to_br }}</div>
+        <span class="d99-home-v3__crosshair" aria-hidden="true"></span>
+      </div>
+
+      <article class="d99-panel d99-home-v3__hero-right">
+        <div class="d99-home-v3__hero-media">
+          {% if hero_right_image != blank %}
+            {{ hero_right_image | image_url: width: 1400 | image_tag: loading: 'lazy', alt: section.settings.hero_cta_label }}
+          {% elsif featured_product != blank and featured_product.images.size > 1 %}
+            {{ featured_product.images[1] | image_url: width: 1400 | image_tag: loading: 'lazy', alt: featured_product.title }}
+          {% elsif featured_product != blank and featured_product.featured_image != blank %}
+            {{ featured_product.featured_image | image_url: width: 1400 | image_tag: loading: 'lazy', alt: featured_product.title }}
           {% else %}
             {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
           {% endif %}
         </div>
-        <div style="padding: 2.2rem 2.4rem; display:grid; gap:1.3rem;">
-          <div class="d99-kicker" style="color:var(--d99-white);">{{ section.settings.action_kicker }}</div>
-          <div class="d99-copy" style="color:rgba(255,255,255,.8);">{{ section.settings.action_list | newline_to_br }}</div>
-          <div style="font-size:3rem; line-height:1; text-align:right;">＋</div>
+        <div class="d99-home-v3__hero-cta-wrap">
+          <a class="d99-home-v3__shopnow" href="{{ section.settings.hero_cta_link | default: routes.all_products_collection_url }}">
+            <span>{{ section.settings.hero_cta_label }}</span>
+            <span class="d99-arrow">→</span>
+          </a>
         </div>
-      </div>
+      </article>
     </div>
   </div>
 
-  <div class="d99-grid" style="grid-template-columns: 1.32fr 1.02fr 0.88fr;">
-    <div class="d99-panel d99-panel--dark" style="padding: 2rem;">
-      <div style="display:flex; justify-content:space-between; gap:1rem; align-items:center; margin-bottom:1.8rem;">
-        <h2 class="d99-heading-page" style="font-size:4.8rem !important; margin:0;">{{ section.settings.arrivals_heading }}</h2>
-        <a href="{{ featured_collection.url | default: routes.all_products_collection_url }}" class="d99-sort-link" style="color:var(--d99-white);">View all <span class="d99-arrow">→</span></a>
-      </div>
-      <div class="d99-home-products">
-        {% for product in featured_collection.products limit: 3 %}
-          <a href="{{ product.url }}" class="d99-product-card">
-            <div class="d99-product-card__media">{{ product.featured_image | image_url: width: 720 | image_tag: loading: 'lazy', alt: product.title }}</div>
-            <div class="d99-product-card__body" style="border-color: rgba(255,255,255,.35); color:var(--d99-white);">
-              <div class="d99-product-card__title">{{ product.title }}</div>
-              <div class="d99-product-card__bottom"><span>{{ product.price | money }}</span><span>FW24</span></div>
-            </div>
-          </a>
-        {% else %}
-          <div class="d99-copy" style="color:rgba(255,255,255,.7);">Assign a collection from the theme editor to populate the New Arrivals panel.</div>
-        {% endfor %}
-      </div>
+  <div class="d99-home-v3__bottom-grid">
+    <div class="d99-home-v3__left-cards">
+      <article class="d99-panel d99-home-v3__mini-card d99-home-v3__mini-card--product">
+        <div class="d99-home-v3__mini-copy">{{ section.settings.product_card_title | newline_to_br }}</div>
+        <div class="d99-home-v3__mini-media">
+          {% if featured_product != blank and featured_product.featured_image != blank %}
+            {{ featured_product.featured_image | image_url: width: 700 | image_tag: loading: 'lazy', alt: featured_product.title }}
+          {% else %}
+            {{ 'product-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
+          {% endif %}
+        </div>
+        <div class="d99-home-v3__mini-bottom">
+          <span>{{ featured_product.price | default: 6900 | money }}</span>
+          <a href="{{ featured_product.url | default: routes.all_products_collection_url }}">{{ section.settings.product_card_cta }} <span class="d99-arrow">→</span></a>
+        </div>
+        <span class="d99-home-v3__plusmark">+</span>
+      </article>
+
+      <article class="d99-panel d99-home-v3__mini-card d99-home-v3__mini-card--explore">
+        <div class="d99-home-v3__mini-copy">{{ section.settings.explore_card_title | newline_to_br }}</div>
+        <div class="d99-home-v3__orbital" aria-hidden="true">
+          <span></span><span></span><span></span>
+        </div>
+        <div class="d99-home-v3__mini-bottom">
+          <span></span>
+          <a href="{{ section.settings.explore_card_link | default: routes.all_products_collection_url }}">{{ section.settings.explore_card_cta }} <span class="d99-arrow">→</span></a>
+        </div>
+        <span class="d99-home-v3__plusmark d99-home-v3__plusmark--bottom">+</span>
+      </article>
+
+      <article class="d99-panel d99-panel--dark d99-home-v3__mini-card d99-home-v3__mini-card--quote">
+        <div class="d99-home-v3__quote-text">{{ section.settings.quote_text | newline_to_br }}</div>
+        <div class="d99-home-v3__quote-foot">[ {{ section.settings.quote_footer }} ]</div>
+        <span class="d99-home-v3__corner-crosshair" aria-hidden="true"></span>
+      </article>
+
+      <article class="d99-panel d99-home-v3__mini-card d99-home-v3__mini-card--lookbook">
+        <div class="d99-home-v3__mini-copy">{{ section.settings.lookbook_title | newline_to_br }}</div>
+        <div class="d99-home-v3__mini-media d99-home-v3__mini-media--lookbook">
+          {% if lookbook_image != blank %}
+            {{ lookbook_image | image_url: width: 700 | image_tag: loading: 'lazy', alt: section.settings.lookbook_title }}
+          {% elsif lookbook_product != blank and lookbook_product.featured_image != blank %}
+            {{ lookbook_product.featured_image | image_url: width: 700 | image_tag: loading: 'lazy', alt: lookbook_product.title }}
+          {% else %}
+            {{ 'collection-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
+          {% endif %}
+        </div>
+        <div class="d99-home-v3__mini-bottom">
+          <span></span>
+          <a href="{{ section.settings.lookbook_link | default: '/pages/lookbook' }}">{{ section.settings.lookbook_cta }} <span class="d99-arrow">→</span></a>
+        </div>
+        <span class="d99-home-v3__plusmark">+</span>
+      </article>
     </div>
 
-    <div class="d99-panel d99-panel--dark" style="min-height: 31rem; display:grid; grid-template-rows: 1fr auto;">
-      <div class="d99-image">
+    <article class="d99-panel d99-home-v3__poster-card">
+      <div class="d99-home-v3__poster-bg">
         {% if poster_image != blank %}
-          {{ poster_image | image_url: width: 1200 | image_tag: loading: 'lazy', alt: section.settings.poster_heading }}
-        {% elsif featured_collection != blank and featured_collection.products.size > 2 and featured_collection.products[2].featured_image != blank %}
-          {{ featured_collection.products[2].featured_image | image_url: width: 1200 | image_tag: loading: 'lazy', alt: featured_collection.products[2].title }}
+          {{ poster_image | image_url: width: 1600 | image_tag: loading: 'lazy', alt: section.settings.poster_line_1 }}
         {% else %}
-          {{ 'hero-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
+          {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
         {% endif %}
       </div>
-      <div style="padding:2rem 2.4rem; display:grid; gap:1rem; align-content:end;">
-        <div style="font-size: 3.5rem; font-family:'Anton', sans-serif; text-transform:uppercase;">{{ section.settings.poster_heading }}</div>
-        <div class="d99-copy" style="color:rgba(255,255,255,.72);">{{ section.settings.poster_text | newline_to_br }}</div>
-        <div class="d99-barcode"></div>
+      <div class="d99-home-v3__poster-overlay">
+        <div class="d99-home-v3__poster-text">
+          <span>{{ section.settings.poster_line_1 }}</span>
+          <span>{{ section.settings.poster_line_2 }}</span>
+        </div>
+        <span class="d99-home-v3__scribble d99-home-v3__scribble--one" aria-hidden="true"></span>
+        <span class="d99-home-v3__scribble d99-home-v3__scribble--two" aria-hidden="true"></span>
       </div>
-      <div class="d99-crosshair" style="right: 5%; bottom: 10%;"></div>
-    </div>
+    </article>
 
-    <div class="d99-grid" style="grid-template-rows: 1fr 1fr;">
-      <a href="{{ section.settings.fw24_link | default: featured_collection.url }}" class="d99-panel" style="padding: 2rem; text-decoration:none; display:grid; gap:1.6rem; align-content:space-between; min-height:15rem;">
-        <div style="display:grid; grid-template-columns: 13rem 1fr; gap:1.6rem; align-items:center;">
-          <div class="d99-image" style="aspect-ratio:1.35; border:1px solid var(--d99-border);">
-            {% if fw24_image != blank %}
-              {{ fw24_image | image_url: width: 700 | image_tag: loading: 'lazy', alt: section.settings.fw24_title }}
-            {% elsif featured_collection != blank and featured_collection.products.first.featured_image != blank %}
-              {{ featured_collection.products.first.featured_image | image_url: width: 700 | image_tag: loading: 'lazy', alt: featured_collection.title }}
-            {% else %}
-              {{ 'collection-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
-            {% endif %}
-          </div>
-          <div>
-            <div class="d99-heading-page" style="font-size: 3rem !important; margin:0;">{{ section.settings.fw24_title }}</div>
-            <div class="d99-copy" style="font-size:1.25rem;">{{ section.settings.fw24_text | newline_to_br }}</div>
-          </div>
-        </div>
-        <div style="text-align:right; font-size:2rem;">→</div>
-      </a>
-
-      <a href="{{ section.settings.intel_link | default: '/blogs/news' }}" class="d99-panel" style="padding: 2rem; text-decoration:none; display:grid; gap:1.6rem; align-content:space-between; min-height:15rem;">
-        <div style="display:grid; grid-template-columns: 13rem 1fr; gap:1.6rem; align-items:center;">
-          <div class="d99-image" style="aspect-ratio:1.35; border:1px solid var(--d99-border);">
-            {% if intel_image != blank %}
-              {{ intel_image | image_url: width: 700 | image_tag: loading: 'lazy', alt: section.settings.intel_title }}
-            {% else %}
-              {{ 'blog-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
-            {% endif %}
-          </div>
-          <div>
-            <div class="d99-heading-page" style="font-size: 3rem !important; margin:0;">{{ section.settings.intel_title }}</div>
-            <div class="d99-copy" style="font-size:1.25rem;">{{ section.settings.intel_text | newline_to_br }}</div>
-          </div>
-        </div>
-        <div style="text-align:right; font-size:2rem;">→</div>
-      </a>
-    </div>
+    <article class="d99-panel d99-home-v3__accessory-card">
+      <div class="d99-home-v3__mini-copy">{{ section.settings.accessory_title | newline_to_br }}</div>
+      <div class="d99-home-v3__mini-media d99-home-v3__mini-media--accessory">
+        {% if accessory_image != blank %}
+          {{ accessory_image | image_url: width: 700 | image_tag: loading: 'lazy', alt: section.settings.accessory_title }}
+        {% else %}
+          {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+        {% endif %}
+      </div>
+      <div class="d99-home-v3__mini-bottom d99-home-v3__mini-bottom--stacked">
+        <span>{{ section.settings.accessory_price }}</span>
+        <a href="{{ section.settings.accessory_link | default: routes.all_products_collection_url }}">{{ section.settings.accessory_cta }} <span class="d99-arrow">→</span></a>
+      </div>
+      <span class="d99-home-v3__plusmark d99-home-v3__plusmark--bottom">+</span>
+    </article>
   </div>
+
+  <footer class="d99-home-v3__footer-grid">
+    <div class="d99-panel d99-home-v3__footer-cell d99-home-v3__footer-cell--mark">[{{ section.settings.footer_mark }}]</div>
+    <div class="d99-panel d99-home-v3__footer-cell">{{ section.settings.footer_copy | newline_to_br | replace: '[year]', year_now }}</div>
+    <div class="d99-panel d99-home-v3__footer-cell d99-home-v3__footer-cell--newsletter">
+      <div class="d99-home-v3__newsletter-head">{{ section.settings.newsletter_title }}</div>
+      {% form 'customer', id: 'D99HomeNewsletter-' | append: section.id %}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        <div class="d99-home-v3__newsletter-row">
+          <input
+            type="email"
+            name="contact[email]"
+            value="{% if customer %}{{ customer.email }}{% endif %}"
+            placeholder="{{ section.settings.newsletter_placeholder }}"
+            required
+          >
+          <button type="submit" aria-label="{{ section.settings.newsletter_title }}">→</button>
+        </div>
+      {% endform %}
+    </div>
+    <div class="d99-panel d99-home-v3__footer-cell d99-home-v3__footer-cell--globe">
+      <span class="d99-home-v3__globe" aria-hidden="true"></span>
+    </div>
+  </footer>
 </section>
 
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+  .template-index .shopify-section-group-header-group,
+  .template-index .shopify-section-group-footer-group,
+  .template-index .section-header,
+  .template-index footer,
+  .template-index .footer {
+    display: none !important;
+  }
+
+  .template-index body,
+  body.template-index {
+    background: #d7d1c8 !important;
+  }
+
+  .d99-home-v3 {
+    --d99-paper: #d7d1c8;
+    --d99-paper-deep: #c9c1b7;
+    --d99-panel: rgba(255,255,255,0.08);
+    --d99-black: #0f0f0f;
+    --d99-white: #f4f0ea;
+    --d99-red: #b72a22;
+    --d99-border: rgba(15,15,15,0.82);
+    --d99-ink-soft: rgba(15,15,15,0.72);
+    background-color: var(--d99-paper);
+    background-image:
+      linear-gradient(rgba(15,15,15,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(15,15,15,0.06) 1px, transparent 1px),
+      radial-gradient(circle at 20% 20%, rgba(0,0,0,0.08), transparent 36%),
+      linear-gradient(180deg, rgba(255,255,255,0.18), rgba(0,0,0,0.03));
+    background-size: 32px 32px, 32px 32px, 100% 100%, 100% 100%;
+    border: 1px solid var(--d99-border);
+    padding: 0;
+    overflow: hidden;
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.12) inset;
+  }
+
+  .d99-home-v3,
+  .d99-home-v3 * {
+    box-sizing: border-box;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  .d99-home-v3 a,
+  .d99-home-v3 input,
+  .d99-home-v3 button,
+  .d99-home-v3 div,
+  .d99-home-v3 span {
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  .d99-home-v3 .d99-home-v3__wordmark,
+  .d99-home-v3 .d99-home-v3__poster-text,
+  .d99-home-v3 .d99-home-v3__footer-cell--mark {
+    font-family: 'Anton', sans-serif !important;
+  }
+
+  .d99-page {
+    margin: 1.6rem auto;
+  }
+
+  .d99-panel {
+    position: relative;
+    border: 1px solid var(--d99-border);
+    margin: -1px 0 0 -1px;
+    background: rgba(255,255,255,0.06);
+    overflow: hidden;
+  }
+
+  .d99-panel--dark {
+    background: rgba(15,15,15,0.95);
+    color: var(--d99-white);
+  }
+
+  .d99-arrow {
+    font-size: 2rem;
+    line-height: 1;
+    font-family: inherit;
+  }
+
+  .d99-home-v3__masthead,
+  .d99-home-v3__submeta,
+  .d99-home-v3__hero-grid,
+  .d99-home-v3__bottom-grid,
+  .d99-home-v3__footer-grid {
+    margin: -1px 0 0 -1px;
+  }
+
+  .d99-home-v3__masthead {
+    padding: 1.2rem 1.8rem 0;
+  }
+
+  .d99-home-v3__wordmark {
+    font-family: 'Anton', sans-serif !important;
+    font-size: clamp(10rem, 18vw, 22rem);
+    line-height: 0.84;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    color: var(--d99-black);
+    margin-bottom: 1.8rem;
+  }
+
+  .d99-home-v3__navrow {
+    display: grid;
+    grid-template-columns: 16rem 1fr 16rem;
+    align-items: center;
+    gap: 2rem;
+    padding-bottom: 2.2rem;
+  }
+
+  .d99-home-v3__brandmark,
+  .d99-home-v3__cartlink,
+  .d99-home-v3__nav a {
+    text-decoration: none;
+    text-transform: uppercase;
+    color: var(--d99-black);
+    font-size: 1.35rem;
+    letter-spacing: 0.04em;
+  }
+
+  .d99-home-v3__brandmark {
+    font-weight: 600;
+  }
+
+  .d99-home-v3__cartlink {
+    text-align: right;
+  }
+
+  .d99-home-v3__nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3.6rem;
+    flex-wrap: wrap;
+  }
+
+  .d99-home-v3__nav a:hover,
+  .d99-home-v3__cartlink:hover,
+  .d99-home-v3__brandmark:hover {
+    color: var(--d99-red);
+  }
+
+  .d99-home-v3__submeta {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+    padding: 0 1.8rem 1.6rem;
+    font-size: 1.3rem;
+    text-transform: uppercase;
+  }
+
+  .d99-home-v3__auth-copy {
+    max-width: 18rem;
+    line-height: 1.45;
+  }
+
+  .d99-home-v3__season {
+    white-space: nowrap;
+    align-self: flex-start;
+  }
+
+  .d99-home-v3__hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+    gap: 0;
+  }
+
+  .d99-home-v3__hero-left,
+  .d99-home-v3__hero-right {
+    min-height: 69rem;
+  }
+
+  .d99-home-v3__hero-media {
+    height: 100%;
+  }
+
+  .d99-home-v3__hero-media img,
+  .d99-home-v3__poster-bg img,
+  .d99-home-v3__mini-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .d99-home-v3__hero-left {
+    padding: 1.6rem;
+    position: relative;
+  }
+
+  .d99-home-v3__hero-left .d99-home-v3__hero-media {
+    min-height: 65rem;
+  }
+
+  .d99-home-v3__hero-caption {
+    position: absolute;
+    left: 3rem;
+    bottom: 2rem;
+    max-width: 19rem;
+    font-size: 1.5rem;
+    line-height: 1.5;
+    text-transform: uppercase;
+  }
+
+  .d99-home-v3__hero-right-stack {
+    display: grid;
+    grid-template-rows: auto 1fr;
+  }
+
+  .d99-home-v3__hero-strip {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 9.2rem;
+    padding: 2rem 2.2rem;
+    font-size: 1.35rem;
+    line-height: 1.55;
+    text-transform: uppercase;
+  }
+
+  .d99-home-v3__crosshair {
+    position: relative;
+    display: inline-block;
+    width: 2.2rem;
+    height: 2.2rem;
+    border: 1px solid rgba(255,255,255,0.8);
+    border-radius: 999px !important;
+    flex: 0 0 auto;
+  }
+
+  .d99-home-v3__crosshair::before,
+  .d99-home-v3__crosshair::after {
+    content: '';
+    position: absolute;
+    background: rgba(255,255,255,0.8);
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .d99-home-v3__crosshair::before {
+    width: 4rem;
+    height: 1px;
+  }
+
+  .d99-home-v3__crosshair::after {
+    width: 1px;
+    height: 4rem;
+  }
+
+  .d99-home-v3__hero-right {
+    position: relative;
+    padding: 1.6rem;
+  }
+
+  .d99-home-v3__hero-right .d99-home-v3__hero-media {
+    min-height: 56rem;
+  }
+
+  .d99-home-v3__hero-cta-wrap {
+    position: absolute;
+    right: 1.8rem;
+    bottom: 2.2rem;
+  }
+
+  .d99-home-v3__shopnow {
+    display: inline-flex;
+    align-items: center;
+    gap: 2.4rem;
+    padding: 1.45rem 2.2rem;
+    background: var(--d99-black);
+    color: var(--d99-white);
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 1.55rem;
+  }
+
+  .d99-home-v3__shopnow:hover {
+    background: var(--d99-red);
+  }
+
+  .d99-home-v3__bottom-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.45fr) minmax(24rem, 0.72fr);
+    gap: 0;
+  }
+
+  .d99-home-v3__left-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+  }
+
+  .d99-home-v3__mini-card {
+    padding: 2rem 2rem 1.8rem;
+    min-height: 31rem;
+    display: grid;
+    align-content: space-between;
+    position: relative;
+  }
+
+  .d99-home-v3__mini-copy,
+  .d99-home-v3__quote-text,
+  .d99-home-v3__footer-cell {
+    font-size: 1.55rem;
+    text-transform: uppercase;
+    line-height: 1.4;
+  }
+
+  .d99-home-v3__mini-media {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 14rem;
+    max-height: 18rem;
+  }
+
+  .d99-home-v3__mini-media img {
+    object-fit: contain;
+  }
+
+  .d99-home-v3__mini-bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    align-self: end;
+    font-size: 1.4rem;
+    text-transform: uppercase;
+  }
+
+  .d99-home-v3__mini-bottom a {
+    text-decoration: none;
+    color: var(--d99-black);
+  }
+
+  .d99-home-v3__mini-bottom a:hover {
+    color: var(--d99-red);
+  }
+
+  .d99-home-v3__plusmark {
+    position: absolute;
+    left: 2rem;
+    top: 10rem;
+    font-size: 4rem;
+    line-height: 1;
+    color: var(--d99-ink-soft);
+  }
+
+  .d99-home-v3__plusmark--bottom {
+    top: auto;
+    right: 2rem;
+    left: auto;
+    bottom: 2rem;
+  }
+
+  .d99-home-v3__orbital {
+    position: relative;
+    width: 16rem;
+    height: 16rem;
+    justify-self: center;
+    align-self: center;
+  }
+
+  .d99-home-v3__orbital::before,
+  .d99-home-v3__orbital::after,
+  .d99-home-v3__orbital span,
+  .d99-home-v3__globe::before,
+  .d99-home-v3__globe::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 1px solid rgba(18,18,18,0.28);
+    border-radius: 50% !important;
+  }
+
+  .d99-home-v3__orbital::after {
+    transform: rotate(90deg);
+  }
+
+  .d99-home-v3__orbital span:nth-child(1) {
+    transform: scale(0.74);
+  }
+
+  .d99-home-v3__orbital span:nth-child(2) {
+    transform: scale(0.48);
+  }
+
+  .d99-home-v3__orbital span:nth-child(3) {
+    transform: scaleY(0.12);
+  }
+
+  .d99-home-v3__orbital {
+    border-left: 1px solid rgba(18,18,18,0.28);
+    border-top: 1px solid rgba(18,18,18,0.28);
+  }
+
+  .d99-home-v3__mini-card--quote {
+    align-content: space-between;
+  }
+
+  .d99-home-v3__quote-text {
+    color: var(--d99-white);
+    max-width: 18rem;
+  }
+
+  .d99-home-v3__quote-foot {
+    font-size: 1.25rem;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.8);
+  }
+
+  .d99-home-v3__corner-crosshair {
+    position: absolute;
+    left: 1.6rem;
+    bottom: 1.6rem;
+    width: 3rem;
+    height: 3rem;
+    border-left: 1px solid rgba(255,255,255,.75);
+    border-bottom: 1px solid rgba(255,255,255,.75);
+  }
+
+  .d99-home-v3__mini-card--lookbook .d99-home-v3__mini-media {
+    min-height: 16rem;
+  }
+
+  .d99-home-v3__poster-card {
+    min-height: 62rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .d99-home-v3__poster-bg,
+  .d99-home-v3__poster-overlay {
+    position: absolute;
+    inset: 0;
+  }
+
+  .d99-home-v3__poster-bg img {
+    object-fit: cover;
+    filter: grayscale(100%) contrast(1.1);
+  }
+
+  .d99-home-v3__poster-overlay {
+    padding: 2rem;
+  }
+
+  .d99-home-v3__poster-text {
+    position: absolute;
+    left: 7%;
+    top: 4%;
+    right: 6%;
+    font-family: 'Anton', sans-serif !important;
+    font-size: clamp(6rem, 8vw, 11rem);
+    line-height: 0.9;
+    text-transform: uppercase;
+    color: var(--d99-red);
+    transform: rotate(-6deg);
+    display: grid;
+    gap: 0.3rem;
+  }
+
+  .d99-home-v3__scribble {
+    position: absolute;
+    border: 2px solid rgba(18,18,18,.24);
+    border-radius: 50% !important;
+    pointer-events: none;
+  }
+
+  .d99-home-v3__scribble--one {
+    width: 42rem;
+    height: 16rem;
+    bottom: 7rem;
+    left: 12rem;
+    transform: rotate(18deg);
+  }
+
+  .d99-home-v3__scribble--two {
+    width: 1px;
+    height: 5rem;
+    border: 0;
+    background: rgba(18,18,18,.42);
+    bottom: 8rem;
+    left: 45%;
+    transform: rotate(18deg);
+    box-shadow: -1.4rem 1rem 0 rgba(18,18,18,.42), 1.2rem -1rem 0 rgba(18,18,18,.42);
+  }
+
+  .d99-home-v3__accessory-card {
+    min-height: 62rem;
+    padding: 2rem;
+    position: relative;
+    display: grid;
+    align-content: space-between;
+  }
+
+  .d99-home-v3__mini-media--accessory {
+    min-height: 34rem;
+    max-height: 38rem;
+  }
+
+  .d99-home-v3__mini-media--accessory img {
+    object-fit: contain;
+    max-width: 82%;
+  }
+
+  .d99-home-v3__mini-bottom--stacked {
+    gap: 2rem;
+  }
+
+  .d99-home-v3__footer-grid {
+    display: grid;
+    grid-template-columns: 0.7fr 1.2fr 1.5fr 0.6fr;
+    gap: 0;
+  }
+
+  .d99-home-v3__footer-cell {
+    min-height: 11rem;
+    padding: 2rem;
+    display: flex;
+    align-items: center;
+  }
+
+  .d99-home-v3__footer-cell--mark {
+    font-family: 'Anton', sans-serif !important;
+    font-size: 4rem;
+    justify-content: center;
+  }
+
+  .d99-home-v3__footer-cell--newsletter {
+    display: grid;
+    align-content: center;
+    gap: 1.4rem;
+  }
+
+  .d99-home-v3__newsletter-head {
+    font-size: 1.5rem;
+    text-transform: uppercase;
+  }
+
+  .d99-home-v3__newsletter-row {
+    display: grid;
+    grid-template-columns: 1fr 4rem;
+    align-items: center;
+    gap: 1rem;
+    border-bottom: 1px solid rgba(18,18,18,0.82);
+    padding-bottom: 0.6rem;
+  }
+
+  .d99-home-v3__newsletter-row input {
+    border: 0;
+    background: transparent;
+    padding: 0;
+    font-size: 1.4rem;
+    text-transform: uppercase;
+    color: var(--d99-black);
+  }
+
+  .d99-home-v3__newsletter-row input:focus {
+    outline: none;
+  }
+
+  .d99-home-v3__newsletter-row input::placeholder {
+    color: rgba(18,18,18,0.54);
+  }
+
+  .d99-home-v3__newsletter-row button {
+    border: 0;
+    background: transparent !important;
+    color: var(--d99-black) !important;
+    padding: 0;
+    font-size: 2rem;
+    justify-self: end;
+    cursor: pointer;
+  }
+
+  .d99-home-v3__footer-cell--globe {
+    justify-content: center;
+  }
+
+  .d99-home-v3__globe {
+    position: relative;
+    width: 7rem;
+    height: 7rem;
+    border: 1px solid rgba(18,18,18,.7);
+    border-radius: 50% !important;
+    display: inline-block;
+  }
+
+  .d99-home-v3__globe::before {
+    transform: scaleX(0.42);
+  }
+
+  .d99-home-v3__globe::after {
+    transform: scaleY(0.42);
+  }
+
+  .d99-home-v3__globe {
+    box-shadow: inset 0 0 0 1px transparent;
+  }
+
+  .d99-home-v3__globe span {
+    display: none;
+  }
+
   @media screen and (max-width: 1200px) {
-    .d99-home-grid-main,
-    .d99-home-grid-page > .d99-grid {
+    .d99-home-v3__navrow,
+    .d99-home-v3__hero-grid,
+    .d99-home-v3__bottom-grid,
+    .d99-home-v3__footer-grid {
       grid-template-columns: 1fr !important;
+    }
+
+    .d99-home-v3__navrow {
+      gap: 1.4rem;
+    }
+
+    .d99-home-v3__brandmark,
+    .d99-home-v3__cartlink {
+      text-align: left;
+    }
+
+    .d99-home-v3__left-cards {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .d99-home-v3__poster-card,
+    .d99-home-v3__accessory-card {
+      min-height: 42rem;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    .d99-home-v3__masthead,
+    .d99-home-v3__submeta {
+      padding-left: 1.2rem;
+      padding-right: 1.2rem;
+    }
+
+    .d99-home-v3__nav {
+      justify-content: flex-start;
+      gap: 1.6rem 2.2rem;
+    }
+
+    .d99-home-v3__submeta {
+      flex-direction: column;
+    }
+
+    .d99-home-v3__hero-left,
+    .d99-home-v3__hero-right {
+      min-height: auto;
+    }
+
+    .d99-home-v3__hero-left .d99-home-v3__hero-media,
+    .d99-home-v3__hero-right .d99-home-v3__hero-media {
+      min-height: 44rem;
+    }
+
+    .d99-home-v3__left-cards {
+      grid-template-columns: 1fr;
+    }
+
+    .d99-home-v3__mini-card,
+    .d99-home-v3__footer-cell {
+      min-height: auto;
+    }
+
+    .d99-home-v3__poster-text {
+      font-size: clamp(4.4rem, 18vw, 8rem);
+      left: 8%;
+      top: 7%;
+    }
+
+    .d99-home-v3__scribble--one {
+      width: 24rem;
+      height: 10rem;
+      left: 50%;
+      transform: translateX(-50%) rotate(18deg);
+      bottom: 8rem;
     }
   }
 </style>
@@ -163,31 +896,43 @@
 {
   "name": "D99 Home Grid",
   "settings": [
+    { "type": "link_list", "id": "menu", "label": "Navigation menu" },
     { "type": "collection", "id": "collection", "label": "Featured collection" },
-    { "type": "image_picker", "id": "hero_collage", "label": "Main collage image" },
-    { "type": "image_picker", "id": "action_image", "label": "Right action image" },
-    { "type": "image_picker", "id": "poster_image", "label": "Poster image" },
-    { "type": "image_picker", "id": "fw24_image", "label": "FW24 card image" },
-    { "type": "image_picker", "id": "intel_image", "label": "Intel card image" },
-    { "type": "text", "id": "manifesto_kicker", "label": "Manifesto kicker", "default": "OUR MANIFESTO" },
-    { "type": "textarea", "id": "heading", "label": "Main heading", "default": "ACTION\nIS THE\nBRIDGE" },
-    { "type": "textarea", "id": "body_text", "label": "Body text", "default": "WE DON'T WAIT FOR CHANGE.\nWE BUILD IT.\nWE MOVE WITH INTENT.\nWE CREATE WHAT'S MISSING.\nWE ARE DISTRICT-99.\n\nUNITED BY PURPOSE.\nDRIVEN BY ACTION." },
-    { "type": "text", "id": "button_label", "label": "Button label", "default": "OUR STORY" },
-    { "type": "url", "id": "button_link", "label": "Button link" },
-    { "type": "text", "id": "side_label", "label": "Side label", "default": "BUILT DIFFERENT. MOVING LOUD. THIS ISN'T FASHION. IT'S FUNCTION." },
-    { "type": "text", "id": "bridge_kicker", "label": "Bridge kicker", "default": "WE BUILD BRIDGES" },
-    { "type": "textarea", "id": "bridge_text", "label": "Bridge text", "default": "BETWEEN IDEAS AND EXECUTION.\nBETWEEN INDIVIDUALS AND MOVEMENTS.\nBETWEEN WHERE WE ARE AND WHERE WE'RE GOING.\n\nTHIS IS HOW WE CONNECT.\nTHIS IS HOW WE CHANGE THE GAME." },
-    { "type": "text", "id": "action_kicker", "label": "Action kicker", "default": "IN ACTION" },
-    { "type": "textarea", "id": "action_list", "label": "Action list", "default": "POP-UP BUILDS\nCOMMUNITY INITIATIVES\nUNDERGROUND EVENTS\nCREATIVE COLLABS\nSOCIAL IMPACT" },
-    { "type": "text", "id": "arrivals_heading", "label": "Arrivals heading", "default": "NEW ARRIVALS" },
-    { "type": "text", "id": "poster_heading", "label": "Poster heading", "default": "DISTRICT-99" },
-    { "type": "textarea", "id": "poster_text", "label": "Poster text", "default": "NO HANDOUTS.\nNO SHORTCUTS.\nALL ACTION." },
-    { "type": "text", "id": "fw24_title", "label": "FW24 title", "default": "FW24 COLLECTION" },
-    { "type": "textarea", "id": "fw24_text", "label": "FW24 text", "default": "DESIGNED FOR\nTHE PRESENT.\nBUILT FOR\nTHE FUTURE." },
-    { "type": "url", "id": "fw24_link", "label": "FW24 link" },
-    { "type": "text", "id": "intel_title", "label": "Intel title", "default": "D99 INTEL" },
-    { "type": "textarea", "id": "intel_text", "label": "Intel text", "default": "STAY LOCKED IN.\nREAL UPDATES.\nREAL MOVES." },
-    { "type": "url", "id": "intel_link", "label": "Intel link" }
+    { "type": "product", "id": "featured_product", "label": "Left product card product" },
+    { "type": "product", "id": "lookbook_product", "label": "Lookbook fallback product" },
+    { "type": "image_picker", "id": "hero_left_image", "label": "Hero left image" },
+    { "type": "image_picker", "id": "hero_right_image", "label": "Hero right image" },
+    { "type": "image_picker", "id": "poster_image", "label": "Poster background image" },
+    { "type": "image_picker", "id": "lookbook_image", "label": "Lookbook card image" },
+    { "type": "image_picker", "id": "accessory_image", "label": "Accessory card image" },
+    { "type": "text", "id": "wordmark_text", "label": "Top wordmark text", "default": "DISTRICT-99" },
+    { "type": "text", "id": "brand_mark", "label": "Small brand mark", "default": "D99™" },
+    { "type": "textarea", "id": "authenticity_copy", "label": "Authenticity copy", "default": "//// AUTHENTICITY\nIS OUR CODE" },
+    { "type": "text", "id": "season_code", "label": "Season code", "default": "D99-A/W-24" },
+    { "type": "textarea", "id": "hero_left_caption", "label": "Hero left caption", "default": "AW24 COLLECTION\n// THE SYSTEM\nDOESN'T WANT\nYOU TO WIN." },
+    { "type": "textarea", "id": "coordinate_text", "label": "Right hero strip text", "default": "39.9042° N, 116.4074° E\nDISTRICT-99 HEADQUARTERS" },
+    { "type": "text", "id": "hero_cta_label", "label": "Hero CTA label", "default": "Shop now" },
+    { "type": "url", "id": "hero_cta_link", "label": "Hero CTA link" },
+    { "type": "textarea", "id": "product_card_title", "label": "Left product card title", "default": "D99™ ESSENTIAL\nOVERSIZED TEE\nBLACK" },
+    { "type": "text", "id": "product_card_cta", "label": "Left product card CTA", "default": "View product" },
+    { "type": "textarea", "id": "explore_card_title", "label": "Explore card title", "default": "BUILD YOURS.\nBREAK THEIR\nSYSTEM." },
+    { "type": "text", "id": "explore_card_cta", "label": "Explore card CTA", "default": "Explore" },
+    { "type": "url", "id": "explore_card_link", "label": "Explore card link" },
+    { "type": "textarea", "id": "quote_text", "label": "Dark quote card text", "default": "WE DON'T\nFOLLOW\nTRENDS.\nWE SET\nTHEM." },
+    { "type": "text", "id": "quote_footer", "label": "Dark quote footer", "default": "EST. 2022" },
+    { "type": "textarea", "id": "lookbook_title", "label": "Lookbook card title", "default": "LOOKBOOK\nAW24" },
+    { "type": "text", "id": "lookbook_cta", "label": "Lookbook card CTA", "default": "View" },
+    { "type": "url", "id": "lookbook_link", "label": "Lookbook card link" },
+    { "type": "text", "id": "poster_line_1", "label": "Poster line 1", "default": "COP NOW" },
+    { "type": "text", "id": "poster_line_2", "label": "Poster line 2", "default": "// LIMITED DROP" },
+    { "type": "textarea", "id": "accessory_title", "label": "Accessory title", "default": "D99™\nPARACORD\nCHAIN" },
+    { "type": "text", "id": "accessory_price", "label": "Accessory price", "default": "$49.00" },
+    { "type": "text", "id": "accessory_cta", "label": "Accessory CTA", "default": "View product" },
+    { "type": "url", "id": "accessory_link", "label": "Accessory link" },
+    { "type": "text", "id": "footer_mark", "label": "Footer mark", "default": "D99" },
+    { "type": "textarea", "id": "footer_copy", "label": "Footer copyright copy", "default": "ALL RIGHTS RESERVED.\nDISTRICT-99 © [year]\nWORLDWIDE" },
+    { "type": "text", "id": "newsletter_title", "label": "Newsletter heading", "default": "Join the district." },
+    { "type": "text", "id": "newsletter_placeholder", "label": "Newsletter placeholder", "default": "Enter your email" }
   ],
   "presets": [
     { "name": "D99 Home Grid" }

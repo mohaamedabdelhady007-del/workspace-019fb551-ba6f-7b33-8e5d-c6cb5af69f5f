@@ -3,15 +3,14 @@
     "main": {
       "type": "d99-home-grid",
       "settings": {
-        "manifesto_kicker": "OUR MANIFESTO",
-        "heading": "ACTION\nIS THE\nBRIDGE",
-        "button_label": "OUR STORY",
-        "bridge_kicker": "WE BUILD BRIDGES",
-        "action_kicker": "IN ACTION",
-        "arrivals_heading": "NEW ARRIVALS",
-        "poster_heading": "DISTRICT-99",
-        "fw24_title": "FW24 COLLECTION",
-        "intel_title": "D99 INTEL"
+        "wordmark_text": "DISTRICT-99",
+        "brand_mark": "D99™",
+        "season_code": "D99-A/W-24",
+        "hero_cta_label": "Shop now",
+        "poster_line_1": "COP NOW",
+        "poster_line_2": "// LIMITED DROP",
+        "newsletter_title": "Join the district.",
+        "newsletter_placeholder": "Enter your email"
       }
     }
   },
