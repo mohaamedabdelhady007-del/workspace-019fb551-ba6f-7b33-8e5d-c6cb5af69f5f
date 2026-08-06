@@ -12,15 +12,19 @@ from pathlib import Path
 STORE_URL = "district99-preview.myshopify.com"
 GITHUB_REPO = "mohaamedabdelhady007-del/workspace-019fb551-ba6f-7b33-8e5d-c6cb5af69f5f"
 REPO_ROOT = Path(__file__).resolve().parent
+DEFAULT_GIT_REF = "094655ffe1ca035a8f08a69a5189422c9929e843"
 
 
 def current_git_ref():
+    env_ref = os.environ.get("D99_GIT_REF", "").strip()
+    if env_ref:
+        return env_ref
     try:
         return subprocess.check_output(
             ["git", "rev-parse", "HEAD"], cwd=REPO_ROOT, text=True
         ).strip()
     except Exception:
-        return "main"
+        return DEFAULT_GIT_REF
 
 
 def github_raw_base():
