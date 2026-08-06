@@ -16,18 +16,28 @@ STATE_FILE = Path(".shopify_live_sync_state.json")
 REPO_ROOT = Path(__file__).resolve().parent
 REMOTE_REF = f"origin/{BRANCH}"
 
-SYNC_PATTERNS = [
-    "shopify-theme/sections/d99-*.liquid",
-    "shopify-theme/templates/index.json",
-    "shopify-theme/templates/product*.json",
-    "shopify-theme/templates/collection.json",
-    "shopify-theme/templates/cart.json",
-    "shopify-theme/templates/page*.json",
-    "shopify-theme/assets/d99-*",
-    "shopify-theme/layout/theme.liquid",
-    "shopify-theme/sections/header.liquid",
-    "shopify-theme/sections/footer.liquid",
-]
+SYNC_PROFILE = os.environ.get("SHOPIFY_SYNC_PROFILE", "homepage").strip().lower()
+
+SYNC_PATTERNS_BY_PROFILE = {
+    "homepage": [
+        "shopify-theme/sections/d99-home-grid.liquid",
+        "shopify-theme/templates/index.json",
+    ],
+    "all": [
+        "shopify-theme/sections/d99-*.liquid",
+        "shopify-theme/templates/index.json",
+        "shopify-theme/templates/product*.json",
+        "shopify-theme/templates/collection.json",
+        "shopify-theme/templates/cart.json",
+        "shopify-theme/templates/page*.json",
+        "shopify-theme/assets/d99-*",
+        "shopify-theme/layout/theme.liquid",
+        "shopify-theme/sections/header.liquid",
+        "shopify-theme/sections/footer.liquid",
+    ],
+}
+
+SYNC_PATTERNS = SYNC_PATTERNS_BY_PROFILE.get(SYNC_PROFILE, SYNC_PATTERNS_BY_PROFILE["homepage"])
 
 BINARY_EXTENSIONS = {
     ".png", ".jpg", ".jpeg", ".gif", ".webp", ".avif", ".woff", ".woff2", ".ttf", ".otf", ".eot", ".mp4", ".webm"
@@ -124,8 +134,12 @@ def upload_asset(token, theme_id, path, content_bytes):
             }
         }
 
-    request_json(url, token, method="PUT", payload=payload)
-    print(f"  ↑ {key}")
+    try:
+        request_json(url, token, method="PUT", payload=payload)
+        print(f"  ↑ {key}")
+    except urllib.error.HTTPError as exc:
+        details = exc.read().decode("utf-8", errors="replace")
+        raise RuntimeError(f"Failed uploading {key}: HTTP {exc.code} :: {details}") from exc
 
 
 def read_state():
@@ -174,7 +188,10 @@ def sync_once():
 
 
 def watch_loop():
-    print(f"Watching branch '{BRANCH}' every {POLL_SECONDS}s and syncing to live theme '{THEME_NAME_HINT}'...")
+    print(
+        f"Watching branch '{BRANCH}' every {POLL_SECONDS}s and syncing profile '{SYNC_PROFILE}' "
+        f"to live theme '{THEME_NAME_HINT}'..."
+    )
     print("Leave this terminal open. Any new commit I push will be pulled and uploaded automatically.\n")
     while True:
         try:

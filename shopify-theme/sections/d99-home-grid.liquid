@@ -913,6 +913,36 @@
   }
 </style>
 
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var selectors = [
+      '.shopify-section-group-header-group',
+      '.shopify-section-group-footer-group',
+      '.section-header',
+      'footer.footer',
+      '.footer',
+      '[id*="header-group"]',
+      '[id*="footer-group"]',
+      '[class*="header-group"]',
+      '[class*="footer-group"]'
+    ];
+
+    selectors.forEach(function (selector) {
+      document.querySelectorAll(selector).forEach(function (element) {
+        element.style.display = 'none';
+      });
+    });
+
+    var mainContent = document.getElementById('MainContent');
+    if (mainContent) {
+      mainContent.style.paddingTop = '0';
+      mainContent.style.marginTop = '0';
+    }
+
+    document.body.style.background = '#d7d1c8';
+  });
+</script>
+
 {% schema %}
 {
   "name": "D99 Home Grid",
