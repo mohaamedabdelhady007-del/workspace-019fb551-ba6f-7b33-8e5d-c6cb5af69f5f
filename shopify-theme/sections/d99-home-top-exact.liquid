@@ -10,6 +10,23 @@
 </section>
 
 <style>
+  body.template-index .shopify-section-group-footer-group,
+  body.template-index footer.footer,
+  body.template-index .footer,
+  body.template-index [id*='footer-group'],
+  body.template-index [class*='footer-group'],
+  body.template-index .shopify-section:has(.footer-wrapper),
+  body.template-index .shopify-section:has(.section-sections--footer-group__footer-padding) {
+    display: none !important;
+    visibility: hidden !important;
+    max-height: 0 !important;
+    min-height: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+
   .d99-home-top {
     background: transparent !important;
     padding: 0 !important;
@@ -30,6 +47,7 @@
     max-width: none;
     margin: 0;
     overflow: hidden;
+    display: block;
   }
 
   .d99-home-top__image {
