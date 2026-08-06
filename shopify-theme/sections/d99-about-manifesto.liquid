@@ -1,0 +1,139 @@
+<section class="page-width d99-page">
+  <div class="d99-grid" style="grid-template-columns: 1.08fr 1.42fr 0.6fr;">
+    <div class="d99-panel" style="padding: 4rem 3.2rem 2.6rem; min-height: 76rem;">
+      <div class="d99-kicker">{{ section.settings.kicker }}</div>
+      <h1 class="d99-heading-hero">{{ section.settings.heading | newline_to_br }}</h1>
+      <div class="d99-copy">{{ section.settings.body_text | newline_to_br }}</div>
+      <div style="margin-top: 3rem;">
+        <a class="d99-link-btn" href="{{ section.settings.button_link | default: '/pages/contact' }}">
+          <span>{{ section.settings.button_label }}</span>
+          <span class="d99-arrow">→</span>
+        </a>
+      </div>
+      <div style="position:absolute; left:-2.4rem; bottom:16rem; writing-mode:vertical-rl; transform:rotate(180deg); font-size:1rem; letter-spacing:.16em; text-transform:uppercase;">{{ section.settings.vertical_text }}</div>
+      <div style="position:absolute; right:8rem; top:22rem; color:var(--d99-red); font-size:12rem; opacity:.85; line-height:.8;">✶</div>
+    </div>
+
+    <div class="d99-panel" style="min-height: 76rem;">
+      <div class="d99-image" style="min-height: 100%;">
+        {% if section.settings.main_image != blank %}
+          {{ section.settings.main_image | image_url: width: 1800 | image_tag: loading: 'lazy', alt: section.settings.heading }}
+        {% else %}
+          {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+        {% endif %}
+      </div>
+      <div class="d99-crosshair" style="left:14%; top:12%;"></div>
+    </div>
+
+    <div class="d99-grid" style="grid-template-rows: 1fr 1.2fr;">
+      <div class="d99-panel" style="padding: 3rem 2.4rem; display:grid; gap:1.6rem; align-content:start;">
+        <div class="d99-kicker">{{ section.settings.side_kicker }}</div>
+        <div class="d99-copy" style="font-size:1.55rem; line-height:1.75;">{{ section.settings.side_copy | newline_to_br }}</div>
+        <div style="font-size:3rem; text-align:right; margin-top:auto;">＋</div>
+      </div>
+      <div class="d99-panel d99-panel--dark" style="display:grid; grid-template-rows: 1fr auto; min-height: 42rem;">
+        <div class="d99-image">
+          {% if section.settings.side_image != blank %}
+            {{ section.settings.side_image | image_url: width: 1000 | image_tag: loading: 'lazy', alt: section.settings.bottom_right_kicker }}
+          {% else %}
+            {{ 'hero-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}
+          {% endif %}
+        </div>
+        <div style="padding:2rem 2.4rem; display:grid; gap:1rem;">
+          <div class="d99-kicker" style="color:var(--d99-white);">{{ section.settings.bottom_right_kicker }}</div>
+          <div class="d99-copy" style="color:rgba(255,255,255,.76);">{{ section.settings.bottom_right_list | newline_to_br }}</div>
+          <div style="font-size:3rem; text-align:right;">＋</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="d99-grid" style="grid-template-columns: 1fr 1fr 1fr;">
+    <div class="d99-panel" style="padding: 2.8rem; min-height: 22rem; display:grid; gap:1.6rem; align-content:start;">
+      <div class="d99-kicker">CORE PRINCIPLES</div>
+      <div class="d99-heading-page" style="font-size:4rem !important; margin:0;">001</div>
+      <div class="d99-copy">{{ section.settings.principle_1 }}</div>
+    </div>
+    <div class="d99-panel" style="padding: 2.8rem; min-height: 22rem; display:grid; gap:1.6rem; align-content:start;">
+      <div class="d99-heading-page" style="font-size:4rem !important; margin-top:2.4rem;">002</div>
+      <div class="d99-copy">{{ section.settings.principle_2 }}</div>
+    </div>
+    <div class="d99-panel" style="padding: 2.8rem; min-height: 22rem; display:grid; gap:1.6rem; align-content:start;">
+      <div class="d99-heading-page" style="font-size:4rem !important; margin-top:2.4rem;">003</div>
+      <div class="d99-copy">{{ section.settings.principle_3 }}</div>
+    </div>
+  </div>
+
+  <div class="d99-grid" style="grid-template-columns: 0.92fr 1.08fr 1.02fr;">
+    <div class="d99-panel" style="display:grid; grid-template-columns: 18rem 1fr; gap:2rem; align-items:center; padding: 2rem; min-height: 17rem;">
+      <div class="d99-image" style="aspect-ratio:1.2; border:1px solid var(--d99-border);">
+        {% if section.settings.lower_left_image != blank %}
+          {{ section.settings.lower_left_image | image_url: width: 700 | image_tag: loading: 'lazy', alt: section.settings.lower_left_text }}
+        {% else %}
+          {{ 'product-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
+        {% endif %}
+      </div>
+      <div class="d99-copy">{{ section.settings.lower_left_text | newline_to_br }}</div>
+    </div>
+    <div class="d99-panel" style="padding: 3rem 3.2rem; display:grid; gap:1.8rem; align-content:center; min-height: 17rem;">
+      <div class="d99-copy" style="font-size:2.1rem; line-height:1.5; color:var(--d99-ink);">{{ section.settings.bottom_cta_text | newline_to_br }}</div>
+      <div>
+        <a class="d99-link-btn" href="{{ section.settings.bottom_cta_link | default: routes.all_products_collection_url }}">
+          <span>{{ section.settings.bottom_cta_label }}</span>
+          <span class="d99-arrow">→</span>
+        </a>
+      </div>
+    </div>
+    <div class="d99-panel" style="display:grid; grid-template-columns: 17rem 1fr; gap:2rem; align-items:center; padding:2rem; min-height:17rem;">
+      <div class="d99-image" style="aspect-ratio:1.2; border:1px solid var(--d99-border);">
+        {% if section.settings.lower_right_image != blank %}
+          {{ section.settings.lower_right_image | image_url: width: 700 | image_tag: loading: 'lazy', alt: section.settings.lower_right_text }}
+        {% else %}
+          {{ 'collection-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}
+        {% endif %}
+      </div>
+      <div class="d99-copy">{{ section.settings.lower_right_text | newline_to_br }}</div>
+    </div>
+  </div>
+</section>
+
+<style>
+  @media screen and (max-width: 1200px) {
+    .shopify-section .d99-page > .d99-grid {
+      grid-template-columns: 1fr !important;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "D99 About Manifesto",
+  "settings": [
+    { "type": "image_picker", "id": "main_image", "label": "Main collage image" },
+    { "type": "image_picker", "id": "side_image", "label": "Side image" },
+    { "type": "image_picker", "id": "lower_left_image", "label": "Lower left image" },
+    { "type": "image_picker", "id": "lower_right_image", "label": "Lower right image" },
+    { "type": "text", "id": "kicker", "label": "Top kicker", "default": "OUR MANIFESTO" },
+    { "type": "textarea", "id": "heading", "label": "Main heading", "default": "ACTION\nIS THE\nBRIDGE" },
+    { "type": "textarea", "id": "body_text", "label": "Body copy", "default": "WE DON'T WAIT FOR CHANGE.\nWE BUILD IT.\nWE MOVE WITH INTENT.\nWE CREATE WHAT'S MISSING.\nWE ARE DISTRICT-99.\n\nUNITED BY PURPOSE.\nDRIVEN BY ACTION." },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "OUR STORY" },
+    { "type": "url", "id": "button_link", "label": "Button link" },
+    { "type": "text", "id": "vertical_text", "label": "Vertical side text", "default": "BUILT DIFFERENT. MOVING LOUD. THIS ISN'T FASHION. IT'S FUNCTION." },
+    { "type": "text", "id": "side_kicker", "label": "Right top kicker", "default": "WE BUILD BRIDGES" },
+    { "type": "textarea", "id": "side_copy", "label": "Right top text", "default": "BETWEEN IDEAS AND EXECUTION.\nBETWEEN INDIVIDUALS AND MOVEMENTS.\nBETWEEN WHERE WE ARE AND WHERE WE'RE GOING.\n\nTHIS IS HOW WE CONNECT.\nTHIS IS HOW WE CHANGE THE GAME." },
+    { "type": "text", "id": "bottom_right_kicker", "label": "Right bottom kicker", "default": "IN ACTION" },
+    { "type": "textarea", "id": "bottom_right_list", "label": "Right bottom list", "default": "POP-UP BUILDS\nCOMMUNITY INITIATIVES\nUNDERGROUND EVENTS\nCREATIVE COLLABS\nSOCIAL IMPACT" },
+    { "type": "textarea", "id": "principle_1", "label": "Principle 1", "default": "NO HANDOUTS.\nNO SHORTCUTS.\nALL ACTION." },
+    { "type": "textarea", "id": "principle_2", "label": "Principle 2", "default": "BUILT FOR THE PRESENT.\nDESIGNED FOR THE FUTURE." },
+    { "type": "textarea", "id": "principle_3", "label": "Principle 3", "default": "COMMUNITY OVER CLOUT.\nIMPACT OVER INFLUENCE." },
+    { "type": "textarea", "id": "lower_left_text", "label": "Lower left text", "default": "LIVE WITH INTENT.\nACT WITHOUT FEAR." },
+    { "type": "textarea", "id": "bottom_cta_text", "label": "Bottom CTA text", "default": "WE'RE NOT HERE TO FIT IN.\nWE'RE HERE TO BUILD WHAT'S NEXT." },
+    { "type": "text", "id": "bottom_cta_label", "label": "Bottom CTA label", "default": "GET INVOLVED" },
+    { "type": "url", "id": "bottom_cta_link", "label": "Bottom CTA link" },
+    { "type": "textarea", "id": "lower_right_text", "label": "Lower right text", "default": "D99 SYSTEM OVERRIDE //" }
+  ],
+  "presets": [
+    { "name": "D99 About Manifesto" }
+  ]
+}
+{% endschema %}

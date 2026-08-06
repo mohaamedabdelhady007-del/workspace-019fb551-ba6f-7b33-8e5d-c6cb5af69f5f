@@ -1,0 +1,196 @@
+{% liquid
+  assign featured_collection = section.settings.collection
+  if featured_collection == blank
+    assign featured_collection = collections['all']
+  endif
+  assign hero_image = section.settings.hero_collage
+  assign action_image = section.settings.action_image
+  assign poster_image = section.settings.poster_image
+  assign fw24_image = section.settings.fw24_image
+  assign intel_image = section.settings.intel_image
+%}
+
+<section class="page-width d99-page d99-home-grid-page">
+  <div class="d99-grid d99-home-grid-main" style="grid-template-columns: 1.1fr 1.55fr 0.62fr;">
+    <div class="d99-panel d99-home-manifesto" style="padding: 4rem 3.2rem 2.8rem;">
+      <div class="d99-kicker">{{ section.settings.manifesto_kicker }}</div>
+      <h1 class="d99-heading-hero">{{ section.settings.heading | newline_to_br }}</h1>
+      <div class="d99-copy">{{ section.settings.body_text | newline_to_br }}</div>
+      <div style="margin-top: 3rem;">
+        <a class="d99-link-btn" href="{{ section.settings.button_link | default: '/pages/about' }}">
+          <span>{{ section.settings.button_label }}</span>
+          <span class="d99-arrow">→</span>
+        </a>
+      </div>
+      <div style="position:absolute; left:-2.4rem; bottom:14rem; writing-mode:vertical-rl; transform:rotate(180deg); font-size:1rem; letter-spacing:.16em; text-transform:uppercase;">{{ section.settings.side_label }}</div>
+      <div style="position:absolute; right:8rem; top:19rem; color:var(--d99-red); font-size:12rem; opacity:.9; line-height:.8;">✶</div>
+    </div>
+
+    <div class="d99-panel d99-home-collage" style="min-height: 78rem;">
+      <div class="d99-topline">
+        <span>D99</span>
+        <span>Built for more</span>
+      </div>
+      <div class="d99-image" style="min-height: 70rem; position: relative;">
+        {% if hero_image != blank %}
+          {{ hero_image | image_url: width: 1800 | image_tag: loading: 'lazy', alt: section.settings.heading }}
+        {% elsif featured_collection != blank and featured_collection.products.first.featured_image != blank %}
+          {{ featured_collection.products.first.featured_image | image_url: width: 1800 | image_tag: loading: 'lazy', alt: featured_collection.products.first.title }}
+        {% else %}
+          {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+        {% endif %}
+        <div class="d99-crosshair" style="left: 12%; bottom: 18%;"></div>
+        <div class="d99-stamp" style="position:absolute; right:8%; top:31%;">Action over everything</div>
+      </div>
+    </div>
+
+    <div class="d99-grid" style="grid-template-rows: 1fr 1fr;">
+      <div class="d99-panel" style="padding: 3rem 2.4rem; min-height: 34rem; display:flex; flex-direction:column; justify-content:space-between;">
+        <div>
+          <div class="d99-kicker">{{ section.settings.bridge_kicker }}</div>
+          <div class="d99-copy" style="font-size: 1.6rem; line-height:1.75; color:var(--d99-ink); margin-top:2rem;">{{ section.settings.bridge_text | newline_to_br }}</div>
+        </div>
+        <div style="font-size:3rem; line-height:1; text-align:right;">＋</div>
+      </div>
+      <div class="d99-panel d99-panel--dark" style="display:grid; grid-template-rows: 1.2fr auto; min-height: 44rem;">
+        <div class="d99-image">
+          {% if action_image != blank %}
+            {{ action_image | image_url: width: 1000 | image_tag: loading: 'lazy', alt: section.settings.action_kicker }}
+          {% elsif featured_collection != blank and featured_collection.products.size > 1 and featured_collection.products[1].featured_image != blank %}
+            {{ featured_collection.products[1].featured_image | image_url: width: 1000 | image_tag: loading: 'lazy', alt: featured_collection.products[1].title }}
+          {% else %}
+            {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+          {% endif %}
+        </div>
+        <div style="padding: 2.2rem 2.4rem; display:grid; gap:1.3rem;">
+          <div class="d99-kicker" style="color:var(--d99-white);">{{ section.settings.action_kicker }}</div>
+          <div class="d99-copy" style="color:rgba(255,255,255,.8);">{{ section.settings.action_list | newline_to_br }}</div>
+          <div style="font-size:3rem; line-height:1; text-align:right;">＋</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="d99-grid" style="grid-template-columns: 1.32fr 1.02fr 0.88fr;">
+    <div class="d99-panel d99-panel--dark" style="padding: 2rem;">
+      <div style="display:flex; justify-content:space-between; gap:1rem; align-items:center; margin-bottom:1.8rem;">
+        <h2 class="d99-heading-page" style="font-size:4.8rem !important; margin:0;">{{ section.settings.arrivals_heading }}</h2>
+        <a href="{{ featured_collection.url | default: routes.all_products_collection_url }}" class="d99-sort-link" style="color:var(--d99-white);">View all <span class="d99-arrow">→</span></a>
+      </div>
+      <div class="d99-home-products">
+        {% for product in featured_collection.products limit: 3 %}
+          <a href="{{ product.url }}" class="d99-product-card">
+            <div class="d99-product-card__media">{{ product.featured_image | image_url: width: 720 | image_tag: loading: 'lazy', alt: product.title }}</div>
+            <div class="d99-product-card__body" style="border-color: rgba(255,255,255,.35); color:var(--d99-white);">
+              <div class="d99-product-card__title">{{ product.title }}</div>
+              <div class="d99-product-card__bottom"><span>{{ product.price | money }}</span><span>FW24</span></div>
+            </div>
+          </a>
+        {% else %}
+          <div class="d99-copy" style="color:rgba(255,255,255,.7);">Assign a collection from the theme editor to populate the New Arrivals panel.</div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="d99-panel d99-panel--dark" style="min-height: 31rem; display:grid; grid-template-rows: 1fr auto;">
+      <div class="d99-image">
+        {% if poster_image != blank %}
+          {{ poster_image | image_url: width: 1200 | image_tag: loading: 'lazy', alt: section.settings.poster_heading }}
+        {% elsif featured_collection != blank and featured_collection.products.size > 2 and featured_collection.products[2].featured_image != blank %}
+          {{ featured_collection.products[2].featured_image | image_url: width: 1200 | image_tag: loading: 'lazy', alt: featured_collection.products[2].title }}
+        {% else %}
+          {{ 'hero-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
+        {% endif %}
+      </div>
+      <div style="padding:2rem 2.4rem; display:grid; gap:1rem; align-content:end;">
+        <div style="font-size: 3.5rem; font-family:'Anton', sans-serif; text-transform:uppercase;">{{ section.settings.poster_heading }}</div>
+        <div class="d99-copy" style="color:rgba(255,255,255,.72);">{{ section.settings.poster_text | newline_to_br }}</div>
+        <div class="d99-barcode"></div>
+      </div>
+      <div class="d99-crosshair" style="right: 5%; bottom: 10%;"></div>
+    </div>
+
+    <div class="d99-grid" style="grid-template-rows: 1fr 1fr;">
+      <a href="{{ section.settings.fw24_link | default: featured_collection.url }}" class="d99-panel" style="padding: 2rem; text-decoration:none; display:grid; gap:1.6rem; align-content:space-between; min-height:15rem;">
+        <div style="display:grid; grid-template-columns: 13rem 1fr; gap:1.6rem; align-items:center;">
+          <div class="d99-image" style="aspect-ratio:1.35; border:1px solid var(--d99-border);">
+            {% if fw24_image != blank %}
+              {{ fw24_image | image_url: width: 700 | image_tag: loading: 'lazy', alt: section.settings.fw24_title }}
+            {% elsif featured_collection != blank and featured_collection.products.first.featured_image != blank %}
+              {{ featured_collection.products.first.featured_image | image_url: width: 700 | image_tag: loading: 'lazy', alt: featured_collection.title }}
+            {% else %}
+              {{ 'collection-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
+            {% endif %}
+          </div>
+          <div>
+            <div class="d99-heading-page" style="font-size: 3rem !important; margin:0;">{{ section.settings.fw24_title }}</div>
+            <div class="d99-copy" style="font-size:1.25rem;">{{ section.settings.fw24_text | newline_to_br }}</div>
+          </div>
+        </div>
+        <div style="text-align:right; font-size:2rem;">→</div>
+      </a>
+
+      <a href="{{ section.settings.intel_link | default: '/blogs/news' }}" class="d99-panel" style="padding: 2rem; text-decoration:none; display:grid; gap:1.6rem; align-content:space-between; min-height:15rem;">
+        <div style="display:grid; grid-template-columns: 13rem 1fr; gap:1.6rem; align-items:center;">
+          <div class="d99-image" style="aspect-ratio:1.35; border:1px solid var(--d99-border);">
+            {% if intel_image != blank %}
+              {{ intel_image | image_url: width: 700 | image_tag: loading: 'lazy', alt: section.settings.intel_title }}
+            {% else %}
+              {{ 'blog-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
+            {% endif %}
+          </div>
+          <div>
+            <div class="d99-heading-page" style="font-size: 3rem !important; margin:0;">{{ section.settings.intel_title }}</div>
+            <div class="d99-copy" style="font-size:1.25rem;">{{ section.settings.intel_text | newline_to_br }}</div>
+          </div>
+        </div>
+        <div style="text-align:right; font-size:2rem;">→</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  @media screen and (max-width: 1200px) {
+    .d99-home-grid-main,
+    .d99-home-grid-page > .d99-grid {
+      grid-template-columns: 1fr !important;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "D99 Home Grid",
+  "settings": [
+    { "type": "collection", "id": "collection", "label": "Featured collection" },
+    { "type": "image_picker", "id": "hero_collage", "label": "Main collage image" },
+    { "type": "image_picker", "id": "action_image", "label": "Right action image" },
+    { "type": "image_picker", "id": "poster_image", "label": "Poster image" },
+    { "type": "image_picker", "id": "fw24_image", "label": "FW24 card image" },
+    { "type": "image_picker", "id": "intel_image", "label": "Intel card image" },
+    { "type": "text", "id": "manifesto_kicker", "label": "Manifesto kicker", "default": "OUR MANIFESTO" },
+    { "type": "textarea", "id": "heading", "label": "Main heading", "default": "ACTION\nIS THE\nBRIDGE" },
+    { "type": "textarea", "id": "body_text", "label": "Body text", "default": "WE DON'T WAIT FOR CHANGE.\nWE BUILD IT.\nWE MOVE WITH INTENT.\nWE CREATE WHAT'S MISSING.\nWE ARE DISTRICT-99.\n\nUNITED BY PURPOSE.\nDRIVEN BY ACTION." },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "OUR STORY" },
+    { "type": "url", "id": "button_link", "label": "Button link" },
+    { "type": "text", "id": "side_label", "label": "Side label", "default": "BUILT DIFFERENT. MOVING LOUD. THIS ISN'T FASHION. IT'S FUNCTION." },
+    { "type": "text", "id": "bridge_kicker", "label": "Bridge kicker", "default": "WE BUILD BRIDGES" },
+    { "type": "textarea", "id": "bridge_text", "label": "Bridge text", "default": "BETWEEN IDEAS AND EXECUTION.\nBETWEEN INDIVIDUALS AND MOVEMENTS.\nBETWEEN WHERE WE ARE AND WHERE WE'RE GOING.\n\nTHIS IS HOW WE CONNECT.\nTHIS IS HOW WE CHANGE THE GAME." },
+    { "type": "text", "id": "action_kicker", "label": "Action kicker", "default": "IN ACTION" },
+    { "type": "textarea", "id": "action_list", "label": "Action list", "default": "POP-UP BUILDS\nCOMMUNITY INITIATIVES\nUNDERGROUND EVENTS\nCREATIVE COLLABS\nSOCIAL IMPACT" },
+    { "type": "text", "id": "arrivals_heading", "label": "Arrivals heading", "default": "NEW ARRIVALS" },
+    { "type": "text", "id": "poster_heading", "label": "Poster heading", "default": "DISTRICT-99" },
+    { "type": "textarea", "id": "poster_text", "label": "Poster text", "default": "NO HANDOUTS.\nNO SHORTCUTS.\nALL ACTION." },
+    { "type": "text", "id": "fw24_title", "label": "FW24 title", "default": "FW24 COLLECTION" },
+    { "type": "textarea", "id": "fw24_text", "label": "FW24 text", "default": "DESIGNED FOR\nTHE PRESENT.\nBUILT FOR\nTHE FUTURE." },
+    { "type": "url", "id": "fw24_link", "label": "FW24 link" },
+    { "type": "text", "id": "intel_title", "label": "Intel title", "default": "D99 INTEL" },
+    { "type": "textarea", "id": "intel_text", "label": "Intel text", "default": "STAY LOCKED IN.\nREAL UPDATES.\nREAL MOVES." },
+    { "type": "url", "id": "intel_link", "label": "Intel link" }
+  ],
+  "presets": [
+    { "name": "D99 Home Grid" }
+  ]
+}
+{% endschema %}

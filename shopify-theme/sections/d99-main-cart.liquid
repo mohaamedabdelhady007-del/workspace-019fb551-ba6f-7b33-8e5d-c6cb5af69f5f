@@ -1,0 +1,141 @@
+<section class="page-width d99-page">
+  <div class="d99-grid" style="grid-template-columns: 38rem 1fr;">
+    <aside class="d99-panel" style="padding: 3rem 2.4rem; min-height: 84rem; display:grid; align-content:start; gap:2rem; background-image: radial-gradient(circle at 40% 20%, rgba(18,18,18,.08), transparent 28%), linear-gradient(90deg, transparent 48%, rgba(18,18,18,.08) 50%, transparent 52%); background-size: 100% 100%, 18rem 18rem;">
+      <div class="d99-micro">DSTCRAT-SYS</div>
+      <h1 class="d99-heading-utility">Cart</h1>
+      <div class="d99-kicker">[ {{ cart.item_count }} items ]</div>
+      <div style="margin-top:auto; display:grid; gap:1.6rem; align-content:end;">
+        <div class="d99-panel" style="margin:0; padding:2rem;">
+          <div class="d99-copy" style="color:var(--d99-ink);">BUILT DIFFERENT. MOVING LOUD. THIS ISN'T FASHION. IT'S FUNCTION.</div>
+        </div>
+        <a class="d99-sort-link" href="{{ routes.all_products_collection_url }}">&lt;&lt; Continue shopping</a>
+      </div>
+    </aside>
+
+    <div class="d99-panel" style="padding: 2rem;">
+      {% if cart == empty %}
+        <div style="padding:4rem 2rem; display:grid; gap:2rem;">
+          <div class="d99-heading-page" style="font-size:4rem !important;">Your cart is empty</div>
+          <div class="d99-copy">Load the system with a fresh drop.</div>
+          <div><a class="d99-link-btn" href="{{ routes.all_products_collection_url }}">Shop now <span class="d99-arrow">→</span></a></div>
+        </div>
+      {% else %}
+        <form action="{{ routes.cart_url }}" method="post" novalidate>
+          <table class="d99-table">
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Price</th>
+                <th>Qty</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in cart.items %}
+                <tr>
+                  <td>
+                    <div style="display:grid; grid-template-columns: 26rem 1fr; gap:2rem; align-items:start;">
+                      <div class="d99-image" style="border:1px solid var(--d99-border); aspect-ratio: 1.6; background:rgba(255,255,255,.14);">
+                        {% if item.image %}
+                          {{ item.image | image_url: width: 600 | image_tag: loading: 'lazy', alt: item.product.title }}
+                        {% else %}
+                          {{ 'product-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                        {% endif %}
+                      </div>
+                      <div style="display:grid; gap:1rem;">
+                        <div class="d99-heading-page" style="font-size:2.8rem !important; margin:0;">{{ item.product.title }}</div>
+                        <div class="d99-copy">Color: {{ item.product.metafields.custom.color.value | default: 'Washed black' }}<br>Size: {{ item.variant.title }}</div>
+                        <a class="d99-sort-link" href="{{ item.url_to_remove }}">Remove</a>
+                      </div>
+                    </div>
+                  </td>
+                  <td>{{ item.final_price | money }}</td>
+                  <td>
+                    <div class="d99-qty">
+                      <button type="button" data-qty-minus>−</button>
+                      <input type="number" name="updates[]" value="{{ item.quantity }}" min="0">
+                      <button type="button" data-qty-plus>+</button>
+                    </div>
+                  </td>
+                  <td>{{ item.final_line_price | money }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+
+          <div class="d99-grid" style="grid-template-columns: 1.2fr 1fr; margin-top:2rem;">
+            <div class="d99-panel" style="padding: 2rem; min-height: 21rem; display:grid; gap:1.2rem; align-content:end;">
+              <div class="d99-barcode" style="width:4rem; height:8rem;"></div>
+              <div class="d99-kicker">Cart ID: D99-{{ cart.token | slice: 0, 8 | upcase }}</div>
+            </div>
+            <div class="d99-panel" style="padding: 0; display:grid;">
+              <div class="d99-topline"><span>Subtotal</span><span>{{ cart.total_price | money }}</span></div>
+              <div class="d99-topline"><span>Shipping</span><span>{{ section.settings.shipping_label }}</span></div>
+              <div class="d99-bottomline" style="font-size:2rem;"><span>Total</span><span>{{ cart.total_price | money }}</span></div>
+            </div>
+          </div>
+
+          <div class="d99-grid" style="grid-template-columns: 1fr 14rem; margin-top:2rem; align-items:stretch;">
+            <button class="d99-btn" type="submit" name="update" style="justify-content:center; min-width:0; padding:2rem; font-size:1.6rem;">Update cart</button>
+            <button class="d99-btn" type="submit" name="checkout" style="justify-content:center; min-width:0; padding:2rem; font-size:4rem; margin-left:-1px;">Checkout</button>
+          </div>
+        </form>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('[data-qty-minus]').forEach((button) => {
+      button.addEventListener('click', () => {
+        const input = button.parentElement.querySelector('input');
+        input.value = Math.max(0, Number(input.value) - 1);
+      });
+    });
+    document.querySelectorAll('[data-qty-plus]').forEach((button) => {
+      button.addEventListener('click', () => {
+        const input = button.parentElement.querySelector('input');
+        input.value = Number(input.value) + 1;
+      });
+    });
+  });
+</script>
+
+<style>
+  @media screen and (max-width: 1200px) {
+    .shopify-section .d99-page > .d99-grid {
+      grid-template-columns: 1fr !important;
+    }
+    .d99-table,
+    .d99-table thead,
+    .d99-table tbody,
+    .d99-table tr,
+    .d99-table td,
+    .d99-table th {
+      display: block;
+      width: 100%;
+    }
+    .d99-table thead {
+      display: none;
+    }
+    .d99-table tr {
+      margin-bottom: 2rem;
+      border: 1px solid var(--d99-border);
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "D99 Main Cart",
+  "settings": [
+    {
+      "type": "text",
+      "id": "shipping_label",
+      "label": "Shipping label",
+      "default": "$9.99"
+    }
+  ]
+}
+{% endschema %}

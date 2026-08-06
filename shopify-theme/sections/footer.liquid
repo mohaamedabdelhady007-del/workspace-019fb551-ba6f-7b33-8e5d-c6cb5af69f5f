@@ -1,0 +1,45 @@
+<footer class="d99-footer page-width" role="contentinfo">
+  <div class="d99-footer__grid">
+    <div class="d99-footer__cell">
+      <span>© {{ 'now' | date: '%Y' }} {{ section.settings.copyright_text }}</span>
+    </div>
+
+    <div class="d99-footer__cell">
+      <div class="d99-footer__links">
+        {% if shop.privacy_policy.url != blank %}
+          <a href="{{ shop.privacy_policy.url }}">Privacy Policy</a>
+        {% endif %}
+        {% if shop.terms_of_service.url != blank %}
+          <a href="{{ shop.terms_of_service.url }}">Terms &amp; Conditions</a>
+        {% endif %}
+        {% if shop.shipping_policy.url != blank %}
+          <a href="{{ shop.shipping_policy.url }}">Shipping</a>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="d99-footer__cell">
+      <span>{{ section.settings.status_text }}</span>
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "D99 System Footer",
+  "settings": [
+    {
+      "type": "text",
+      "id": "copyright_text",
+      "label": "Copyright text",
+      "default": "DISTRICT-99. ALL RIGHTS RESERVED."
+    },
+    {
+      "type": "text",
+      "id": "status_text",
+      "label": "Status text",
+      "default": "D99 SYSTEM OVERRIDE // ●"
+    }
+  ]
+}
+{% endschema %}

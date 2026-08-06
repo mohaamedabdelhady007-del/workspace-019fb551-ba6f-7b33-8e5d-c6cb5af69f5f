@@ -1,0 +1,137 @@
+{% paginate collection.products by section.settings.products_per_page %}
+  <section class="page-width d99-page">
+    <div class="d99-grid" style="grid-template-columns: 31rem 1fr;">
+      <aside class="d99-panel" style="padding: 3rem 2.4rem;">
+        <div style="display:grid; gap:1.8rem; margin-bottom:2rem;">
+          <h1 class="d99-heading-page" style="font-size:5.8rem !important;">{{ collection.title }}</h1>
+          <div class="d99-kicker">[ {{ collection.products_count }} items ]</div>
+          {% if collection.description != blank %}
+            <div class="d99-copy">{{ collection.description }}</div>
+          {% else %}
+            <div class="d99-copy">BUILT FOR THE PRESENT. DESIGNED FOR THE FUTURE. NO SHORTCUTS. ALL ACTION.</div>
+          {% endif %}
+        </div>
+
+        <div class="d99-sidebar-filter">
+          <div class="d99-filter-group">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+              <h3>Filters</h3>
+              <span>⚙</span>
+            </div>
+          </div>
+
+          {% for filter in collection.filters %}
+            <div class="d99-filter-group">
+              <h3>{{ filter.label }}</h3>
+              {% case filter.type %}
+                {% when 'list' %}
+                  {% for value in filter.values %}
+                    <a class="d99-filter-link{% if value.active %} is-active{% endif %}" href="{% if value.active %}{{ value.url_to_remove }}{% else %}{{ value.url_to_add }}{% endif %}">
+                      <span>{% if value.active %}■{% else %}□{% endif %} {{ value.label }}</span>
+                      <span class="d99-filter-count">{{ value.count }}</span>
+                    </a>
+                  {% endfor %}
+                {% when 'price_range' %}
+                  <div class="d99-copy">{{ filter.min_value.value | default: 0 | money_without_trailing_zeros }} — {{ filter.max_value.value | default: filter.range_max | money_without_trailing_zeros }}</div>
+                {% else %}
+                  <div class="d99-copy">Use Shopify Search &amp; Discovery filters for this group.</div>
+              {% endcase %}
+            </div>
+          {% endfor %}
+
+          <div class="d99-filter-group">
+            <a class="d99-filter-reset" href="{{ collection.url }}">Reset filters <span>↻</span></a>
+          </div>
+        </div>
+      </aside>
+
+      <div class="d99-panel" style="padding: 2rem 2rem 2.4rem;">
+        <div class="d99-topline" style="padding-left:0; padding-right:0; border-top:0;">
+          <div>All products &nbsp; <span class="d99-muted">{{ paginate.items }} items</span></div>
+          <form method="get" action="{{ collection.url }}">
+            {% for filter in collection.filters %}
+              {% if filter.type == 'list' %}
+                {% for value in filter.active_values %}
+                  <input type="hidden" name="{{ value.param_name }}" value="{{ value.value }}">
+                {% endfor %}
+              {% endif %}
+            {% endfor %}
+            <label class="visually-hidden" for="SortBy">Sort</label>
+            <select id="SortBy" name="sort_by" onchange="this.form.submit()" style="border:0; background:transparent; text-transform:uppercase; font-size:1.1rem;">
+              {% for option in collection.sort_options %}
+                <option value="{{ option.value }}" {% if option.value == collection.sort_by %}selected{% endif %}>Sort by: {{ option.name }}</option>
+              {% endfor %}
+            </select>
+          </form>
+        </div>
+
+        <div class="d99-grid d99-collection-products" style="grid-template-columns: repeat(3, minmax(0, 1fr)); gap:1.8rem;">
+          {% for product in collection.products %}
+            {% assign first_variant = product.selected_or_first_available_variant %}
+            {% assign material = product.metafields.custom.material.value | default: '100% cotton' %}
+            <article class="d99-product-card d99-panel" style="margin:0;">
+              <a href="{{ product.url }}" class="d99-product-card__media" style="position:relative;">
+                {% if product.featured_image != blank %}
+                  {{ product.featured_image | image_url: width: 900 | image_tag: loading: 'lazy', alt: product.title }}
+                {% else %}
+                  {{ 'product-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                {% endif %}
+                {% if product.tags contains 'limited' or product.tags contains 'LIMITED' %}
+                  <span class="d99-stamp" style="position:absolute; top:2rem; right:2rem; font-size:1.5rem; transform:rotate(-4deg);">Limited</span>
+                {% endif %}
+                {% unless product.available %}
+                  <span class="d99-stamp" style="position:absolute; right:2rem; bottom:3rem; font-size:1.8rem; transform:rotate(-8deg);">Sold out</span>
+                {% endunless %}
+                <div class="d99-crosshair" style="right:2.5rem; top:2.5rem; color:var(--d99-ink);"></div>
+              </a>
+              <div class="d99-product-card__body">
+                <div class="d99-product-card__meta"><span>D99</span><span>Tees FW24</span></div>
+                <div class="d99-product-card__bottom"><span class="d99-product-card__title">[ {{ product.title }} ]</span><span>{{ product.price | money }}</span></div>
+                <div class="d99-product-card__meta"><span>SKU: {{ first_variant.sku | default: product.handle | upcase }}</span><span class="d99-barcode" style="width:11rem; height:1.6rem; background-size:auto 100%;"></span></div>
+                <div class="d99-product-card__meta"><span>Material: {{ material }}</span><span></span></div>
+              </div>
+            </article>
+          {% else %}
+            <div class="d99-copy">No products found in this collection.</div>
+          {% endfor %}
+        </div>
+
+        {% if paginate.pages > 1 %}
+          <div class="d99-bottomline" style="padding-left:0; padding-right:0; margin-top:2rem;">
+            <span>Page {{ paginate.current_page }} / {{ paginate.pages }}</span>
+            <div style="display:flex; gap:2rem;">
+              {% if paginate.previous %}<a href="{{ paginate.previous.url }}">← Prev</a>{% endif %}
+              {% if paginate.next %}<a href="{{ paginate.next.url }}">Next →</a>{% endif %}
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+{% endpaginate %}
+
+<style>
+  @media screen and (max-width: 1200px) {
+    .d99-collection-products,
+    .d99-page > .d99-grid {
+      grid-template-columns: 1fr !important;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "D99 Main Collection",
+  "settings": [
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "label": "Products per page",
+      "min": 6,
+      "max": 24,
+      "step": 3,
+      "default": 12
+    }
+  ]
+}
+{% endschema %}

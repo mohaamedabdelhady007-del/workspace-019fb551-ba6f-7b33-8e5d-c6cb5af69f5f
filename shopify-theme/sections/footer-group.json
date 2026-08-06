@@ -1,0 +1,16 @@
+{
+  "name": "D99 Footer Group",
+  "type": "footer",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "settings": {
+        "copyright_text": "DISTRICT-99. ALL RIGHTS RESERVED.",
+        "status_text": "D99 SYSTEM OVERRIDE // ●"
+      }
+    }
+  },
+  "order": [
+    "footer"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "sections": {
+    "main": {
+      "type": "d99-product-blueprint",
+      "settings": {
+        "blueprint_status": "UNITED BY DESIGN\nWORK IN PROGRESS"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

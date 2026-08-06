@@ -1,0 +1,125 @@
+{% liquid
+  assign product_ref = section.settings.featured_product
+  assign hero_image = section.settings.hero_image
+  assign spec_image = section.settings.spec_image
+  assign aside_image = section.settings.aside_image
+%}
+
+<section class="page-width d99-page">
+  <div class="d99-topline">
+    <span>UNITED BY DESIGN</span>
+    <span>◉ &nbsp; CART [{{ cart.item_count }}]</span>
+  </div>
+  <div class="d99-panel" style="margin:0; padding: 2rem 2.4rem; display:grid; grid-template-columns: 1fr 38rem; align-items:center;">
+    <img src="{{ 'd99-logo-header-black.png' | asset_url }}" alt="{{ shop.name }}" style="max-width: 64rem; width:100%; height:auto; display:block;">
+    <div class="d99-copy" style="justify-self:end; text-transform:uppercase; font-size:1.35rem;">{{ section.settings.header_copy | newline_to_br }}</div>
+  </div>
+  <div class="d99-topline">
+    <div style="display:flex; gap:4rem; flex-wrap:wrap;">
+      <a href="{{ routes.all_products_collection_url }}">Shop</a>
+      <a href="{{ routes.all_products_collection_url }}">Collections</a>
+      <a href="/pages/about">About</a>
+    </div>
+    <div>D99</div>
+  </div>
+
+  <div class="d99-grid" style="grid-template-columns: 0.62fr 1.25fr 0.95fr;">
+    <div class="d99-panel" style="padding: 3rem 2rem; min-height: 68rem; display:grid; gap:2rem; align-content:start;">
+      <div class="d99-copy" style="text-transform:uppercase; font-size:1.1rem;">Collection 006</div>
+      <h1 class="d99-heading-page" style="font-size:5rem !important;">{{ section.settings.heading | newline_to_br }}</h1>
+      <div class="d99-copy">{{ section.settings.left_specs | newline_to_br }}</div>
+      <div>
+        <a class="d99-link-btn" href="{% if product_ref != blank %}{{ product_ref.url }}{% else %}{{ routes.all_products_collection_url }}{% endif %}">
+          <span>{{ section.settings.button_label }}</span>
+          <span class="d99-arrow">＋</span>
+        </a>
+      </div>
+      <div style="margin-top:auto; display:grid; gap:1rem;">
+        <div class="d99-image" style="aspect-ratio:1.08; border:1px solid var(--d99-border);">
+          {% if aside_image != blank %}
+            {{ aside_image | image_url: width: 900 | image_tag: loading: 'lazy', alt: section.settings.aside_caption }}
+          {% else %}
+            {{ 'collection-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
+          {% endif %}
+        </div>
+        <div class="d99-copy">{{ section.settings.aside_caption | newline_to_br }}</div>
+        <div class="d99-barcode"></div>
+      </div>
+    </div>
+
+    <div class="d99-panel" style="padding:0; min-height:68rem; display:grid; place-items:end center;">
+      <div class="d99-image" style="height:100%; width:100%;">
+        {% if hero_image != blank %}
+          {{ hero_image | image_url: width: 1600 | image_tag: loading: 'lazy', alt: section.settings.heading }}
+        {% elsif product_ref != blank and product_ref.featured_image != blank %}
+          {{ product_ref.featured_image | image_url: width: 1600 | image_tag: loading: 'lazy', alt: product_ref.title }}
+        {% else %}
+          {{ 'hero-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="d99-grid" style="grid-template-rows: auto 1fr;">
+      <div class="d99-panel" style="padding:2rem; min-height:34rem; display:grid; gap:1.5rem; align-content:start;">
+        <div class="d99-kicker">Product specs</div>
+        <div class="d99-image" style="border:1px solid var(--d99-border); aspect-ratio:1.2;">
+          {% if spec_image != blank %}
+            {{ spec_image | image_url: width: 1200 | image_tag: loading: 'lazy', alt: section.settings.spec_heading }}
+          {% else %}
+            {{ 'product-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
+          {% endif %}
+        </div>
+        <ul class="d99-info-list">
+          <li><span>Fabric</span><span>{{ section.settings.fabric }}</span></li>
+          <li><span>Weight</span><span>{{ section.settings.weight }}</span></li>
+          <li><span>Fit</span><span>{{ section.settings.fit }}</span></li>
+          <li><span>Color</span><span>{{ section.settings.color }}</span></li>
+        </ul>
+      </div>
+      <div class="d99-panel" style="padding:2rem; min-height:34rem; display:grid; gap:1.5rem; align-content:space-between;">
+        <div>
+          <ul class="d99-info-list">
+            <li><span>Details</span><span>Screen print graphic</span></li>
+            <li><span></span><span>Ribbed crewneck</span></li>
+            <li><span></span><span>Dropped shoulders</span></li>
+            <li><span></span><span>Double needle hem</span></li>
+          </ul>
+        </div>
+        <div class="d99-stamp" style="font-size:3rem; justify-self:end;">Limited drop</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  @media screen and (max-width: 1200px) {
+    .shopify-section .d99-page > .d99-grid {
+      grid-template-columns: 1fr !important;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "D99 Industrial Grid Hero",
+  "settings": [
+    { "type": "product", "id": "featured_product", "label": "Featured product" },
+    { "type": "image_picker", "id": "hero_image", "label": "Hero image" },
+    { "type": "image_picker", "id": "spec_image", "label": "Spec image" },
+    { "type": "image_picker", "id": "aside_image", "label": "Aside image" },
+    { "type": "textarea", "id": "header_copy", "label": "Header copy", "default": "NO COMPROMISES.\nFUNCTIONAL DESIGN." },
+    { "type": "textarea", "id": "heading", "label": "Heading", "default": "SMOKINGTIME\nOVERSIZED TEE" },
+    { "type": "textarea", "id": "left_specs", "label": "Left specs", "default": "100% COTTON\n280 GSM / HEAVYWEIGHT" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "SHOP NOW" },
+    { "type": "textarea", "id": "aside_caption", "label": "Aside caption", "default": "D99 INTL.™\n53.3498° N, 6.2603° W" },
+    { "type": "text", "id": "spec_heading", "label": "Spec heading", "default": "Product specs" },
+    { "type": "text", "id": "fabric", "label": "Fabric", "default": "100% cotton" },
+    { "type": "text", "id": "weight", "label": "Weight", "default": "280 GSM" },
+    { "type": "text", "id": "fit", "label": "Fit", "default": "Oversized" },
+    { "type": "text", "id": "color", "label": "Color", "default": "Vintage black" }
+  ],
+  "presets": [
+    { "name": "D99 Industrial Grid Hero" }
+  ]
+}
+{% endschema %}

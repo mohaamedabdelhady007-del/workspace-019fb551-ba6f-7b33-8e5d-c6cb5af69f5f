@@ -1,0 +1,13 @@
+{
+  "sections": {
+    "main": {
+      "type": "d99-main-cart",
+      "settings": {
+        "shipping_label": "$9.99"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

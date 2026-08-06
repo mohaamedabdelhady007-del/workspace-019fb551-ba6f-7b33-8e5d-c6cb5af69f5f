@@ -1,0 +1,188 @@
+{% assign current_variant = product.selected_or_first_available_variant %}
+{% assign current_image = product.selected_or_first_available_variant.featured_media.preview_image | default: product.featured_image %}
+
+<section class="page-width d99-page">
+  <div class="d99-grid d99-product-layout" style="grid-template-columns: 23rem minmax(0, 1fr) 1.02fr;">
+    <div class="d99-panel" style="padding:1.6rem;">
+      <div class="d99-thumb-list">
+        {% for media in product.media limit: 4 %}
+          {% if media.media_type == 'image' %}
+            <button
+              class="d99-thumb{% if forloop.first %} is-active{% endif %}"
+              type="button"
+              data-product-thumb="{{ section.id }}"
+              data-media-id="{{ media.id }}"
+              data-src="{{ media | image_url: width: 1500 }}"
+            >
+              {{ media | image_url: width: 360 | image_tag: loading: 'lazy', alt: product.title }}
+            </button>
+          {% endif %}
+        {% endfor %}
+      </div>
+      <div class="d99-figure-note">MODEL IS 187CM / 6'1" WEARING SIZE {{ current_variant.title }}</div>
+    </div>
+
+    <div class="d99-panel" style="padding:1.6rem;">
+      <div class="d99-product-media">
+        {% if current_image != blank %}
+          <img id="D99MainMedia-{{ section.id }}" src="{{ current_image | image_url: width: 1600 }}" alt="{{ product.title }}">
+        {% else %}
+          {{ 'product-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="d99-panel" style="padding: 2.2rem; display:grid; gap:1.8rem; align-content:start;">
+      <div class="d99-topline" style="padding:0 0 1.2rem; border-top:0; border-left:0; border-right:0;"> 
+        <span>{{ collection.title | default: 'FW24 Collection' }}</span>
+        <span>// {{ product.type | default: 'T-SHIRT' }}</span>
+      </div>
+      <h1 class="d99-heading-product">{{ product.title }}</h1>
+      <div class="d99-copy">{{ section.settings.product_subtitle }}</div>
+      <div style="font-size: 4rem; text-transform: uppercase;">{{ current_variant.price | money }} USD</div>
+
+      {% form 'product', product, id: 'D99ProductForm-' | append: section.id, class: 'd99-product-form' %}
+        <input type="hidden" name="id" value="{{ current_variant.id }}" id="D99VariantId-{{ section.id }}">
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:1rem; margin-top:1rem;">
+          <span class="d99-micro">Size</span>
+          <span class="d99-micro">Size guide &nbsp; ＋</span>
+        </div>
+        <div style="display:flex; gap:1rem; flex-wrap:wrap;">
+          {% for variant in product.variants %}
+            <button
+              type="button"
+              class="d99-square-option{% if variant.id == current_variant.id %} is-active{% endif %}{% unless variant.available %} is-disabled{% endunless %}"
+              data-variant-button="{{ section.id }}"
+              data-variant-id="{{ variant.id }}"
+              {% unless variant.available %}disabled{% endunless %}
+            >
+              {{ variant.title }}
+            </button>
+          {% endfor %}
+        </div>
+
+        <button type="submit" class="d99-btn" style="width:100%; justify-content:center; padding:2rem; font-size:3.8rem; margin-top:1rem;">
+          ADD TO CART
+        </button>
+      {% endform %}
+
+      <div class="d99-accordion">
+        <details open>
+          <summary>Description</summary>
+          <div class="d99-accordion__content d99-copy">{{ product.description | default: section.settings.description_fallback }}</div>
+        </details>
+        <details>
+          <summary>Shipping &amp; Returns</summary>
+          <div class="d99-accordion__content d99-copy">{{ section.settings.shipping_text | newline_to_br }}</div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <div class="d99-grid" style="grid-template-columns: 1.45fr 1fr 1fr 1fr;">
+    <div class="d99-panel" style="padding:2.4rem; min-height: 28rem; display:grid; gap:1.5rem;">
+      <div class="d99-micro">Technical specs // blueprint</div>
+      <svg viewBox="0 0 520 320" style="width:100%; height:auto; max-height:22rem;">
+        <rect x="30" y="20" width="180" height="240" fill="none" stroke="rgba(18,18,18,.5)" stroke-width="1"/>
+        <rect x="280" y="20" width="180" height="240" fill="none" stroke="rgba(18,18,18,.5)" stroke-width="1"/>
+        <path d="M85 55 Q120 28 155 55 L195 92 L176 115 L161 102 L161 228 H79 V102 L64 115 L45 92 Z" fill="none" stroke="rgba(18,18,18,.7)" stroke-width="2"/>
+        <path d="M335 55 Q370 28 405 55 L445 92 L426 115 L411 102 L411 228 H329 V102 L314 115 L295 92 Z" fill="none" stroke="rgba(18,18,18,.7)" stroke-width="2"/>
+        <line x1="78" y1="245" x2="162" y2="245" stroke="var(--d99-red)" stroke-width="2"/>
+        <text x="120" y="265" font-size="14" text-anchor="middle" fill="var(--d99-red)" font-family="IBM Plex Mono">58CM</text>
+        <line x1="437" y1="92" x2="437" y2="228" stroke="var(--d99-red)" stroke-width="2"/>
+        <text x="452" y="160" font-size="14" fill="var(--d99-red)" font-family="IBM Plex Mono">72CM</text>
+        <text x="32" y="300" font-size="16" fill="var(--d99-red)" font-family="IBM Plex Mono">DECLASSIFIED</text>
+      </svg>
+    </div>
+
+    <div class="d99-panel" style="padding:2.4rem; min-height:28rem; display:grid; gap:1.2rem; align-content:start;">
+      <div class="d99-micro">Material // composition</div>
+      <ul class="d99-info-list">
+        <li><span>Fabric</span><span>{{ product.metafields.custom.material.value | default: '100% premium cotton' }}</span></li>
+        <li><span>Weight</span><span>{{ product.metafields.custom.fabric_weight.value | default: '300 GSM heavy jersey' }}</span></li>
+        <li><span>Fit</span><span>{{ product.metafields.custom.fit.value | default: 'Oversized relaxed fit' }}</span></li>
+        <li><span>Print</span><span>{{ product.metafields.custom.print_type.value | default: 'High density + puff ink' }}</span></li>
+      </ul>
+    </div>
+
+    <div class="d99-panel" style="padding:2.4rem; min-height:28rem; display:grid; gap:1.2rem; align-content:start;">
+      <div class="d99-micro">Care instructions // wash &amp; care</div>
+      <ul class="d99-info-list">
+        <li><span>Wash</span><span>Cold machine wash</span></li>
+        <li><span>Inside out</span><span>With like colors</span></li>
+        <li><span>Bleach</span><span>Do not bleach</span></li>
+        <li><span>Dry</span><span>Tumble dry low</span></li>
+        <li><span>Iron</span><span>Do not iron print</span></li>
+      </ul>
+    </div>
+
+    <div class="d99-panel" style="padding:2.4rem; min-height:28rem; display:grid; gap:1.2rem; align-content:start;">
+      <div class="d99-micro">Product data</div>
+      <ul class="d99-info-list">
+        <li><span>SKU</span><span>{{ current_variant.sku | default: product.handle | upcase }}</span></li>
+        <li><span>Type</span><span>{{ product.type | default: 'Apparel' }}</span></li>
+        <li><span>Status</span><span>{% if product.available %}In stock{% else %}Sold out{% endif %}</span></li>
+        <li><span>Vendor</span><span>{{ product.vendor | default: shop.name }}</span></li>
+      </ul>
+      <div class="d99-barcode"></div>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const media = document.getElementById('D99MainMedia-{{ section.id }}');
+    document.querySelectorAll('[data-product-thumb="{{ section.id }}"]').forEach((button) => {
+      button.addEventListener('click', () => {
+        document.querySelectorAll('[data-product-thumb="{{ section.id }}"]').forEach((item) => item.classList.remove('is-active'));
+        button.classList.add('is-active');
+        if (media) media.src = button.dataset.src;
+      });
+    });
+
+    const variantInput = document.getElementById('D99VariantId-{{ section.id }}');
+    document.querySelectorAll('[data-variant-button="{{ section.id }}"]').forEach((button) => {
+      button.addEventListener('click', () => {
+        if (button.disabled) return;
+        document.querySelectorAll('[data-variant-button="{{ section.id }}"]').forEach((item) => item.classList.remove('is-active'));
+        button.classList.add('is-active');
+        variantInput.value = button.dataset.variantId;
+      });
+    });
+  });
+</script>
+
+<style>
+  @media screen and (max-width: 1200px) {
+    .d99-product-layout,
+    .shopify-section .d99-page > .d99-grid {
+      grid-template-columns: 1fr !important;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "D99 Main Product",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "product_subtitle",
+      "label": "Product subtitle",
+      "default": "BUILT FOR MORE. DESIGNED FOR THE FUTURE. NO HANDOUTS. NO SHORTCUTS. ALL ACTION."
+    },
+    {
+      "type": "textarea",
+      "id": "description_fallback",
+      "label": "Description fallback",
+      "default": "Heavyweight cut. Purpose-built shape. Brutalist branding with premium materials and considered construction."
+    },
+    {
+      "type": "textarea",
+      "id": "shipping_text",
+      "label": "Shipping text",
+      "default": "Cairo / Giza: 24–48 hours.\nAll Egypt: 2–4 business days.\nReturns & exchanges accepted within 14 days if unworn."
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,14 @@
+{
+  "sections": {
+    "main": {
+      "type": "d99-industrial-grid-hero",
+      "settings": {
+        "heading": "SMOKINGTIME\nOVERSIZED TEE",
+        "button_label": "SHOP NOW"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

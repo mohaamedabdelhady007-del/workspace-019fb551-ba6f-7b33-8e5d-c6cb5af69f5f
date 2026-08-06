@@ -1,0 +1,15 @@
+{
+  "sections": {
+    "main": {
+      "type": "d99-about-manifesto",
+      "settings": {
+        "kicker": "OUR MANIFESTO",
+        "heading": "ACTION\nIS THE\nBRIDGE",
+        "button_label": "OUR STORY"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

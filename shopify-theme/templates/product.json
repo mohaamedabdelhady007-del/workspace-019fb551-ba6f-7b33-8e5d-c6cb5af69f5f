@@ -1,0 +1,13 @@
+{
+  "sections": {
+    "main": {
+      "type": "d99-main-product",
+      "settings": {
+        "product_subtitle": "BUILT FOR MORE. DESIGNED FOR THE FUTURE. NO HANDOUTS. NO SHORTCUTS. ALL ACTION."
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

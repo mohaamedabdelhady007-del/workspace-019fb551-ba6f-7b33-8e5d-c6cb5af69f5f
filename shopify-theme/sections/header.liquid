@@ -1,0 +1,101 @@
+{% liquid
+  assign header_logo = settings.logo
+  assign logo_alt = shop.name | escape
+%}
+
+<header class="d99-header page-width" role="banner">
+  <div class="d99-header__grid">
+    <div class="d99-header__brand">
+      <a href="{{ routes.root_url }}" class="d99-header__brand-link" aria-label="{{ shop.name }}">
+        {% if header_logo != blank %}
+          {{
+            header_logo
+            | image_url: width: 280
+            | image_tag: alt: logo_alt, class: 'd99-header__logo-img', loading: 'eager'
+          }}
+        {% else %}
+          <img src="{{ 'd99-logo-header-black.png' | asset_url }}" alt="{{ logo_alt }}" class="d99-header__logo-img" loading="eager">
+        {% endif %}
+      </a>
+      <div class="d99-header__brand-copy">
+        <span>{{ section.settings.brand_line_1 }}</span>
+        <span>{{ section.settings.brand_line_2 }}</span>
+      </div>
+    </div>
+
+    <nav class="d99-header__nav" aria-label="Primary">
+      {% if section.settings.menu != blank %}
+        {% for link in section.settings.menu.links %}
+          <a href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title }}</a>
+        {% endfor %}
+      {% else %}
+        <a href="{{ routes.all_products_collection_url }}">Shop</a>
+        <a href="{{ routes.all_products_collection_url }}">Collections</a>
+        <a href="/pages/editorial">Editorial</a>
+        <a href="/pages/about">About</a>
+        <a href="/pages/contact">Contact</a>
+      {% endif %}
+    </nav>
+
+    <div class="d99-header__actions">
+      <a href="{{ routes.search_url }}">{{ section.settings.search_label }}</a>
+      {% if shop.customer_accounts_enabled %}
+        <a href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}">
+          {% if customer %}Account{% else %}Login{% endif %}
+        </a>
+      {% endif %}
+      <a href="{{ routes.cart_url }}">Cart [{{ cart.item_count }}]</a>
+    </div>
+
+    <div class="d99-header__status">
+      <div>
+        <div>{{ section.settings.status_title }}</div>
+        <div>{{ section.settings.status_body }}</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "D99 System Header",
+  "class": "section-header",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu"
+    },
+    {
+      "type": "text",
+      "id": "brand_line_1",
+      "label": "Brand line 1",
+      "default": "DISTRICT-99"
+    },
+    {
+      "type": "text",
+      "id": "brand_line_2",
+      "label": "Brand line 2",
+      "default": "UNITED BY PURPOSE / DRIVEN BY ACTION"
+    },
+    {
+      "type": "text",
+      "id": "search_label",
+      "label": "Search label",
+      "default": "SEARCH (Q)"
+    },
+    {
+      "type": "text",
+      "id": "status_title",
+      "label": "Status title",
+      "default": "D99 SYSTEM"
+    },
+    {
+      "type": "text",
+      "id": "status_body",
+      "label": "Status body",
+      "default": "OVERRIDE //"
+    }
+  ]
+}
+{% endschema %}
