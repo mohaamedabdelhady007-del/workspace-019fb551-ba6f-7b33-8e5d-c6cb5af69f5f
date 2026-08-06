@@ -16,12 +16,19 @@ STATE_FILE = Path(".shopify_live_sync_state.json")
 REPO_ROOT = Path(__file__).resolve().parent
 REMOTE_REF = f"origin/{BRANCH}"
 
-SYNC_PROFILE = os.environ.get("SHOPIFY_SYNC_PROFILE", "header").strip().lower()
+SYNC_PROFILE = os.environ.get("SHOPIFY_SYNC_PROFILE", "top").strip().lower()
 
 SYNC_PATTERNS_BY_PROFILE = {
     "header": [
         "shopify-theme/sections/header.liquid",
         "shopify-theme/sections/header-group.json"
+    ],
+    "top": [
+        "shopify-theme/sections/header.liquid",
+        "shopify-theme/sections/header-group.json",
+        "shopify-theme/sections/d99-home-top.liquid",
+        "shopify-theme/templates/index.json",
+        "shopify-theme/assets/d99-home-top-mockup.jpg"
     ],
     "homepage": [
         "shopify-theme/sections/d99-home-grid.liquid",

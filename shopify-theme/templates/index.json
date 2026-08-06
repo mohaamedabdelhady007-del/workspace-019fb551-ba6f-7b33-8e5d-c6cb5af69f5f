@@ -1,18 +1,10 @@
 {
   "sections": {
     "main": {
-      "type": "d99-home-grid",
+      "type": "d99-home-top",
       "settings": {
-        "shop_link": "shopify://collections/all",
-        "collections_link": "shopify://collections/all",
-        "about_link": "/pages/about",
-        "lookbook_link": "/pages/lookbook",
-        "contact_link": "/pages/contact",
-        "hero_cta_link": "shopify://collections/all",
-        "product_card_link": "shopify://collections/all",
-        "explore_link": "shopify://collections/all",
-        "lookbook_card_link": "/pages/lookbook",
-        "accessory_link": "shopify://collections/all"
+        "shop_now_link": "shopify://collections/all",
+        "shop_link": "shopify://collections/all"
       }
     }
   },
