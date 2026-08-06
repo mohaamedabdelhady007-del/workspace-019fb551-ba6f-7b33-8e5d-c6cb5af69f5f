@@ -1,108 +1,451 @@
-<section class="d99-home-bottom-exact" aria-label="DISTRICT-99 homepage lower grid">
-  <div class="d99-home-bottom-exact__frame">
-    <div class="d99-home-bottom-exact__artboard">
-      <img src="{{ 'd99-home-bottom-mockup.jpg' | asset_url }}" alt="DISTRICT-99 homepage lower grid" class="d99-home-bottom-exact__image" loading="eager">
+{% liquid
+  assign product_image = section.settings.product_image
+  assign lookbook_image = section.settings.lookbook_image
+  assign accessory_image = section.settings.accessory_image
+  assign poster_image = section.settings.poster_image
+  assign year_now = 'now' | date: '%Y'
+%}
 
-      <a class="d99-home-bottom-exact__hotspot hs-product-card" href="{{ section.settings.product_link | default: routes.all_products_collection_url }}" aria-label="View product"></a>
-      <a class="d99-home-bottom-exact__hotspot hs-explore" href="{{ section.settings.explore_link | default: routes.all_products_collection_url }}" aria-label="Explore"></a>
-      <a class="d99-home-bottom-exact__hotspot hs-lookbook" href="{{ section.settings.lookbook_link | default: '/pages/lookbook' }}" aria-label="View lookbook"></a>
-      <a class="d99-home-bottom-exact__hotspot hs-accessory" href="{{ section.settings.accessory_link | default: routes.all_products_collection_url }}" aria-label="View accessory"></a>
+<section class="d99-home-bottom-editable" aria-label="DISTRICT-99 homepage lower grid">
+  <div class="d99-home-bottom-editable__grid">
+    <article class="d99-btm-card d99-btm-card--paper d99-btm-card--product">
+      <div class="d99-btm-card__title">{{ section.settings.product_title | newline_to_br }}</div>
+      <span class="d99-btm-card__plus">+</span>
+      <div class="d99-btm-card__imagewrap d99-btm-card__imagewrap--product">
+        {% if product_image != blank %}
+          {{ product_image | image_url: width: 800 | image_tag: loading: 'lazy', alt: section.settings.product_title, class: 'd99-btm-card__image' }}
+        {% else %}
+          {{ 'product-apparel-1' | placeholder_svg_tag: 'placeholder-svg d99-btm-card__image' }}
+        {% endif %}
+      </div>
+      <div class="d99-btm-card__bottom">
+        <span>{{ section.settings.product_price }}</span>
+        <a href="{{ section.settings.product_link | default: routes.all_products_collection_url }}">{{ section.settings.product_cta }} <span class="d99-btm-card__arrow">→</span></a>
+      </div>
+    </article>
 
-      {% form 'customer', id: 'D99BottomNewsletter-' | append: section.id, class: 'd99-home-bottom-exact__newsletter' %}
+    <article class="d99-btm-card d99-btm-card--paper d99-btm-card--explore">
+      <div class="d99-btm-card__title">{{ section.settings.explore_title | newline_to_br }}</div>
+      <div class="d99-btm-orbit" aria-hidden="true">
+        <span></span><span></span><span></span>
+      </div>
+      <div class="d99-btm-card__bottom">
+        <span></span>
+        <a href="{{ section.settings.explore_link | default: routes.all_products_collection_url }}">{{ section.settings.explore_cta }} <span class="d99-btm-card__arrow">→</span></a>
+      </div>
+      <span class="d99-btm-card__plus d99-btm-card__plus--bottom">+</span>
+    </article>
+
+    <article class="d99-btm-card d99-btm-card--dark d99-btm-card--quote">
+      <div class="d99-btm-card__quote">{{ section.settings.quote_text | newline_to_br }}</div>
+      <div class="d99-btm-card__foot">[ {{ section.settings.quote_footer }} ]</div>
+      <span class="d99-btm-card__corner" aria-hidden="true"></span>
+    </article>
+
+    <article class="d99-btm-card d99-btm-card--paper d99-btm-card--lookbook">
+      <div class="d99-btm-card__title">{{ section.settings.lookbook_title | newline_to_br }}</div>
+      <span class="d99-btm-card__plus">+</span>
+      <div class="d99-btm-card__imagewrap d99-btm-card__imagewrap--lookbook">
+        {% if lookbook_image != blank %}
+          {{ lookbook_image | image_url: width: 900 | image_tag: loading: 'lazy', alt: section.settings.lookbook_title, class: 'd99-btm-card__image' }}
+        {% else %}
+          {{ 'collection-apparel-1' | placeholder_svg_tag: 'placeholder-svg d99-btm-card__image' }}
+        {% endif %}
+      </div>
+      <div class="d99-btm-card__bottom">
+        <span></span>
+        <a href="{{ section.settings.lookbook_link | default: '/pages/lookbook' }}">{{ section.settings.lookbook_cta }} <span class="d99-btm-card__arrow">→</span></a>
+      </div>
+    </article>
+
+    <article class="d99-btm-card d99-btm-card--poster">
+      <div class="d99-btm-card__poster-bg">
+        {% if poster_image != blank %}
+          {{ poster_image | image_url: width: 1400 | image_tag: loading: 'lazy', alt: section.settings.poster_line_1, class: 'd99-btm-card__image' }}
+        {% else %}
+          {{ 'image' | placeholder_svg_tag: 'placeholder-svg d99-btm-card__image' }}
+        {% endif %}
+      </div>
+      <div class="d99-btm-card__poster-text">
+        <span>{{ section.settings.poster_line_1 }}</span>
+        <span>{{ section.settings.poster_line_2 }}</span>
+      </div>
+      <span class="d99-btm-card__scribble d99-btm-card__scribble--one" aria-hidden="true"></span>
+      <span class="d99-btm-card__scribble d99-btm-card__scribble--two" aria-hidden="true"></span>
+    </article>
+
+    <article class="d99-btm-card d99-btm-card--paper d99-btm-card--accessory">
+      <div class="d99-btm-card__title">{{ section.settings.accessory_title | newline_to_br }}</div>
+      <span class="d99-btm-card__plus d99-btm-card__plus--right">+</span>
+      <div class="d99-btm-card__imagewrap d99-btm-card__imagewrap--accessory">
+        {% if accessory_image != blank %}
+          {{ accessory_image | image_url: width: 900 | image_tag: loading: 'lazy', alt: section.settings.accessory_title, class: 'd99-btm-card__image' }}
+        {% else %}
+          {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg d99-btm-card__image' }}
+        {% endif %}
+      </div>
+      <div class="d99-btm-card__bottom d99-btm-card__bottom--right">
+        <span>{{ section.settings.accessory_price }}</span>
+        <a href="{{ section.settings.accessory_link | default: routes.all_products_collection_url }}">{{ section.settings.accessory_cta }} <span class="d99-btm-card__arrow">→</span></a>
+      </div>
+    </article>
+
+    <div class="d99-btm-card d99-btm-card--paper d99-btm-card--mark">[{{ section.settings.footer_mark }}]</div>
+    <div class="d99-btm-card d99-btm-card--paper d99-btm-card--copy">{{ section.settings.footer_copy | newline_to_br | replace: '[year]', year_now }}</div>
+    <div class="d99-btm-card d99-btm-card--paper d99-btm-card--newsletter">
+      <div class="d99-btm-card__title d99-btm-card__title--newsletter">{{ section.settings.newsletter_title }}</div>
+      {% form 'customer', id: 'D99BottomNewsletter-' | append: section.id, class: 'd99-btm-newsletter' %}
         <input type="hidden" name="contact[tags]" value="newsletter">
-        <input type="email" name="contact[email]" value="{% if customer %}{{ customer.email }}{% endif %}" placeholder="Enter your email" aria-label="Enter your email">
-        <button type="submit" aria-label="Submit newsletter"></button>
+        <input type="email" name="contact[email]" value="{% if customer %}{{ customer.email }}{% endif %}" placeholder="{{ section.settings.newsletter_placeholder }}" aria-label="{{ section.settings.newsletter_placeholder }}">
+        <button type="submit" aria-label="Submit newsletter">→</button>
       {% endform %}
     </div>
+    <div class="d99-btm-card d99-btm-card--paper d99-btm-card--globe"><span class="d99-btm-globe" aria-hidden="true"></span></div>
   </div>
 </section>
 
 <style>
-  .d99-home-bottom-exact {
+  .d99-home-bottom-editable {
     width: 100%;
     padding: 0 0.45rem 0 !important;
     margin: 0 !important;
     background: transparent !important;
-    line-height: 0;
   }
 
-  .d99-home-bottom-exact__frame {
-    width: 100% !important;
-    max-width: none !important;
-    margin: 0 !important;
-    padding: 0 !important;
+  .d99-home-bottom-editable,
+  .d99-home-bottom-editable * {
+    box-sizing: border-box;
+    font-family: 'IBM Plex Mono', monospace !important;
   }
 
-  .d99-home-bottom-exact__artboard {
-    position: relative;
-    width: 100%;
-    overflow: hidden;
-  }
-
-  .d99-home-bottom-exact__image {
-    display: block;
-    width: 100%;
-    height: auto;
-  }
-
-  .d99-home-bottom-exact__hotspot,
-  .d99-home-bottom-exact__newsletter {
-    position: absolute;
-    display: block;
-    z-index: 2;
-    background: transparent;
-  }
-
-  .shopify-design-mode .d99-home-bottom-exact__hotspot:hover,
-  .shopify-design-mode .d99-home-bottom-exact__hotspot:focus-visible,
-  .shopify-design-mode .d99-home-bottom-exact__newsletter:focus-within {
-    outline: 1px dashed rgba(255, 0, 0, 0.5);
-    outline-offset: -1px;
-  }
-
-  .hs-product-card { left: 2.3%; top: 43.8%; width: 15.8%; height: 22.5%; }
-  .hs-explore { left: 28.5%; top: 45.2%; width: 10.5%; height: 18%; }
-  .hs-lookbook { left: 27.4%; top: 83.1%; width: 10.5%; height: 13.8%; }
-  .hs-accessory { right: 1.8%; top: 40.8%; width: 14.8%; height: 44.5%; }
-
-  .d99-home-bottom-exact__newsletter {
-    left: 69.4%;
-    bottom: 5.2%;
-    width: 22.3%;
-    height: 7%;
+  .d99-home-bottom-editable__grid {
     display: grid;
-    grid-template-columns: 1fr 3.4rem;
-    align-items: end;
-    gap: 0.8rem;
+    grid-template-columns: 1fr 1fr 2.05fr 1.18fr;
+    grid-template-rows: 34rem 21rem 10rem;
+    grid-template-areas:
+      'product explore poster accessory'
+      'quote lookbook poster accessory'
+      'mark copy newsletter globe';
+    gap: 0;
   }
 
-  .d99-home-bottom-exact__newsletter input {
+  .d99-btm-card {
+    position: relative;
+    margin: -1px 0 0 -1px;
+    border: 1px solid #111;
+    background: #d7d1c8;
+    color: #111;
+    overflow: hidden;
+    padding: 1.7rem 1.7rem 1.5rem;
+  }
+
+  .d99-btm-card--dark {
+    background: #0f0f0f;
+    color: #f3efe9;
+  }
+
+  .d99-btm-card--product { grid-area: product; }
+  .d99-btm-card--explore { grid-area: explore; }
+  .d99-btm-card--quote { grid-area: quote; }
+  .d99-btm-card--lookbook { grid-area: lookbook; }
+  .d99-btm-card--poster { grid-area: poster; padding: 0; }
+  .d99-btm-card--accessory { grid-area: accessory; }
+  .d99-btm-card--mark { grid-area: mark; display: flex; align-items: center; font-family: 'Anton', sans-serif !important; font-size: 3.2rem; }
+  .d99-btm-card--copy { grid-area: copy; display: flex; align-items: center; font-size: 1.18rem; line-height: 1.45; text-transform: uppercase; }
+  .d99-btm-card--newsletter { grid-area: newsletter; display: grid; align-content: center; gap: 1.2rem; }
+  .d99-btm-card--globe { grid-area: globe; display: flex; align-items: center; justify-content: center; }
+
+  .d99-btm-card__title {
+    font-size: 1.3rem;
+    line-height: 1.32;
+    text-transform: uppercase;
+    max-width: 15rem;
+  }
+
+  .d99-btm-card__title--newsletter {
+    max-width: none;
+  }
+
+  .d99-btm-card__plus {
+    position: absolute;
+    left: 1.7rem;
+    top: 10.4rem;
+    font-size: 3.3rem;
+    line-height: 1;
+    color: rgba(17,17,17,0.7);
+  }
+
+  .d99-btm-card__plus--bottom {
+    left: auto;
+    right: 1.7rem;
+    top: auto;
+    bottom: 2rem;
+  }
+
+  .d99-btm-card__plus--right {
+    left: auto;
+    right: 1.2rem;
+    top: 18rem;
+  }
+
+  .d99-btm-card__imagewrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2.8rem;
+  }
+
+  .d99-btm-card__imagewrap--product {
+    min-height: 14rem;
+    max-height: 16rem;
+  }
+
+  .d99-btm-card__imagewrap--lookbook {
+    min-height: 12rem;
+    max-height: 14rem;
+    margin-top: 1.4rem;
+  }
+
+  .d99-btm-card__imagewrap--accessory {
+    min-height: 25rem;
+    max-height: 30rem;
+    margin-top: 1rem;
+  }
+
+  .d99-btm-card__image {
     width: 100%;
-    border: 0;
-    background: transparent;
-    color: transparent;
-    caret-color: transparent;
-    outline: none;
-    padding: 0;
-    font-size: 1rem;
+    height: 100%;
+    display: block;
+    object-fit: contain;
+  }
+
+  .d99-btm-card__imagewrap--product .d99-btm-card__image {
+    max-width: 78%;
+  }
+
+  .d99-btm-card__imagewrap--lookbook .d99-btm-card__image {
+    max-width: 90%;
+  }
+
+  .d99-btm-card__imagewrap--accessory .d99-btm-card__image {
+    max-width: 80%;
+  }
+
+  .d99-btm-card__bottom {
+    position: absolute;
+    left: 1.7rem;
+    right: 1.7rem;
+    bottom: 1.5rem;
+    display: grid;
+    gap: 0.9rem;
+    font-size: 1.15rem;
+    text-transform: uppercase;
+  }
+
+  .d99-btm-card__bottom a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .d99-btm-card__arrow {
+    font-size: 1.5rem;
     line-height: 1;
   }
 
-  .d99-home-bottom-exact__newsletter input::placeholder {
-    color: transparent;
+  .d99-btm-card__quote {
+    margin-top: 1.8rem;
+    font-size: 1.55rem;
+    line-height: 1.45;
+    text-transform: uppercase;
+    max-width: 16rem;
   }
 
-  .d99-home-bottom-exact__newsletter button {
+  .d99-btm-card__foot {
+    position: absolute;
+    left: 1.7rem;
+    bottom: 1.7rem;
+    font-size: 1.05rem;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.86);
+  }
+
+  .d99-btm-card__corner {
+    position: absolute;
+    left: 0.8rem;
+    bottom: 0.8rem;
+    width: 3.4rem;
+    height: 3.4rem;
+    border-left: 1px solid rgba(255,255,255,0.85);
+    border-bottom: 1px solid rgba(255,255,255,0.85);
+  }
+
+  .d99-btm-orbit {
+    position: relative;
+    width: 15rem;
+    height: 15rem;
+    margin: 2rem auto 0;
+  }
+
+  .d99-btm-orbit::before,
+  .d99-btm-orbit::after,
+  .d99-btm-orbit span {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 1px solid rgba(17,17,17,0.35);
+    border-radius: 50% !important;
+  }
+
+  .d99-btm-orbit::after { transform: rotate(90deg); }
+  .d99-btm-orbit span:nth-child(1) { transform: scale(0.75); }
+  .d99-btm-orbit span:nth-child(2) { transform: scale(0.46); }
+  .d99-btm-orbit span:nth-child(3) { transform: scaleY(0.14); }
+  .d99-btm-orbit {
+    border-left: 1px solid rgba(17,17,17,0.35);
+    border-top: 1px solid rgba(17,17,17,0.35);
+  }
+
+  .d99-btm-card__poster-bg,
+  .d99-btm-card__poster-bg .d99-btm-card__image {
     width: 100%;
     height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .d99-btm-card__poster-text {
+    position: absolute;
+    inset: 2rem 1.7rem auto 2.2rem;
+    font-family: 'Anton', sans-serif !important;
+    font-size: clamp(7rem, 9vw, 12rem);
+    line-height: 0.88;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    color: #b72a22;
+    transform: rotate(-7deg);
+    display: grid;
+    gap: 0.3rem;
+  }
+
+  .d99-btm-card__scribble {
+    position: absolute;
+    border: 2px solid rgba(17,17,17,0.22);
+    border-radius: 50% !important;
+    pointer-events: none;
+  }
+
+  .d99-btm-card__scribble--one {
+    width: 44rem;
+    height: 16rem;
+    right: -2rem;
+    top: 13rem;
+    transform: rotate(14deg);
+  }
+
+  .d99-btm-card__scribble--two {
+    width: 1px;
+    height: 5rem;
+    border: 0;
+    background: rgba(17,17,17,0.45);
+    left: 56%;
+    bottom: 7rem;
+    transform: rotate(18deg);
+    box-shadow: -1.5rem 1rem 0 rgba(17,17,17,0.45), 1.2rem -1rem 0 rgba(17,17,17,0.45);
+  }
+
+  .d99-btm-newsletter {
+    display: grid;
+    grid-template-columns: 1fr 3rem;
+    align-items: end;
+    gap: 0.8rem;
+    border-bottom: 1px solid rgba(17,17,17,0.8);
+    padding-bottom: 0.5rem;
+  }
+
+  .d99-btm-newsletter input {
+    border: 0;
+    background: transparent;
+    padding: 0;
+    font-size: 1.1rem;
+    color: #111;
+    outline: none;
+    text-transform: uppercase;
+  }
+
+  .d99-btm-newsletter input::placeholder {
+    color: rgba(17,17,17,0.8);
+  }
+
+  .d99-btm-newsletter button {
     border: 0;
     background: transparent;
     cursor: pointer;
+    font-size: 1.8rem;
+    line-height: 1;
+    color: #111;
+    padding: 0;
   }
 
-  @media screen and (max-width: 990px) {
-    .d99-home-bottom-exact {
+  .d99-btm-globe {
+    position: relative;
+    width: 7rem;
+    height: 7rem;
+    border: 1px solid rgba(17,17,17,0.75);
+    border-radius: 50% !important;
+    display: inline-block;
+  }
+
+  .d99-btm-globe::before,
+  .d99-btm-globe::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 1px solid rgba(17,17,17,0.45);
+    border-radius: 50% !important;
+  }
+
+  .d99-btm-globe::before { transform: scaleX(0.45); }
+  .d99-btm-globe::after { transform: scaleY(0.45); }
+
+  @media screen and (max-width: 1100px) {
+    .d99-home-bottom-editable__grid {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto;
+      grid-template-areas:
+        'product explore'
+        'quote lookbook'
+        'poster poster'
+        'accessory accessory'
+        'mark copy'
+        'newsletter globe';
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    .d99-home-bottom-editable {
       padding: 0 0.25rem 0 !important;
+    }
+
+    .d99-home-bottom-editable__grid {
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        'product'
+        'explore'
+        'quote'
+        'lookbook'
+        'poster'
+        'accessory'
+        'mark'
+        'copy'
+        'newsletter'
+        'globe';
+    }
+
+    .d99-btm-card--mark,
+    .d99-btm-card--copy,
+    .d99-btm-card--newsletter,
+    .d99-btm-card--globe {
+      min-height: 8rem;
     }
   }
 </style>
@@ -111,10 +454,32 @@
 {
   "name": "D99 Home Bottom Exact",
   "settings": [
+    { "type": "image_picker", "id": "product_image", "label": "Product card image" },
+    { "type": "image_picker", "id": "lookbook_image", "label": "Lookbook image" },
+    { "type": "image_picker", "id": "accessory_image", "label": "Accessory image" },
+    { "type": "image_picker", "id": "poster_image", "label": "Poster image" },
+    { "type": "textarea", "id": "product_title", "label": "Product title", "default": "D99™ ESSENTIAL\nOVERSIZED TEE\nBLACK" },
+    { "type": "text", "id": "product_price", "label": "Product price", "default": "$69.00" },
+    { "type": "text", "id": "product_cta", "label": "Product CTA", "default": "VIEW PRODUCT" },
     { "type": "url", "id": "product_link", "label": "Product card link" },
+    { "type": "textarea", "id": "explore_title", "label": "Explore title", "default": "BUILD YOURS.\nBREAK THEIR\nSYSTEM." },
+    { "type": "text", "id": "explore_cta", "label": "Explore CTA", "default": "EXPLORE" },
     { "type": "url", "id": "explore_link", "label": "Explore link" },
+    { "type": "textarea", "id": "quote_text", "label": "Quote text", "default": "WE DON'T\nFOLLOW\nTRENDS.\nWE SET\nTHEM." },
+    { "type": "text", "id": "quote_footer", "label": "Quote footer", "default": "EST. 2022" },
+    { "type": "textarea", "id": "lookbook_title", "label": "Lookbook title", "default": "LOOKBOOK\nAW24" },
+    { "type": "text", "id": "lookbook_cta", "label": "Lookbook CTA", "default": "VIEW" },
     { "type": "url", "id": "lookbook_link", "label": "Lookbook link" },
-    { "type": "url", "id": "accessory_link", "label": "Accessory link" }
+    { "type": "text", "id": "poster_line_1", "label": "Poster line 1", "default": "COP NOW" },
+    { "type": "text", "id": "poster_line_2", "label": "Poster line 2", "default": "// LIMITED DROP" },
+    { "type": "textarea", "id": "accessory_title", "label": "Accessory title", "default": "D99™\nPARACORD\nCHAIN" },
+    { "type": "text", "id": "accessory_price", "label": "Accessory price", "default": "$49.00" },
+    { "type": "text", "id": "accessory_cta", "label": "Accessory CTA", "default": "VIEW PRODUCT" },
+    { "type": "url", "id": "accessory_link", "label": "Accessory link" },
+    { "type": "text", "id": "footer_mark", "label": "Footer mark", "default": "D99" },
+    { "type": "textarea", "id": "footer_copy", "label": "Footer copy", "default": "ALL RIGHTS RESERVED.\nDISTRICT-99 © [year]\nWORLDWIDE" },
+    { "type": "text", "id": "newsletter_title", "label": "Newsletter title", "default": "JOIN THE DISTRICT." },
+    { "type": "text", "id": "newsletter_placeholder", "label": "Newsletter placeholder", "default": "ENTER YOUR EMAIL" }
   ],
   "presets": [
     { "name": "D99 Home Bottom Exact" }
