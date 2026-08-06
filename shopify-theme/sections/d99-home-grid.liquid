@@ -1,239 +1,57 @@
 {% liquid
-  assign featured_collection = section.settings.collection
-  if featured_collection == blank
-    assign featured_collection = collections['all']
-  endif
-
-  assign hero_left_image = section.settings.hero_left_image
-  assign hero_right_image = section.settings.hero_right_image
-  assign poster_image = section.settings.poster_image
-  assign lookbook_image = section.settings.lookbook_image
-  assign accessory_image = section.settings.accessory_image
-
-  assign featured_product = section.settings.featured_product
-  if featured_product == blank and featured_collection != blank and featured_collection.products_count > 0
-    assign featured_product = featured_collection.products.first
-  endif
-
-  assign lookbook_product = section.settings.lookbook_product
-  if lookbook_product == blank and featured_collection != blank and featured_collection.products_count > 1
-    assign lookbook_product = featured_collection.products[1]
-  endif
-
-  assign accessory_product = section.settings.accessory_product
-  assign product_card_image = section.settings.product_card_image
-  assign product_card_link = section.settings.product_card_link
-  assign product_card_price = section.settings.product_card_price
-
-  assign year_now = 'now' | date: '%Y'
+  assign artboard_image = section.settings.desktop_artboard
+  assign fallback_artboard = 'https://raw.githubusercontent.com/mohaamedabdelhady007-del/workspace-019fb551-ba6f-7b33-8e5d-c6cb5af69f5f/e4d707941eb8f079c49c84bd4a278e9cd3e9caef/uploads/theme-design-mockups/homepage_option_3.jpg'
 %}
 
-<section class="page-width d99-page d99-home-v3">
-  <header class="d99-home-v3__masthead">
-    <div class="d99-home-v3__wordmark">{{ section.settings.wordmark_text }}</div>
+<section class="d99-home-artboard-shell page-width">
+  <div class="d99-home-artboard">
+    {% if artboard_image != blank %}
+      {{ artboard_image | image_url: width: 2200 | image_tag: loading: 'eager', alt: 'DISTRICT-99 homepage mockup', class: 'd99-home-artboard__image' }}
+    {% else %}
+      <img src="{{ fallback_artboard }}" alt="DISTRICT-99 homepage mockup" class="d99-home-artboard__image" loading="eager">
+    {% endif %}
 
-    <div class="d99-home-v3__navrow">
-      <a class="d99-home-v3__brandmark" href="{{ routes.root_url }}">{{ section.settings.brand_mark }}</a>
+    <a class="d99-home-artboard__hotspot hs-shop" href="{{ section.settings.shop_link | default: routes.all_products_collection_url }}" aria-label="Shop"></a>
+    <a class="d99-home-artboard__hotspot hs-collections" href="{{ section.settings.collections_link | default: routes.all_products_collection_url }}" aria-label="Collections"></a>
+    <a class="d99-home-artboard__hotspot hs-about" href="{{ section.settings.about_link | default: '/pages/about' }}" aria-label="About"></a>
+    <a class="d99-home-artboard__hotspot hs-lookbook" href="{{ section.settings.lookbook_link | default: '/pages/lookbook' }}" aria-label="Lookbook"></a>
+    <a class="d99-home-artboard__hotspot hs-contact" href="{{ section.settings.contact_link | default: '/pages/contact' }}" aria-label="Contact"></a>
+    <a class="d99-home-artboard__hotspot hs-cart" href="{{ routes.cart_url }}" aria-label="Cart"></a>
 
-      <nav class="d99-home-v3__nav" aria-label="Homepage navigation">
-        {% if section.settings.menu != blank %}
-          {% for link in section.settings.menu.links %}
-            <a href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title }}</a>
-          {% endfor %}
-        {% else %}
-          <a href="{{ routes.all_products_collection_url }}">Shop</a>
-          <a href="{{ routes.all_products_collection_url }}">Collections</a>
-          <a href="/pages/about">About</a>
-          <a href="/pages/lookbook">Lookbook</a>
-          <a href="/pages/contact">Contact</a>
-        {% endif %}
-      </nav>
+    <a class="d99-home-artboard__hotspot hs-hero-cta" href="{{ section.settings.hero_cta_link | default: routes.all_products_collection_url }}" aria-label="Shop now"></a>
 
-      <a class="d99-home-v3__cartlink" href="{{ routes.cart_url }}">Cart ({{ cart.item_count }})</a>
-    </div>
-  </header>
+    <a class="d99-home-artboard__hotspot hs-product-card" href="{{ section.settings.product_card_link | default: routes.all_products_collection_url }}" aria-label="View product"></a>
+    <a class="d99-home-artboard__hotspot hs-explore" href="{{ section.settings.explore_link | default: routes.all_products_collection_url }}" aria-label="Explore"></a>
+    <a class="d99-home-artboard__hotspot hs-lookbook-card" href="{{ section.settings.lookbook_card_link | default: '/pages/lookbook' }}" aria-label="View lookbook"></a>
+    <a class="d99-home-artboard__hotspot hs-accessory-card" href="{{ section.settings.accessory_link | default: routes.all_products_collection_url }}" aria-label="View accessory"></a>
 
-  <div class="d99-home-v3__submeta">
-    <div class="d99-home-v3__auth-copy">{{ section.settings.authenticity_copy | newline_to_br }}</div>
-    <div class="d99-home-v3__season">[{{ section.settings.season_code }}]</div>
+    {% form 'customer', id: 'D99ArtboardNewsletter-' | append: section.id, class: 'd99-home-artboard__newsletter-form' %}
+      <input type="hidden" name="contact[tags]" value="newsletter">
+      <input
+        class="d99-home-artboard__newsletter-input"
+        type="email"
+        name="contact[email]"
+        value="{% if customer %}{{ customer.email }}{% endif %}"
+        placeholder="Enter your email"
+        aria-label="Enter your email"
+      >
+      <button type="submit" class="d99-home-artboard__newsletter-button" aria-label="Submit newsletter"></button>
+    {% endform %}
   </div>
-
-  <div class="d99-home-v3__hero-grid">
-    <article class="d99-panel d99-home-v3__hero-left">
-      <div class="d99-home-v3__hero-media">
-        {% if hero_left_image != blank %}
-          {{ hero_left_image | image_url: width: 1600 | image_tag: loading: 'lazy', alt: section.settings.hero_left_caption }}
-        {% elsif featured_product != blank and featured_product.images.size > 0 %}
-          {{ featured_product.images[0] | image_url: width: 1600 | image_tag: loading: 'lazy', alt: featured_product.title }}
-        {% else %}
-          {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
-        {% endif %}
-      </div>
-      <div class="d99-home-v3__hero-caption">{{ section.settings.hero_left_caption | newline_to_br }}</div>
-    </article>
-
-    <div class="d99-home-v3__hero-right-stack">
-      <div class="d99-panel d99-panel--dark d99-home-v3__hero-strip">
-        <div>{{ section.settings.coordinate_text | newline_to_br }}</div>
-        <span class="d99-home-v3__crosshair" aria-hidden="true"></span>
-      </div>
-
-      <article class="d99-panel d99-home-v3__hero-right">
-        <div class="d99-home-v3__hero-media">
-          {% if hero_right_image != blank %}
-            {{ hero_right_image | image_url: width: 1400 | image_tag: loading: 'lazy', alt: section.settings.hero_cta_label }}
-          {% elsif featured_product != blank and featured_product.images.size > 1 %}
-            {{ featured_product.images[1] | image_url: width: 1400 | image_tag: loading: 'lazy', alt: featured_product.title }}
-          {% elsif featured_product != blank and featured_product.featured_image != blank %}
-            {{ featured_product.featured_image | image_url: width: 1400 | image_tag: loading: 'lazy', alt: featured_product.title }}
-          {% else %}
-            {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
-          {% endif %}
-        </div>
-        <div class="d99-home-v3__hero-cta-wrap">
-          <a class="d99-home-v3__shopnow" href="{{ section.settings.hero_cta_link | default: routes.all_products_collection_url }}">
-            <span>{{ section.settings.hero_cta_label }}</span>
-            <span class="d99-arrow">→</span>
-          </a>
-        </div>
-      </article>
-    </div>
-  </div>
-
-  <div class="d99-home-v3__bottom-grid">
-    <div class="d99-home-v3__left-cards">
-      <article class="d99-panel d99-home-v3__mini-card d99-home-v3__mini-card--product">
-        <div class="d99-home-v3__mini-copy">{{ section.settings.product_card_title | newline_to_br }}</div>
-        <div class="d99-home-v3__mini-media">
-          {% if product_card_image != blank %}
-            {{ product_card_image | image_url: width: 700 | image_tag: loading: 'lazy', alt: section.settings.product_card_title }}
-          {% elsif featured_product != blank and featured_product.featured_image != blank %}
-            {{ featured_product.featured_image | image_url: width: 700 | image_tag: loading: 'lazy', alt: featured_product.title }}
-          {% else %}
-            {{ 'product-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
-          {% endif %}
-        </div>
-        <div class="d99-home-v3__mini-bottom">
-          <span>{{ product_card_price }}</span>
-          <a href="{{ product_card_link | default: featured_product.url | default: routes.all_products_collection_url }}">{{ section.settings.product_card_cta }} <span class="d99-arrow">→</span></a>
-        </div>
-        <span class="d99-home-v3__plusmark">+</span>
-      </article>
-
-      <article class="d99-panel d99-home-v3__mini-card d99-home-v3__mini-card--explore">
-        <div class="d99-home-v3__mini-copy">{{ section.settings.explore_card_title | newline_to_br }}</div>
-        <div class="d99-home-v3__orbital" aria-hidden="true">
-          <span></span><span></span><span></span>
-        </div>
-        <div class="d99-home-v3__mini-bottom">
-          <span></span>
-          <a href="{{ section.settings.explore_card_link | default: routes.all_products_collection_url }}">{{ section.settings.explore_card_cta }} <span class="d99-arrow">→</span></a>
-        </div>
-        <span class="d99-home-v3__plusmark d99-home-v3__plusmark--bottom">+</span>
-      </article>
-
-      <article class="d99-panel d99-panel--dark d99-home-v3__mini-card d99-home-v3__mini-card--quote">
-        <div class="d99-home-v3__quote-text">{{ section.settings.quote_text | newline_to_br }}</div>
-        <div class="d99-home-v3__quote-foot">[ {{ section.settings.quote_footer }} ]</div>
-        <span class="d99-home-v3__corner-crosshair" aria-hidden="true"></span>
-      </article>
-
-      <article class="d99-panel d99-home-v3__mini-card d99-home-v3__mini-card--lookbook">
-        <div class="d99-home-v3__mini-copy">{{ section.settings.lookbook_title | newline_to_br }}</div>
-        <div class="d99-home-v3__mini-media d99-home-v3__mini-media--lookbook">
-          {% if lookbook_image != blank %}
-            {{ lookbook_image | image_url: width: 700 | image_tag: loading: 'lazy', alt: section.settings.lookbook_title }}
-          {% elsif lookbook_product != blank and lookbook_product.featured_image != blank %}
-            {{ lookbook_product.featured_image | image_url: width: 700 | image_tag: loading: 'lazy', alt: lookbook_product.title }}
-          {% else %}
-            {{ 'collection-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
-          {% endif %}
-        </div>
-        <div class="d99-home-v3__mini-bottom">
-          <span></span>
-          <a href="{{ section.settings.lookbook_link | default: '/pages/lookbook' }}">{{ section.settings.lookbook_cta }} <span class="d99-arrow">→</span></a>
-        </div>
-        <span class="d99-home-v3__plusmark">+</span>
-      </article>
-    </div>
-
-    <article class="d99-panel d99-home-v3__poster-card">
-      <div class="d99-home-v3__poster-bg">
-        {% if poster_image != blank %}
-          {{ poster_image | image_url: width: 1600 | image_tag: loading: 'lazy', alt: section.settings.poster_line_1 }}
-        {% else %}
-          {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
-        {% endif %}
-      </div>
-      <div class="d99-home-v3__poster-overlay">
-        <div class="d99-home-v3__poster-text">
-          <span>{{ section.settings.poster_line_1 }}</span>
-          <span>{{ section.settings.poster_line_2 }}</span>
-        </div>
-        <span class="d99-home-v3__scribble d99-home-v3__scribble--one" aria-hidden="true"></span>
-        <span class="d99-home-v3__scribble d99-home-v3__scribble--two" aria-hidden="true"></span>
-      </div>
-    </article>
-
-    <article class="d99-panel d99-home-v3__accessory-card">
-      <div class="d99-home-v3__mini-copy">{{ section.settings.accessory_title | newline_to_br }}</div>
-      <div class="d99-home-v3__mini-media d99-home-v3__mini-media--accessory">
-        {% if accessory_image != blank %}
-          {{ accessory_image | image_url: width: 700 | image_tag: loading: 'lazy', alt: section.settings.accessory_title }}
-        {% elsif accessory_product != blank and accessory_product.featured_image != blank %}
-          {{ accessory_product.featured_image | image_url: width: 700 | image_tag: loading: 'lazy', alt: accessory_product.title }}
-        {% else %}
-          {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
-        {% endif %}
-      </div>
-      <div class="d99-home-v3__mini-bottom d99-home-v3__mini-bottom--stacked">
-        <span>{{ section.settings.accessory_price }}</span>
-        <a href="{{ section.settings.accessory_link | default: accessory_product.url | default: routes.all_products_collection_url }}">{{ section.settings.accessory_cta }} <span class="d99-arrow">→</span></a>
-      </div>
-      <span class="d99-home-v3__plusmark d99-home-v3__plusmark--bottom">+</span>
-    </article>
-  </div>
-
-  <footer class="d99-home-v3__footer-grid">
-    <div class="d99-panel d99-home-v3__footer-cell d99-home-v3__footer-cell--mark">[{{ section.settings.footer_mark }}]</div>
-    <div class="d99-panel d99-home-v3__footer-cell">{{ section.settings.footer_copy | newline_to_br | replace: '[year]', year_now }}</div>
-    <div class="d99-panel d99-home-v3__footer-cell d99-home-v3__footer-cell--newsletter">
-      <div class="d99-home-v3__newsletter-head">{{ section.settings.newsletter_title }}</div>
-      {% form 'customer', id: 'D99HomeNewsletter-' | append: section.id %}
-        <input type="hidden" name="contact[tags]" value="newsletter">
-        <div class="d99-home-v3__newsletter-row">
-          <input
-            type="email"
-            name="contact[email]"
-            value="{% if customer %}{{ customer.email }}{% endif %}"
-            placeholder="{{ section.settings.newsletter_placeholder }}"
-            required
-          >
-          <button type="submit" aria-label="{{ section.settings.newsletter_title }}">→</button>
-        </div>
-      {% endform %}
-    </div>
-    <div class="d99-panel d99-home-v3__footer-cell d99-home-v3__footer-cell--globe">
-      <span class="d99-home-v3__globe" aria-hidden="true"></span>
-    </div>
-  </footer>
 </section>
 
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
-
-  body:has(.d99-home-v3) .shopify-section-group-header-group,
-  body:has(.d99-home-v3) .shopify-section-group-footer-group,
-  body:has(.d99-home-v3) .section-header,
-  body:has(.d99-home-v3) footer,
-  body:has(.d99-home-v3) .footer,
-  body:has(.d99-home-v3) [id*='header-group'],
-  body:has(.d99-home-v3) [id*='footer-group'],
-  body:has(.d99-home-v3) [class*='header-group'],
-  body:has(.d99-home-v3) [class*='footer-group'],
-  body:has(.d99-home-v3) sticky-header,
-  body:has(.d99-home-v3) header.header,
-  body:has(.d99-home-v3) .shopify-section:has(.header-wrapper) {
+  .shopify-section-group-header-group,
+  .shopify-section-group-footer-group,
+  .section-header,
+  footer.footer,
+  .footer,
+  sticky-header,
+  header.header,
+  .shopify-section:has(.header-wrapper),
+  .shopify-section:has(.footer-wrapper),
+  #shopify-section-sections--header-group,
+  #shopify-section-sections--footer-group {
     display: none !important;
     visibility: hidden !important;
     max-height: 0 !important;
@@ -244,726 +62,132 @@
     pointer-events: none !important;
   }
 
-  body:has(.d99-home-v3) #MainContent,
-  body:has(.d99-home-v3) main,
-  body:has(.d99-home-v3) .content-for-layout,
-  body:has(.d99-home-v3) .shopify-section-group-main-content,
-  body:has(.d99-home-v3) .template-index {
-    padding-top: 0 !important;
-    margin-top: 0 !important;
-  }
-
-  .template-index body,
+  body,
   body.template-index,
-  body:has(.d99-home-v3) {
+  #MainContent,
+  main {
     background: #d7d1c8 !important;
+    margin-top: 0 !important;
+    padding-top: 0 !important;
   }
 
-  .d99-home-v3 {
-    --d99-paper: #d7d1c8;
-    --d99-paper-deep: #c9c1b7;
-    --d99-panel: rgba(255,255,255,0.08);
-    --d99-black: #0f0f0f;
-    --d99-white: #f4f0ea;
-    --d99-red: #b72a22;
-    --d99-border: rgba(15,15,15,0.82);
-    --d99-ink-soft: rgba(15,15,15,0.72);
-    background-color: var(--d99-paper);
-    background-image:
-      linear-gradient(rgba(15,15,15,0.06) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(15,15,15,0.06) 1px, transparent 1px),
-      radial-gradient(circle at 20% 20%, rgba(0,0,0,0.08), transparent 36%),
-      linear-gradient(180deg, rgba(255,255,255,0.18), rgba(0,0,0,0.03));
-    background-size: 32px 32px, 32px 32px, 100% 100%, 100% 100%;
-    border: 1px solid var(--d99-border);
-    padding: 0;
-    overflow: hidden;
-    box-shadow: 0 0 0 1px rgba(255,255,255,0.12) inset;
+  .d99-home-artboard-shell {
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
   }
 
-  .d99-home-v3,
-  .d99-home-v3 * {
-    box-sizing: border-box;
-    font-family: 'IBM Plex Mono', monospace;
-  }
-
-  .d99-home-v3 a,
-  .d99-home-v3 input,
-  .d99-home-v3 button,
-  .d99-home-v3 div,
-  .d99-home-v3 span {
-    font-family: 'IBM Plex Mono', monospace;
-  }
-
-  .d99-home-v3 .d99-home-v3__wordmark,
-  .d99-home-v3 .d99-home-v3__poster-text,
-  .d99-home-v3 .d99-home-v3__footer-cell--mark {
-    font-family: 'Anton', sans-serif !important;
-  }
-
-  .d99-page {
+  .d99-home-artboard {
+    position: relative;
+    width: 100%;
+    max-width: 150rem;
     margin: 0 auto;
+    background: #d7d1c8;
+  }
+
+  .d99-home-artboard__image {
+    display: block;
     width: 100%;
-    max-width: 100%;
+    height: auto;
   }
 
-  .d99-panel {
-    position: relative;
-    border: 1px solid var(--d99-border);
-    margin: -1px 0 0 -1px;
-    background: rgba(255,255,255,0.06);
-    overflow: hidden;
+  .d99-home-artboard__hotspot,
+  .d99-home-artboard__newsletter-form {
+    position: absolute;
+    display: block;
+    z-index: 2;
   }
 
-  .d99-panel--dark {
-    background: rgba(15,15,15,0.95);
-    color: var(--d99-white);
+  .d99-home-artboard__hotspot {
+    background: transparent;
   }
 
-  .d99-arrow {
-    font-size: 2rem;
-    line-height: 1;
-    font-family: inherit;
+  .shopify-design-mode .d99-home-artboard__hotspot:hover,
+  .shopify-design-mode .d99-home-artboard__hotspot:focus-visible {
+    outline: 1px dashed rgba(255, 0, 0, 0.55);
+    outline-offset: -1px;
   }
 
-  .d99-home-v3__masthead,
-  .d99-home-v3__submeta,
-  .d99-home-v3__hero-grid,
-  .d99-home-v3__bottom-grid,
-  .d99-home-v3__footer-grid {
-    margin: -1px 0 0 -1px;
-  }
+  .hs-shop { left: 28.2%; top: 11.15%; width: 5.6%; height: 2.3%; }
+  .hs-collections { left: 35.7%; top: 11.15%; width: 9.4%; height: 2.3%; }
+  .hs-about { left: 49.0%; top: 11.15%; width: 5.7%; height: 2.3%; }
+  .hs-lookbook { left: 57.4%; top: 11.15%; width: 8.2%; height: 2.3%; }
+  .hs-contact { left: 68.7%; top: 11.15%; width: 7.0%; height: 2.3%; }
+  .hs-cart { right: 1.1%; top: 11.0%; width: 6.5%; height: 2.5%; }
 
-  .d99-home-v3__masthead {
-    padding: 0.8rem 1.6rem 0;
-  }
+  .hs-hero-cta { right: 1.5%; top: 60.55%; width: 18.4%; height: 4.6%; }
 
-  .d99-home-v3__wordmark {
-    font-family: 'Anton', sans-serif !important;
-    font-size: clamp(12rem, 19vw, 24rem);
-    line-height: 0.78;
-    letter-spacing: -0.02em;
-    text-transform: uppercase;
-    color: var(--d99-black);
-    margin-bottom: 1rem;
-  }
+  .hs-product-card { left: 2.1%; top: 81.4%; width: 13.4%; height: 3.2%; }
+  .hs-explore { left: 22.8%; top: 82.0%; width: 10.0%; height: 2.8%; }
+  .hs-lookbook-card { left: 22.9%; top: 95.05%; width: 8.4%; height: 2.5%; }
+  .hs-accessory-card { right: 1.7%; top: 87.7%; width: 14.3%; height: 9.0%; }
 
-  .d99-home-v3__navrow {
+  .d99-home-artboard__newsletter-form {
+    left: 69.5%;
+    top: 95.35%;
+    width: 22.2%;
+    height: 2.6%;
     display: grid;
-    grid-template-columns: 13rem 1fr 13rem;
-    align-items: center;
-    gap: 1.6rem;
-    padding-bottom: 1.8rem;
+    grid-template-columns: 1fr 3.2rem;
+    align-items: end;
+    gap: 0.6rem;
   }
 
-  .d99-home-v3__brandmark,
-  .d99-home-v3__cartlink,
-  .d99-home-v3__nav a {
-    text-decoration: none;
-    text-transform: uppercase;
-    color: var(--d99-black);
-    font-size: 1.15rem;
-    letter-spacing: 0.04em;
-  }
-
-  .d99-home-v3__brandmark {
-    font-weight: 600;
-  }
-
-  .d99-home-v3__cartlink {
-    text-align: right;
-  }
-
-  .d99-home-v3__nav {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 4.4rem;
-    flex-wrap: wrap;
-  }
-
-  .d99-home-v3__nav a:hover,
-  .d99-home-v3__cartlink:hover,
-  .d99-home-v3__brandmark:hover {
-    color: var(--d99-red);
-  }
-
-  .d99-home-v3__submeta {
-    display: flex;
-    justify-content: space-between;
-    gap: 2rem;
-    padding: 0 1.6rem 1.1rem;
-    font-size: 1.15rem;
-    text-transform: uppercase;
-  }
-
-  .d99-home-v3__auth-copy {
-    max-width: 14rem;
-    line-height: 1.38;
-  }
-
-  .d99-home-v3__season {
-    white-space: nowrap;
-    align-self: flex-start;
-  }
-
-  .d99-home-v3__hero-grid {
-    display: grid;
-    grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.86fr);
-    gap: 0;
-  }
-
-  .d99-home-v3__hero-left,
-  .d99-home-v3__hero-right {
-    min-height: 65rem;
-  }
-
-  .d99-home-v3__hero-media {
-    height: 100%;
-  }
-
-  .d99-home-v3__hero-media img,
-  .d99-home-v3__poster-bg img,
-  .d99-home-v3__mini-media img {
+  .d99-home-artboard__newsletter-input {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .d99-home-v3__hero-left {
-    padding: 1.4rem;
-    position: relative;
-  }
-
-  .d99-home-v3__hero-left::before {
-    content: '';
-    position: absolute;
-    top: -2.6rem;
-    left: 0;
-    width: 86%;
-    height: 2.6rem;
-    background: var(--d99-black);
-  }
-
-  .d99-home-v3__hero-left .d99-home-v3__hero-media {
-    min-height: 61rem;
-  }
-
-  .d99-home-v3__hero-caption {
-    position: absolute;
-    left: 3rem;
-    bottom: 2.2rem;
-    max-width: 18rem;
-    font-size: 1.3rem;
-    line-height: 1.5;
-    text-transform: uppercase;
-  }
-
-  .d99-home-v3__hero-right-stack {
-    display: grid;
-    grid-template-rows: auto 1fr;
-  }
-
-  .d99-home-v3__hero-strip {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    min-height: 8.8rem;
-    padding: 1.8rem 2.2rem;
-    font-size: 1.2rem;
-    line-height: 1.55;
-    text-transform: uppercase;
-  }
-
-  .d99-home-v3__crosshair {
-    position: relative;
-    display: inline-block;
-    width: 2.2rem;
-    height: 2.2rem;
-    border: 1px solid rgba(255,255,255,0.8);
-    border-radius: 999px !important;
-    flex: 0 0 auto;
-  }
-
-  .d99-home-v3__crosshair::before,
-  .d99-home-v3__crosshair::after {
-    content: '';
-    position: absolute;
-    background: rgba(255,255,255,0.8);
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-  }
-
-  .d99-home-v3__crosshair::before {
-    width: 4rem;
-    height: 1px;
-  }
-
-  .d99-home-v3__crosshair::after {
-    width: 1px;
-    height: 4rem;
-  }
-
-  .d99-home-v3__hero-right {
-    position: relative;
-    padding: 1.4rem;
-  }
-
-  .d99-home-v3__hero-right .d99-home-v3__hero-media {
-    min-height: 53.2rem;
-  }
-
-  .d99-home-v3__hero-cta-wrap {
-    position: absolute;
-    right: 1.8rem;
-    bottom: 2.2rem;
-  }
-
-  .d99-home-v3__shopnow {
-    display: inline-flex;
-    align-items: center;
-    gap: 2.8rem;
-    padding: 1.3rem 2.4rem;
-    background: var(--d99-black);
-    color: var(--d99-white);
-    text-decoration: none;
-    text-transform: uppercase;
-    font-size: 1.35rem;
-  }
-
-  .d99-home-v3__shopnow:hover {
-    background: var(--d99-red);
-  }
-
-  .d99-home-v3__bottom-grid {
-    display: grid;
-    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.22fr) minmax(21rem, 0.7fr);
-    gap: 0;
-  }
-
-  .d99-home-v3__left-cards {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1.06fr 0.9fr;
-  }
-
-  .d99-home-v3__mini-card {
-    padding: 1.8rem 1.8rem 1.5rem;
-    min-height: 27rem;
-    display: grid;
-    align-content: space-between;
-    position: relative;
-  }
-
-  .d99-home-v3__mini-copy,
-  .d99-home-v3__quote-text,
-  .d99-home-v3__footer-cell {
-    font-size: 1.3rem;
-    text-transform: uppercase;
-    line-height: 1.42;
-  }
-
-  .d99-home-v3__mini-media {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 12.5rem;
-    max-height: 16.5rem;
-  }
-
-  .d99-home-v3__mini-media img {
-    object-fit: contain;
-  }
-
-  .d99-home-v3__mini-bottom {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    align-self: end;
-    font-size: 1.18rem;
-    text-transform: uppercase;
-  }
-
-  .d99-home-v3__mini-bottom a {
-    text-decoration: none;
-    color: var(--d99-black);
-  }
-
-  .d99-home-v3__mini-bottom a:hover {
-    color: var(--d99-red);
-  }
-
-  .d99-home-v3__plusmark {
-    position: absolute;
-    left: 1.6rem;
-    top: 11.4rem;
-    font-size: 3.3rem;
-    line-height: 1;
-    color: var(--d99-ink-soft);
-  }
-
-  .d99-home-v3__plusmark--bottom {
-    top: auto;
-    right: 2rem;
-    left: auto;
-    bottom: 2rem;
-  }
-
-  .d99-home-v3__orbital {
-    position: relative;
-    width: 13rem;
-    height: 13rem;
-    justify-self: center;
-    align-self: center;
-    margin-top: 0.8rem;
-  }
-
-  .d99-home-v3__orbital::before,
-  .d99-home-v3__orbital::after,
-  .d99-home-v3__orbital span,
-  .d99-home-v3__globe::before,
-  .d99-home-v3__globe::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border: 1px solid rgba(18,18,18,0.28);
-    border-radius: 50% !important;
-  }
-
-  .d99-home-v3__orbital::after {
-    transform: rotate(90deg);
-  }
-
-  .d99-home-v3__orbital span:nth-child(1) {
-    transform: scale(0.74);
-  }
-
-  .d99-home-v3__orbital span:nth-child(2) {
-    transform: scale(0.48);
-  }
-
-  .d99-home-v3__orbital span:nth-child(3) {
-    transform: scaleY(0.12);
-  }
-
-  .d99-home-v3__orbital {
-    border-left: 1px solid rgba(18,18,18,0.28);
-    border-top: 1px solid rgba(18,18,18,0.28);
-  }
-
-  .d99-home-v3__mini-card--quote {
-    align-content: space-between;
-  }
-
-  .d99-home-v3__quote-text {
-    color: var(--d99-white);
-    max-width: 18rem;
-  }
-
-  .d99-home-v3__quote-foot {
-    font-size: 1.05rem;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.8);
-  }
-
-  .d99-home-v3__corner-crosshair {
-    position: absolute;
-    left: 1.6rem;
-    bottom: 1.6rem;
-    width: 3rem;
-    height: 3rem;
-    border-left: 1px solid rgba(255,255,255,.75);
-    border-bottom: 1px solid rgba(255,255,255,.75);
-  }
-
-  .d99-home-v3__mini-card--lookbook .d99-home-v3__mini-media {
-    min-height: 14rem;
-  }
-
-  .d99-home-v3__poster-card {
-    min-height: 54rem;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .d99-home-v3__poster-bg,
-  .d99-home-v3__poster-overlay {
-    position: absolute;
-    inset: 0;
-  }
-
-  .d99-home-v3__poster-bg img {
-    object-fit: cover;
-    filter: grayscale(100%) contrast(1.1);
-  }
-
-  .d99-home-v3__poster-overlay {
-    padding: 2rem;
-  }
-
-  .d99-home-v3__poster-text {
-    position: absolute;
-    left: 8%;
-    top: 4%;
-    right: 4%;
-    font-family: 'Anton', sans-serif !important;
-    font-size: clamp(7rem, 9.6vw, 12.6rem);
-    line-height: 0.88;
-    text-transform: uppercase;
-    color: var(--d99-red);
-    transform: rotate(-7deg);
-    display: grid;
-    gap: 0.2rem;
-  }
-
-  .d99-home-v3__scribble {
-    position: absolute;
-    border: 2px solid rgba(18,18,18,.24);
-    border-radius: 50% !important;
-    pointer-events: none;
-  }
-
-  .d99-home-v3__scribble--one {
-    width: 47rem;
-    height: 17rem;
-    bottom: 7rem;
-    left: 11rem;
-    transform: rotate(17deg);
-  }
-
-  .d99-home-v3__scribble--two {
-    width: 1px;
-    height: 5.4rem;
-    border: 0;
-    background: rgba(18,18,18,.42);
-    bottom: 7.4rem;
-    left: 45%;
-    transform: rotate(16deg);
-    box-shadow: -1.6rem 1.1rem 0 rgba(18,18,18,.42), 1.4rem -1rem 0 rgba(18,18,18,.42);
-  }
-
-  .d99-home-v3__accessory-card {
-    min-height: 54rem;
-    padding: 1.8rem 1.8rem 1.5rem;
-    position: relative;
-    display: grid;
-    align-content: space-between;
-  }
-
-  .d99-home-v3__mini-media--accessory {
-    min-height: 29rem;
-    max-height: 32rem;
-    justify-content: center;
-  }
-
-  .d99-home-v3__mini-media--accessory img {
-    object-fit: contain;
-    max-width: 78%;
-  }
-
-  .d99-home-v3__mini-bottom--stacked {
-    gap: 2rem;
-  }
-
-  .d99-home-v3__footer-grid {
-    display: grid;
-    grid-template-columns: 0.66fr 1.18fr 1.42fr 0.56fr;
-    gap: 0;
-  }
-
-  .d99-home-v3__footer-cell {
-    min-height: 9.2rem;
-    padding: 1.6rem 1.8rem;
-    display: flex;
-    align-items: center;
-  }
-
-  .d99-home-v3__footer-cell--mark {
-    font-family: 'Anton', sans-serif !important;
-    font-size: 3.3rem;
-    justify-content: center;
-  }
-
-  .d99-home-v3__footer-cell--newsletter {
-    display: grid;
-    align-content: center;
-    gap: 1.4rem;
-  }
-
-  .d99-home-v3__newsletter-head {
-    font-size: 1.25rem;
-    text-transform: uppercase;
-  }
-
-  .d99-home-v3__newsletter-row {
-    display: grid;
-    grid-template-columns: 1fr 4rem;
-    align-items: center;
-    gap: 1rem;
-    border-bottom: 1px solid rgba(18,18,18,0.82);
-    padding-bottom: 0.6rem;
-  }
-
-  .d99-home-v3__newsletter-row input {
     border: 0;
     background: transparent;
-    padding: 0;
-    font-size: 1.15rem;
-    text-transform: uppercase;
-    color: var(--d99-black);
-  }
-
-  .d99-home-v3__newsletter-row input:focus {
+    color: transparent;
+    caret-color: transparent;
     outline: none;
-  }
-
-  .d99-home-v3__newsletter-row input::placeholder {
-    color: rgba(18,18,18,0.54);
-  }
-
-  .d99-home-v3__newsletter-row button {
-    border: 0;
-    background: transparent !important;
-    color: var(--d99-black) !important;
     padding: 0;
-    font-size: 2rem;
-    justify-self: end;
+    font-size: 1.2rem;
+  }
+
+  .d99-home-artboard__newsletter-input::placeholder {
+    color: transparent;
+  }
+
+  .d99-home-artboard__newsletter-button {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background: transparent;
     cursor: pointer;
   }
 
-  .d99-home-v3__footer-cell--globe {
-    justify-content: center;
-  }
-
-  .d99-home-v3__globe {
-    position: relative;
-    width: 7rem;
-    height: 7rem;
-    border: 1px solid rgba(18,18,18,.7);
-    border-radius: 50% !important;
-    display: inline-block;
-  }
-
-  .d99-home-v3__globe::before {
-    transform: scaleX(0.42);
-  }
-
-  .d99-home-v3__globe::after {
-    transform: scaleY(0.42);
-  }
-
-  .d99-home-v3__globe {
-    box-shadow: inset 0 0 0 1px transparent;
-  }
-
-  .d99-home-v3__globe span {
-    display: none;
-  }
-
-  @media screen and (max-width: 1200px) {
-    .d99-home-v3__navrow,
-    .d99-home-v3__hero-grid,
-    .d99-home-v3__bottom-grid,
-    .d99-home-v3__footer-grid {
-      grid-template-columns: 1fr !important;
-    }
-
-    .d99-home-v3__navrow {
-      gap: 1.4rem;
-    }
-
-    .d99-home-v3__brandmark,
-    .d99-home-v3__cartlink {
-      text-align: left;
-    }
-
-    .d99-home-v3__left-cards {
-      grid-template-columns: 1fr 1fr;
-    }
-
-    .d99-home-v3__poster-card,
-    .d99-home-v3__accessory-card {
-      min-height: 42rem;
-    }
-  }
-
-  @media screen and (max-width: 768px) {
-    .d99-home-v3__masthead,
-    .d99-home-v3__submeta {
-      padding-left: 1.2rem;
-      padding-right: 1.2rem;
-    }
-
-    .d99-home-v3__nav {
-      justify-content: flex-start;
-      gap: 1.6rem 2.2rem;
-    }
-
-    .d99-home-v3__submeta {
-      flex-direction: column;
-    }
-
-    .d99-home-v3__hero-left,
-    .d99-home-v3__hero-right {
-      min-height: auto;
-    }
-
-    .d99-home-v3__hero-left .d99-home-v3__hero-media,
-    .d99-home-v3__hero-right .d99-home-v3__hero-media {
-      min-height: 44rem;
-    }
-
-    .d99-home-v3__left-cards {
-      grid-template-columns: 1fr;
-    }
-
-    .d99-home-v3__mini-card,
-    .d99-home-v3__footer-cell {
-      min-height: auto;
-    }
-
-    .d99-home-v3__poster-text {
-      font-size: clamp(4.4rem, 18vw, 8rem);
-      left: 8%;
-      top: 7%;
-    }
-
-    .d99-home-v3__scribble--one {
-      width: 24rem;
-      height: 10rem;
-      left: 50%;
-      transform: translateX(-50%) rotate(18deg);
-      bottom: 8rem;
+  @media screen and (max-width: 900px) {
+    .d99-home-artboard {
+      max-width: 100%;
     }
   }
 </style>
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-    var selectors = [
-      '.shopify-section-group-header-group',
-      '.shopify-section-group-footer-group',
-      '.section-header',
-      'footer.footer',
-      '.footer',
-      '[id*="header-group"]',
-      '[id*="footer-group"]',
-      '[class*="header-group"]',
-      '[class*="footer-group"]',
-      'sticky-header',
-      'header.header',
-      '.shopify-section:has(.header-wrapper)'
-    ];
+    function hideHorizonShell() {
+      var selectors = [
+        '.shopify-section-group-header-group',
+        '.shopify-section-group-footer-group',
+        '.section-header',
+        'footer.footer',
+        '.footer',
+        'sticky-header',
+        'header.header',
+        '.shopify-section:has(.header-wrapper)',
+        '.shopify-section:has(.footer-wrapper)',
+        '#shopify-section-sections--header-group',
+        '#shopify-section-sections--footer-group'
+      ];
 
-    function hideShell() {
       selectors.forEach(function (selector) {
         document.querySelectorAll(selector).forEach(function (element) {
-          if (element.closest('.d99-home-v3')) return;
+          if (element.closest('.d99-home-artboard-shell')) return;
           element.style.display = 'none';
           element.style.visibility = 'hidden';
           element.style.height = '0';
           element.style.maxHeight = '0';
+          element.style.minHeight = '0';
           element.style.overflow = 'hidden';
           element.style.opacity = '0';
           element.style.pointerEvents = 'none';
@@ -972,20 +196,15 @@
 
       var mainContent = document.getElementById('MainContent');
       if (mainContent) {
-        mainContent.style.paddingTop = '0';
         mainContent.style.marginTop = '0';
+        mainContent.style.paddingTop = '0';
       }
 
       document.body.style.background = '#d7d1c8';
     }
 
-    hideShell();
-
-    var observer = new MutationObserver(function () {
-      hideShell();
-    });
-
-    observer.observe(document.documentElement, { childList: true, subtree: true });
+    hideHorizonShell();
+    new MutationObserver(hideHorizonShell).observe(document.documentElement, { childList: true, subtree: true });
   });
 </script>
 
@@ -993,47 +212,17 @@
 {
   "name": "D99 Home Grid",
   "settings": [
-    { "type": "link_list", "id": "menu", "label": "Navigation menu" },
-    { "type": "collection", "id": "collection", "label": "Featured collection" },
-    { "type": "product", "id": "featured_product", "label": "Left product card product" },
-    { "type": "product", "id": "lookbook_product", "label": "Lookbook fallback product" },
-    { "type": "product", "id": "accessory_product", "label": "Accessory fallback product" },
-    { "type": "image_picker", "id": "hero_left_image", "label": "Hero left image" },
-    { "type": "image_picker", "id": "hero_right_image", "label": "Hero right image" },
-    { "type": "image_picker", "id": "poster_image", "label": "Poster background image" },
-    { "type": "image_picker", "id": "lookbook_image", "label": "Lookbook card image" },
-    { "type": "image_picker", "id": "product_card_image", "label": "Left product card image" },
-    { "type": "image_picker", "id": "accessory_image", "label": "Accessory card image" },
-    { "type": "text", "id": "wordmark_text", "label": "Top wordmark text", "default": "DISTRICT-99" },
-    { "type": "text", "id": "brand_mark", "label": "Small brand mark", "default": "D99™" },
-    { "type": "textarea", "id": "authenticity_copy", "label": "Authenticity copy", "default": "//// AUTHENTICITY\nIS OUR CODE" },
-    { "type": "text", "id": "season_code", "label": "Season code", "default": "D99-A/W-24" },
-    { "type": "textarea", "id": "hero_left_caption", "label": "Hero left caption", "default": "AW24 COLLECTION\n// THE SYSTEM\nDOESN'T WANT\nYOU TO WIN." },
-    { "type": "textarea", "id": "coordinate_text", "label": "Right hero strip text", "default": "39.9042° N, 116.4074° E\nDISTRICT-99 HEADQUARTERS" },
-    { "type": "text", "id": "hero_cta_label", "label": "Hero CTA label", "default": "Shop now" },
+    { "type": "image_picker", "id": "desktop_artboard", "label": "Desktop artboard image" },
+    { "type": "url", "id": "shop_link", "label": "Shop link" },
+    { "type": "url", "id": "collections_link", "label": "Collections link" },
+    { "type": "url", "id": "about_link", "label": "About link" },
+    { "type": "url", "id": "lookbook_link", "label": "Top lookbook link" },
+    { "type": "url", "id": "contact_link", "label": "Contact link" },
     { "type": "url", "id": "hero_cta_link", "label": "Hero CTA link" },
-    { "type": "textarea", "id": "product_card_title", "label": "Left product card title", "default": "D99™ ESSENTIAL\nOVERSIZED TEE\nBLACK" },
-    { "type": "text", "id": "product_card_price", "label": "Left product card price", "default": "$69.00" },
     { "type": "url", "id": "product_card_link", "label": "Left product card link" },
-    { "type": "text", "id": "product_card_cta", "label": "Left product card CTA", "default": "View product" },
-    { "type": "textarea", "id": "explore_card_title", "label": "Explore card title", "default": "BUILD YOURS.\nBREAK THEIR\nSYSTEM." },
-    { "type": "text", "id": "explore_card_cta", "label": "Explore card CTA", "default": "Explore" },
-    { "type": "url", "id": "explore_card_link", "label": "Explore card link" },
-    { "type": "textarea", "id": "quote_text", "label": "Dark quote card text", "default": "WE DON'T\nFOLLOW\nTRENDS.\nWE SET\nTHEM." },
-    { "type": "text", "id": "quote_footer", "label": "Dark quote footer", "default": "EST. 2022" },
-    { "type": "textarea", "id": "lookbook_title", "label": "Lookbook card title", "default": "LOOKBOOK\nAW24" },
-    { "type": "text", "id": "lookbook_cta", "label": "Lookbook card CTA", "default": "View" },
-    { "type": "url", "id": "lookbook_link", "label": "Lookbook card link" },
-    { "type": "text", "id": "poster_line_1", "label": "Poster line 1", "default": "COP NOW" },
-    { "type": "text", "id": "poster_line_2", "label": "Poster line 2", "default": "// LIMITED DROP" },
-    { "type": "textarea", "id": "accessory_title", "label": "Accessory title", "default": "D99™\nPARACORD\nCHAIN" },
-    { "type": "text", "id": "accessory_price", "label": "Accessory price", "default": "$49.00" },
-    { "type": "text", "id": "accessory_cta", "label": "Accessory CTA", "default": "View product" },
-    { "type": "url", "id": "accessory_link", "label": "Accessory link" },
-    { "type": "text", "id": "footer_mark", "label": "Footer mark", "default": "D99" },
-    { "type": "textarea", "id": "footer_copy", "label": "Footer copyright copy", "default": "ALL RIGHTS RESERVED.\nDISTRICT-99 © [year]\nWORLDWIDE" },
-    { "type": "text", "id": "newsletter_title", "label": "Newsletter heading", "default": "Join the district." },
-    { "type": "text", "id": "newsletter_placeholder", "label": "Newsletter placeholder", "default": "Enter your email" }
+    { "type": "url", "id": "explore_link", "label": "Explore card link" },
+    { "type": "url", "id": "lookbook_card_link", "label": "Lower lookbook card link" },
+    { "type": "url", "id": "accessory_link", "label": "Accessory card link" }
   ],
   "presets": [
     { "name": "D99 Home Grid" }

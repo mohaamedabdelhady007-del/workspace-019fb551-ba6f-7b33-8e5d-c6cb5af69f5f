@@ -3,16 +3,16 @@
     "main": {
       "type": "d99-home-grid",
       "settings": {
-        "wordmark_text": "DISTRICT-99",
-        "brand_mark": "D99™",
-        "season_code": "D99-A/W-24",
-        "hero_cta_label": "Shop now",
-        "product_card_price": "$69.00",
-        "poster_line_1": "COP NOW",
-        "poster_line_2": "// LIMITED DROP",
-        "accessory_price": "$49.00",
-        "newsletter_title": "Join the district.",
-        "newsletter_placeholder": "Enter your email"
+        "shop_link": "shopify://collections/all",
+        "collections_link": "shopify://collections/all",
+        "about_link": "/pages/about",
+        "lookbook_link": "/pages/lookbook",
+        "contact_link": "/pages/contact",
+        "hero_cta_link": "shopify://collections/all",
+        "product_card_link": "shopify://collections/all",
+        "explore_link": "shopify://collections/all",
+        "lookbook_card_link": "/pages/lookbook",
+        "accessory_link": "shopify://collections/all"
       }
     }
   },
