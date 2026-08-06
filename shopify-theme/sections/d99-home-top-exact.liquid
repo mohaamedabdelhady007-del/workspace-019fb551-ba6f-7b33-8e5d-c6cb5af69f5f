@@ -1,88 +1,303 @@
-<section class="d99-home-top" aria-label="DISTRICT-99 hero section">
-  <div class="d99-home-top__frame">
-    <div class="d99-home-top__artboard">
-      <img src="{{ 'd99-home-top-mockup.jpg' | asset_url }}" alt="DISTRICT-99 homepage hero" class="d99-home-top__image" loading="eager">
+{% liquid
+  assign left_image = section.settings.left_image
+  assign right_image = section.settings.right_image
+%}
 
-      <a class="d99-home-top__hotspot hs-shop-now" href="{{ section.settings.shop_now_link | default: routes.all_products_collection_url }}" aria-label="Shop now"></a>
-      <a class="d99-home-top__hotspot hs-shop" href="{{ section.settings.shop_link | default: routes.all_products_collection_url }}" aria-label="Shop"></a>
+<section class="d99-home-top-exact" aria-label="DISTRICT-99 hero section">
+  <div class="d99-home-top-exact__meta">
+    <div class="d99-home-top-exact__auth">{{ section.settings.authenticity_copy | newline_to_br }}</div>
+    <div class="d99-home-top-exact__season">[{{ section.settings.season_code }}]</div>
+  </div>
+
+  <div class="d99-home-top-exact__grid">
+    <article class="d99-home-top-exact__left">
+      <div class="d99-home-top-exact__left-bar" aria-hidden="true"></div>
+      <div class="d99-home-top-exact__image-wrap">
+        {% if left_image != blank %}
+          {{ left_image | image_url: width: 1600 | image_tag: loading: 'eager', alt: 'Left hero image', class: 'd99-home-top-exact__image' }}
+        {% else %}
+          {{ 'image' | placeholder_svg_tag: 'placeholder-svg d99-home-top-exact__placeholder' }}
+        {% endif %}
+      </div>
+      <div class="d99-home-top-exact__caption">{{ section.settings.left_caption | newline_to_br }}</div>
+    </article>
+
+    <div class="d99-home-top-exact__right-stack">
+      <div class="d99-home-top-exact__strip">
+        <div class="d99-home-top-exact__coords">{{ section.settings.coordinate_text | newline_to_br }}</div>
+        <span class="d99-home-top-exact__crosshair" aria-hidden="true"></span>
+      </div>
+
+      <article class="d99-home-top-exact__right">
+        <div class="d99-home-top-exact__image-wrap d99-home-top-exact__image-wrap--right">
+          {% if right_image != blank %}
+            {{ right_image | image_url: width: 1400 | image_tag: loading: 'eager', alt: 'Right hero image', class: 'd99-home-top-exact__image' }}
+          {% else %}
+            {{ 'image' | placeholder_svg_tag: 'placeholder-svg d99-home-top-exact__placeholder' }}
+          {% endif %}
+        </div>
+        <a class="d99-home-top-exact__cta" href="{{ section.settings.shop_now_link | default: routes.all_products_collection_url }}">
+          <span>{{ section.settings.shop_now_label }}</span>
+          <span class="d99-home-top-exact__arrow">→</span>
+        </a>
+      </article>
     </div>
   </div>
 </section>
 
 <style>
-  body.template-index .shopify-section-group-footer-group,
-  body.template-index footer.footer,
-  body.template-index .footer,
-  body.template-index [id*='footer-group'],
-  body.template-index [class*='footer-group'],
-  body.template-index .shopify-section:has(.footer-wrapper),
-  body.template-index .shopify-section:has(.section-sections--footer-group__footer-padding) {
-    display: none !important;
-    visibility: hidden !important;
-    max-height: 0 !important;
-    min-height: 0 !important;
-    height: 0 !important;
-    overflow: hidden !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
-  }
-
-  .d99-home-top {
-    background: transparent !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    line-height: 0 !important;
-  }
-
-  .d99-home-top__frame {
-    width: 100% !important;
-    max-width: none !important;
+  .d99-home-top-exact {
+    width: 100%;
     padding: 0 0.45rem 0 !important;
     margin: 0 !important;
+    background: transparent !important;
+    line-height: 0;
   }
 
-  .d99-home-top__artboard {
+  .d99-home-top-exact,
+  .d99-home-top-exact * {
+    box-sizing: border-box;
+    font-family: 'IBM Plex Mono', monospace !important;
+  }
+
+  .d99-home-top-exact__meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+    padding: 0.35rem 0 0.9rem;
+    color: #111;
+    text-transform: uppercase;
+    font-size: 1.05rem;
+    line-height: 1.35;
+  }
+
+  .d99-home-top-exact__auth {
+    max-width: 13rem;
+  }
+
+  .d99-home-top-exact__season {
+    white-space: nowrap;
+    align-self: flex-start;
+  }
+
+  .d99-home-top-exact__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.86fr);
+    gap: 0;
+    border-top: 1px solid #111;
+    margin-top: 0.2rem;
+  }
+
+  .d99-home-top-exact__left,
+  .d99-home-top-exact__right {
     position: relative;
-    width: 100%;
-    max-width: none;
-    margin: 0;
+    border-left: 1px solid #111;
+    border-right: 1px solid #111;
+    border-bottom: 1px solid #111;
+    min-height: 60rem;
     overflow: hidden;
-    display: block;
   }
 
-  .d99-home-top__image {
-    display: block;
-    width: 100%;
-    height: auto;
+  .d99-home-top-exact__left {
+    border-right: 0;
   }
 
-  .d99-home-top__hotspot {
+  .d99-home-top-exact__left-bar {
     position: absolute;
+    top: -2.2rem;
+    left: 0;
+    width: 69%;
+    height: 2.2rem;
+    background: #111;
+    z-index: 3;
+  }
+
+  .d99-home-top-exact__image-wrap {
+    width: 100%;
+    height: 100%;
+    min-height: 60rem;
+    background: #ddd0;
+  }
+
+  .d99-home-top-exact__image-wrap--right {
+    min-height: 53.5rem;
+  }
+
+  .d99-home-top-exact__image {
+    width: 100%;
+    height: 100%;
     display: block;
-    z-index: 2;
-    background: transparent;
+    object-fit: cover;
   }
 
-  .shopify-design-mode .d99-home-top__hotspot:hover,
-  .shopify-design-mode .d99-home-top__hotspot:focus-visible {
-    outline: 1px dashed rgba(255, 0, 0, 0.5);
-    outline-offset: -1px;
+  .d99-home-top-exact__placeholder {
+    width: 100%;
+    height: 100%;
+    min-height: 100%;
   }
 
-  .hs-shop-now { right: 2.3%; bottom: 3.0%; width: 18.8%; height: 7.2%; }
-  .hs-shop { left: 0; top: 0; width: 100%; height: 100%; }
+  .d99-home-top-exact__caption {
+    position: absolute;
+    left: 2rem;
+    bottom: 1.6rem;
+    z-index: 4;
+    color: #111;
+    text-transform: uppercase;
+    font-size: 1.2rem;
+    line-height: 1.5;
+    max-width: 15rem;
+  }
+
+  .d99-home-top-exact__right-stack {
+    display: grid;
+    grid-template-rows: auto 1fr;
+  }
+
+  .d99-home-top-exact__strip {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    min-height: 8.2rem;
+    background: #111;
+    color: #f2eee8;
+    border-right: 1px solid #111;
+    border-bottom: 1px solid #111;
+    padding: 1.5rem 1.8rem;
+    font-size: 1rem;
+    line-height: 1.45;
+    text-transform: uppercase;
+  }
+
+  .d99-home-top-exact__coords {
+    white-space: pre-line;
+  }
+
+  .d99-home-top-exact__crosshair {
+    position: relative;
+    width: 2rem;
+    height: 2rem;
+    border: 1px solid rgba(255,255,255,0.85);
+    border-radius: 999px !important;
+    flex: 0 0 auto;
+  }
+
+  .d99-home-top-exact__crosshair::before,
+  .d99-home-top-exact__crosshair::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255,255,255,0.85);
+  }
+
+  .d99-home-top-exact__crosshair::before {
+    width: 4rem;
+    height: 1px;
+  }
+
+  .d99-home-top-exact__crosshair::after {
+    width: 1px;
+    height: 4rem;
+  }
+
+  .d99-home-top-exact__cta {
+    position: absolute;
+    right: 1.4rem;
+    bottom: 1.4rem;
+    z-index: 4;
+    display: inline-flex;
+    align-items: center;
+    gap: 2.4rem;
+    padding: 1.2rem 2rem;
+    background: #111;
+    color: #f2eee8;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 1.25rem;
+    line-height: 1;
+  }
+
+  .d99-home-top-exact__arrow {
+    font-size: 1.8rem;
+    line-height: 1;
+  }
+
+  .d99-home-top-exact__cta:hover {
+    background: #b72a22;
+  }
 
   @media screen and (max-width: 990px) {
-    .d99-home-top__frame {
+    .d99-home-top-exact {
       padding: 0 0.25rem 0 !important;
+    }
+
+    .d99-home-top-exact__meta {
+      padding-top: 0.2rem;
+      padding-bottom: 0.7rem;
+      font-size: 0.9rem;
+    }
+
+    .d99-home-top-exact__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .d99-home-top-exact__left,
+    .d99-home-top-exact__right {
+      min-height: auto;
+    }
+
+    .d99-home-top-exact__image-wrap,
+    .d99-home-top-exact__image-wrap--right {
+      min-height: 34rem;
     }
   }
 </style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    function hideFooterOnHome() {
+      var selectors = [
+        '.shopify-section-group-footer-group',
+        'footer.footer',
+        '.footer',
+        '[id*="footer-group"]',
+        '[class*="footer-group"]',
+        '.shopify-section:has(.footer-wrapper)',
+        '.shopify-section:has(.section-sections--footer-group__footer-padding)'
+      ];
+
+      selectors.forEach(function (selector) {
+        document.querySelectorAll(selector).forEach(function (element) {
+          element.style.display = 'none';
+          element.style.visibility = 'hidden';
+          element.style.height = '0';
+          element.style.maxHeight = '0';
+          element.style.minHeight = '0';
+          element.style.overflow = 'hidden';
+          element.style.opacity = '0';
+          element.style.pointerEvents = 'none';
+        });
+      });
+    }
+
+    hideFooterOnHome();
+    new MutationObserver(hideFooterOnHome).observe(document.documentElement, { childList: true, subtree: true });
+  });
+</script>
 
 {% schema %}
 {
   "name": "D99 Home Top Exact",
   "settings": [
+    { "type": "image_picker", "id": "left_image", "label": "Left image" },
+    { "type": "image_picker", "id": "right_image", "label": "Right image" },
+    { "type": "textarea", "id": "authenticity_copy", "label": "Authenticity text", "default": "//// AUTHENTICITY\nIS OUR CODE" },
+    { "type": "text", "id": "season_code", "label": "Season code", "default": "D99-A/W-24" },
+    { "type": "textarea", "id": "coordinate_text", "label": "Coordinate text", "default": "39.9042° N, 116.4074° E\nDISTRICT-99 HEADQUARTERS" },
+    { "type": "textarea", "id": "left_caption", "label": "Left caption", "default": "AW24 COLLECTION\n// THE SYSTEM\nDOESN'T WANT\nYOU TO WIN." },
+    { "type": "text", "id": "shop_now_label", "label": "Button label", "default": "Shop now" },
     { "type": "url", "id": "shop_now_link", "label": "Shop now link" },
     { "type": "url", "id": "shop_link", "label": "General hero link" }
   ],
