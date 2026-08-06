@@ -27,6 +27,7 @@ SYNC_PATTERNS_BY_PROFILE = {
         "shopify-theme/sections/header.liquid",
         "shopify-theme/sections/header-group.json",
         "shopify-theme/sections/d99-home-top.liquid",
+        "shopify-theme/sections/d99-home-top-exact.liquid",
         "shopify-theme/templates/index.json",
         "shopify-theme/assets/d99-home-top-mockup.jpg"
     ],

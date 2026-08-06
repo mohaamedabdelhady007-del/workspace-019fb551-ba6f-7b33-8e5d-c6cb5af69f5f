@@ -1,0 +1,75 @@
+<section class="d99-home-top" aria-label="DISTRICT-99 hero section">
+  <div class="d99-home-top__frame">
+    <div class="d99-home-top__artboard">
+      <img src="{{ 'd99-home-top-mockup.jpg' | asset_url }}" alt="DISTRICT-99 homepage hero" class="d99-home-top__image" loading="eager">
+
+      <a class="d99-home-top__hotspot hs-shop-now" href="{{ section.settings.shop_now_link | default: routes.all_products_collection_url }}" aria-label="Shop now"></a>
+      <a class="d99-home-top__hotspot hs-shop" href="{{ section.settings.shop_link | default: routes.all_products_collection_url }}" aria-label="Shop"></a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .d99-home-top {
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    line-height: 0 !important;
+  }
+
+  .d99-home-top__frame {
+    width: 100% !important;
+    max-width: none !important;
+    padding: 0 0.45rem 0 !important;
+    margin: 0 !important;
+  }
+
+  .d99-home-top__artboard {
+    position: relative;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    overflow: hidden;
+  }
+
+  .d99-home-top__image {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .d99-home-top__hotspot {
+    position: absolute;
+    display: block;
+    z-index: 2;
+    background: transparent;
+  }
+
+  .shopify-design-mode .d99-home-top__hotspot:hover,
+  .shopify-design-mode .d99-home-top__hotspot:focus-visible {
+    outline: 1px dashed rgba(255, 0, 0, 0.5);
+    outline-offset: -1px;
+  }
+
+  .hs-shop-now { right: 2.3%; bottom: 3.0%; width: 18.8%; height: 7.2%; }
+  .hs-shop { left: 0; top: 0; width: 100%; height: 100%; }
+
+  @media screen and (max-width: 990px) {
+    .d99-home-top__frame {
+      padding: 0 0.25rem 0 !important;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "D99 Home Top Exact",
+  "settings": [
+    { "type": "url", "id": "shop_now_link", "label": "Shop now link" },
+    { "type": "url", "id": "shop_link", "label": "General hero link" }
+  ],
+  "presets": [
+    { "name": "D99 Home Top Exact" }
+  ]
+}
+{% endschema %}

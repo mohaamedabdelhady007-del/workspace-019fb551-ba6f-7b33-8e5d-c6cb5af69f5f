@@ -1,7 +1,7 @@
 {
   "sections": {
-    "main": {
-      "type": "d99-home-top",
+    "d99_home_top_exact": {
+      "type": "d99-home-top-exact",
       "settings": {
         "shop_now_link": "shopify://collections/all",
         "shop_link": "shopify://collections/all"
@@ -9,6 +9,6 @@
     }
   },
   "order": [
-    "main"
+    "d99_home_top_exact"
   ]
 }
