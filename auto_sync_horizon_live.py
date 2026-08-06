@@ -177,14 +177,24 @@ def sync_once():
     git_fetch()
     remote_commit = git_rev_parse(REMOTE_REF)
     last_synced = state.get("last_synced_commit")
+    previous_profile = state.get("profile")
+    previous_theme_id = state.get("theme_id")
+
+    force_full_sync = previous_profile != SYNC_PROFILE or previous_theme_id != theme["id"]
+    if force_full_sync:
+        last_synced = None
 
     files = changed_files_for_sync(last_synced, remote_commit)
     if not files:
         print(f"No theme changes to sync. Live theme remains: {theme['name']} (ID {theme['id']})")
         state["last_synced_commit"] = remote_commit
         state["theme_id"] = theme["id"]
+        state["profile"] = SYNC_PROFILE
         write_state(state)
         return
+
+    if force_full_sync:
+        print(f"Profile/theme changed. Forcing full sync for profile '{SYNC_PROFILE}'.")
 
     print(f"Syncing {len(files)} changed file(s) to live theme: {theme['name']} (ID {theme['id']})")
     print(f"Commit: {remote_commit}")
@@ -194,6 +204,7 @@ def sync_once():
 
     state["last_synced_commit"] = remote_commit
     state["theme_id"] = theme["id"]
+    state["profile"] = SYNC_PROFILE
     write_state(state)
     print("Sync complete.\n")
 
